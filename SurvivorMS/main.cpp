@@ -1,9 +1,14 @@
-#include <iostream>
+#include "stdafx.h"
+#include "Game.h"
+
+
 
 int main() {
 
     // Init Game;
-    std::cout << "SEIMA" << std::endl;
+    Game game;
+
+    game.run();
 
 
     return 0;
