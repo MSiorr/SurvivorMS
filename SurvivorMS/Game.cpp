@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "Game.h"
 
+
+
 // Private
 void Game::initVariables() {
 
@@ -31,9 +33,31 @@ void Game::initWindow() {
 	this->window->setVerticalSyncEnabled(vsyncEnabled);
 }
 
+void Game::initKeys() {
+
+	std::ifstream ifs("Config/supportedKeys.ini");
+
+	if (ifs.is_open()) {
+		std::string key;
+		int val;
+
+		while (ifs >> key >> val) {
+			this->supportedKeys[key] = val;
+		}
+	}
+
+	ifs.close();
+
+	//this->supportedKeys.emplace(SUPPKEYS::W, sf::Keyboard::Key::W);
+	//this->supportedKeys.emplace(SUPPKEYS::A, sf::Keyboard::Key::A);
+	//this->supportedKeys.emplace(SUPPKEYS::S, sf::Keyboard::Key::S);
+	//this->supportedKeys.emplace(SUPPKEYS::D, sf::Keyboard::Key::D);
+	//this->supportedKeys.emplace(SUPPKEYS::ESC, sf::Keyboard::Key::Escape);
+}
+
 void Game::initStates() {
 
-	this->states.push(new GameState(this->window));
+	this->states.push(new GameState(this->window, &this->supportedKeys));
 
 }
 
@@ -42,6 +66,9 @@ Game::Game() {
 
 	this->initVariables();
 	this->initWindow();
+	this->initKeys();
+	this->initStates();
+
 }
 
 Game::~Game() {
@@ -54,12 +81,13 @@ Game::~Game() {
 	}
 }
 
+void Game::endApp() {
+	std::cout << "APP END" << "\n";
+}
+
 void Game::updateDt() {
 
 	this->dt = dtTime.restart().asSeconds();
-
-	system("cls");
-	std::cout << 1 / this->dt << std::endl;
 
 }
 
@@ -73,7 +101,7 @@ void Game::pollEvents() {
 			break;
 		case sf::Event::KeyPressed:
 			if (this->ev.key.code == sf::Keyboard::Escape)
-				this->window->close();
+				//this->window->close();
 			break;
 		}
 	}
@@ -85,7 +113,19 @@ void Game::update() {
 
 	if (!this->states.empty()) {
 		this->states.top()->update(this->dt);
+
+		if (this->states.top()->getQuit()) {
+
+			this->states.top()->endState();
+			delete this->states.top();
+			this->states.pop();
+		}
+	} else {
+		this->endApp();
+		this->window->close();
 	}
+
+
 }
 
 void Game::render() {

@@ -17,10 +17,13 @@ private:
 
     std::stack<State*> states;
 
+    std::map<std::string, int> supportedKeys;
+
 
     // Init
     void initVariables();
     void initWindow();
+    void initKeys();
     void initStates();
 
 public:
@@ -28,10 +31,14 @@ public:
     ~Game();
 
     // Fun
+    void endApp();
+
     void updateDt();
     void pollEvents();
     void update();
+
     void render();
+
     void run();
 };
 
