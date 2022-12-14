@@ -39,6 +39,9 @@
     <ClCompile Include="Entity.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
+    <ClCompile Include="MainMenuState.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -55,6 +58,9 @@
     </ClInclude>
     <ClInclude Include="Entity.h">
       <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenuState.h">
+      <Filter>States</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

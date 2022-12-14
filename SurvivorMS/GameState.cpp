@@ -65,9 +65,8 @@ void GameState::update(const float& dt) {
 
 void GameState::render(sf::RenderTarget* target) {
 
-	if (target == NULL) {
+	if (!target)
 		target = this->window;
-	}
 
 	this->player.render(target);
 }

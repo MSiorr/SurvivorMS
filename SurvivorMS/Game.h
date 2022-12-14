@@ -1,4 +1,4 @@
-#include "GameState.h"
+#include "MainMenuState.h"
 
 #ifndef GAME_H
 #define GAME_H
