@@ -57,6 +57,7 @@ void GameState::updateInput(const float& dt) {
 
 void GameState::update(const float& dt) {
 
+	this->updateMousePos();
 	this->updateInput(dt);
 
 	this->player.update(dt);
