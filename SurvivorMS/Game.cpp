@@ -7,28 +7,44 @@
 void Game::initVariables() {
 
 	this->window = nullptr;
+	this->fullscreen = false;
+	this->dt = 0.f;
 }
 
 void Game::initWindow() {
 
 	// Take window data from window.ini
 	std::ifstream ifs("Config/window.ini");
+	this->videoModes = sf::VideoMode::getFullscreenModes();
 
 	std::string title = "SURVIVOR.MS";
-	sf::VideoMode window_size(1600, 900);
+	sf::VideoMode window_size = sf::VideoMode::getDesktopMode();
 	unsigned int fps = 144;
 	bool vsyncEnabled = false;
+	bool fullscreen = false;
+	unsigned antialiasing_lvl = 0;
 
 	if (ifs.is_open()) {
 		std::getline(ifs, title);
 		ifs >> window_size.width >> window_size.height;
 		ifs >> fps;
 		ifs >> vsyncEnabled;
+		ifs >> fullscreen;
+		ifs >> antialiasing_lvl;
 	}
 
 	ifs.close();
 
-	this->window = new sf::RenderWindow(window_size, title, sf::Style::Titlebar | sf::Style::Close);
+	this->fullscreen = fullscreen;
+
+	this->windowSettings.antialiasingLevel = antialiasing_lvl;
+
+	if(fullscreen)
+		this->window = new sf::RenderWindow(window_size, title, sf::Style::Fullscreen, windowSettings);
+	else
+		this->window = new sf::RenderWindow(window_size, title, sf::Style::Titlebar | sf::Style::Close, windowSettings);
+	
+	//this->window = new sf::RenderWindow(window_size, title, sf::Style::Titlebar | sf::Style::Close);
 	this->window->setFramerateLimit(fps);
 	this->window->setVerticalSyncEnabled(vsyncEnabled);
 }
@@ -57,7 +73,7 @@ void Game::initKeys() {
 
 void Game::initStates() {
 
-	this->states.push(new MainMenuState(this->window, &this->supportedKeys));
+	this->states.push(new MainMenuState(this->window, &this->supportedKeys, &this->states));
 	//this->states.push(new GameState(this->window, &this->supportedKeys));
 
 }

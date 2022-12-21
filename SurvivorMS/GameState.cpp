@@ -23,35 +23,47 @@ void GameState::initKeyBinds() {
 	//this->keyBinds.emplace(KEYACTIONS::CLOSE, supportedKeys->at(SUPPKEYS::ESC));
 }
 
-GameState::GameState(sf::RenderWindow* window, std::map<std::string, int>* suppKeys)
-	: State(window, suppKeys) {
+void GameState::initTextures() {
+
+	if (!this->textures["PLAYER_IDLE"].loadFromFile("Resources/Images/Sprites/player.png")) {
+		throw "PLAYER TEXTURE ERROR";
+	}
+
+}
+
+void GameState::initPlayer() {
+	this->player = new Player(0, 0, &this->textures["PLAYER_IDLE"]);
+}
+
+GameState::GameState(sf::RenderWindow* window, std::map<std::string, int>* suppKeys, std::stack<State*>* states)
+	: State(window, suppKeys, states) {
 
 	this->initKeyBinds();
+	this->initTextures();
+	this->initPlayer();
 }
 
 GameState::~GameState() {
-}
-
-
-void GameState::endState() {
-
-	std::cout << "BYE BYE " << "\n";
+	delete this->player;
 }
 
 void GameState::updateInput(const float& dt) {
-	this->checkQuit();
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keyBinds.at("MOVE_LEFT")))) {
-		this->player.move(dt, -1.f, 0.f);
+		this->player->move(dt, -1.f, 0.f);
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keyBinds.at("MOVE_RIGHT")))) {
-		this->player.move(dt, 1.f, 0.f);
+		this->player->move(dt, 1.f, 0.f);
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keyBinds.at("MOVE_UP")))) {
-		this->player.move(dt, 0.f, -1.f);
+		this->player->move(dt, 0.f, -1.f);
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keyBinds.at("MOVE_DOWN")))) {
-		this->player.move(dt, 0.f, 1.f);
+		this->player->move(dt, 0.f, 1.f);
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keyBinds.at("CLOSE")))) {
+		this->endState();
 	}
 }
 
@@ -60,7 +72,7 @@ void GameState::update(const float& dt) {
 	this->updateMousePos();
 	this->updateInput(dt);
 
-	this->player.update(dt);
+	this->player->update(dt);
 
 }
 
@@ -69,5 +81,5 @@ void GameState::render(sf::RenderTarget* target) {
 	if (!target)
 		target = this->window;
 
-	this->player.render(target);
+	this->player->render(target);
 }

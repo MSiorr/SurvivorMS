@@ -11,6 +11,10 @@ private:
     sf::RenderWindow* window;
 
     sf::Event ev;
+    std::vector<sf::VideoMode> videoModes;
+    sf::ContextSettings windowSettings;
+
+    bool fullscreen;
 
     sf::Clock dtTime;
     float dt; // deltaTime

@@ -19,6 +19,9 @@
     <Filter Include="Entities">
       <UniqueIdentifier>{5c358763-c77c-4a55-8e53-78e4efad21c3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Components">
+      <UniqueIdentifier>{bba1488c-db3f-4a39-9436-de3c8981af92}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -45,6 +48,12 @@
     <ClCompile Include="Button.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="MovementComponent.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -66,6 +75,12 @@
       <Filter>States</Filter>
     </ClInclude>
     <ClInclude Include="Button.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="MovementComponent.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
   </ItemGroup>

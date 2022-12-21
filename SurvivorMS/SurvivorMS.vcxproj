@@ -140,6 +140,8 @@
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenuState.cpp" />
+    <ClCompile Include="MovementComponent.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -151,6 +153,8 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="MainMenuState.h" />
+    <ClInclude Include="MovementComponent.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
