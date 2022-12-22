@@ -1,7 +1,7 @@
 #ifndef MOVEMENTCOMPONENT_H
 #define MOVEMENTCOMPONENT_H
 
-enum MOVEMENTSTATE { IDLE = 0, MOVING, MOVING_LEFT, MOVING_RIGHT };
+enum MOVEMENTSTATE { IDLE = 0, MOVING, MOVING_LEFT, MOVING_RIGHT, MOVING_UP, MOVING_DOWN };
 
 class MovementComponent {
 private:
@@ -18,6 +18,7 @@ public:
 	MovementComponent(sf::Sprite& sprite, float maxVelocity, float acceleration, float deceleration);
 	virtual ~MovementComponent();
 
+	const float& getMaxVelocity() const;
 	const sf::Vector2f& getVelocity() const;
 
 	const bool getState(const short unsigned state) const;

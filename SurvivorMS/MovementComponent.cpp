@@ -8,6 +8,10 @@ MovementComponent::MovementComponent(sf::Sprite& sprite, float maxVelocity, floa
 MovementComponent::~MovementComponent() {
 }
 
+const float& MovementComponent::getMaxVelocity() const {
+	return this->maxVelocity;
+}
+
 const sf::Vector2f& MovementComponent::getVelocity() const {
 	return this->velocity;
 }
@@ -36,6 +40,18 @@ const bool MovementComponent::getState(const short unsigned state) const {
 	case MOVEMENTSTATE::MOVING_RIGHT:
 
 		if (this->velocity.x > 0.f)
+			return true;
+
+		break;
+	case MOVEMENTSTATE::MOVING_UP:
+
+		if (this->velocity.y < 0.f)
+			return true;
+
+		break;
+	case MOVEMENTSTATE::MOVING_DOWN:
+
+		if (this->velocity.y> 0.f)
 			return true;
 
 		break;

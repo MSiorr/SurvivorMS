@@ -2,6 +2,7 @@
 #define STATE_H
 
 #include "Player.h"
+#include "Button.h"
 
 class State {
 private:
