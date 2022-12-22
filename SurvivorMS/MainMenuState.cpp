@@ -43,25 +43,47 @@ void MainMenuState::initKeyBinds() {
 }
 
 void MainMenuState::initButtons() {
-	float btnWidth = 150.f;
-	float btnHeight = 50.f;
+	float btnWidth = 240.f;
+	float btnHeight = 60.f;
+	unsigned fontSize = 30;
 	float centerX = this->window->getSize().x / 2.f - btnWidth / 2.f;
 	float centerY = this->window->getSize().y / 2.f - btnHeight / 2.f;
 
+	float spaceYMultip = 1.25f;
+
+	short btnCount = 0;
+
 	this->buttons["GAME_STATE"] = new Button(
-		centerX, centerY, btnWidth, btnHeight,
-		&this->font, "NEW GAME",
-		sf::Color(0, 0, 0, 255), sf::Color(100, 100, 100, 255), sf::Color(255, 0, 0, 255));
+		centerX, centerY + btnCount * spaceYMultip * btnHeight, 
+		btnWidth, btnHeight,
+		&this->font, "NEW GAME", fontSize,
+		sf::Color(70, 70, 70, 200), sf::Color(250, 250, 250, 250), sf::Color(20, 20, 20, 50),
+		sf::Color(0, 0, 0, 200), sf::Color(0, 0, 0, 140), sf::Color(0, 0, 0, 50));
+	btnCount++;
 	
 	this->buttons["SETTINGS_STATE"] = new Button(
-		centerX, centerY + 1.5*btnHeight, btnWidth, btnHeight,
-		&this->font, "SETTINGS",
-		sf::Color(0, 0, 0, 255), sf::Color(100, 100, 100, 255), sf::Color(255, 0, 0, 255));
+		centerX, centerY + btnCount * spaceYMultip * btnHeight, 
+		btnWidth, btnHeight,
+		&this->font, "SETTINGS", fontSize,
+		sf::Color(70, 70, 70, 200), sf::Color(250, 250, 250, 250), sf::Color(20, 20, 20, 50),
+		sf::Color(0, 0, 0, 200), sf::Color(0, 0, 0, 140), sf::Color(0, 0, 0, 50));
+	btnCount++;
+
+	this->buttons["EDITOR_STATE"] = new Button(
+		centerX, centerY + btnCount * spaceYMultip * btnHeight, 
+		btnWidth, btnHeight,
+		&this->font, "EDITOR", fontSize,
+		sf::Color(70, 70, 70, 200), sf::Color(250, 250, 250, 250), sf::Color(20, 20, 20, 50),
+		sf::Color(0, 0, 0, 200), sf::Color(0, 0, 0, 140), sf::Color(0, 0, 0, 50));
+	btnCount++;
 
 	this->buttons["EXIT_STATE"] = new Button(
-		centerX, centerY + 3*btnHeight, btnWidth, btnHeight,
-		&this->font, "EXIT",
-		sf::Color(0, 0, 0, 255), sf::Color(100, 100, 100, 255), sf::Color(255, 0, 0, 255));
+		centerX, centerY + btnCount * spaceYMultip * btnHeight, 
+		btnWidth, btnHeight,
+		&this->font, "EXIT", fontSize,
+		sf::Color(70, 70, 70, 200), sf::Color(250, 250, 250, 250), sf::Color(20, 20, 20, 50),
+		sf::Color(0, 0, 0, 200), sf::Color(0, 0, 0, 140), sf::Color(0, 0, 0, 50));
+	btnCount++;
 
 }
 

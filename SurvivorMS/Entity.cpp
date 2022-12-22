@@ -3,8 +3,6 @@
 
 void Entity::initVariables() {
 
-	this->texture = nullptr;
-	this->sprite = nullptr;
 	this->movementComponent = nullptr;
 }
 
@@ -15,40 +13,35 @@ Entity::Entity() {
 }
 
 Entity::~Entity() {
-	delete this->sprite;
+	
+	delete this->movementComponent;
+	delete this->animationComponent;
 }
 
-void Entity::move(const float& dt, const float dirX, const float dirY) {
+void Entity::move(const float dirX, const float dirY, const float& dt) {
 
-	if (this->sprite) {
-		//float mX = dirX * this->moveSpeed * dt;
-		//float mY = dirY * this->moveSpeed * dt;
-
-		//this->sprite->move(mX, mY);
-
-		this->movementComponent->move(dirX, dirY);
-		this->sprite->move(this->movementComponent->getVelocity() * dt);
-
-	}
+	if(this->movementComponent)
+		this->movementComponent->move(dirX, dirY, dt);
 
 }
 
-void Entity::createSprite(sf::Texture* texture) {
+void Entity::setTexture(sf::Texture& texture) {
 
-	this->texture = texture;
-	this->sprite = new sf::Sprite(*this->texture);
-	this->sprite->setScale(4, 4);
+	this->sprite.setTexture(texture);
+	//this->sprite.setScale(4, 4);
 
 }
 
 void Entity::setPosition(const float x, const float y) {
-	if (this->sprite) {
-		this->sprite->setPosition(x, y);
-	}
+	this->sprite.setPosition(x, y);
 }
 
-void Entity::createMovementComponent(const float maxVelocity) {
-	this->movementComponent = new MovementComponent(maxVelocity);
+void Entity::createMovementComponent(const float maxVelocity, const float acceleration, const float deceleration) {
+	this->movementComponent = new MovementComponent(this->sprite, maxVelocity, acceleration, deceleration);
+}
+
+void Entity::createAnimationComponent(sf::Texture& textureSheet) {
+	this->animationComponent = new AnimationComponent(this->sprite, textureSheet);
 }
 
 void Entity::update(const float& dt) {
@@ -56,6 +49,5 @@ void Entity::update(const float& dt) {
 }
 
 void Entity::render(sf::RenderTarget* target) {
-	if(this->sprite)
-		target->draw(*this->sprite);
+	target->draw(this->sprite);
 }
