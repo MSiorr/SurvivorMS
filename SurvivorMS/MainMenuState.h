@@ -3,17 +3,20 @@
 
 #include "GameState.h"
 #include "EditorState.h"
+#include "SettingsState.h"
+
 
 
 class MainMenuState :
     public State {
 
 private:
+
 	sf::Texture bgTexture;
 	sf::RectangleShape bg;
 	sf::Font font;
 
-	std::map<std::string, Button*> buttons;
+	std::map<std::string, gui::Button*> buttons;
 
 	void initVariables();
 	void initBackground();
@@ -22,7 +25,7 @@ private:
 	void initButtons();
 
 public:
-	MainMenuState(sf::RenderWindow* window, std::map<std::string, int>* suppKeys, std::stack<State*>* states);
+	MainMenuState(StateData* stateData);
 	virtual ~MainMenuState();
 
 	//Fun

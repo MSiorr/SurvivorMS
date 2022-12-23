@@ -7,46 +7,45 @@
 void Game::initVariables() {
 
 	this->window = nullptr;
-	this->fullscreen = false;
 	this->dt = 0.f;
+
+	this->gridSize = 50.f;
+}
+
+void Game::initGraphicsSettings() {
+
+	this->gfxSettings.loadFromFile("Config/graphics.ini");
+}
+
+void Game::initStateData() {
+
+	this->stateData.window = this->window;
+	this->stateData.gfxSettings = &this->gfxSettings;
+	this->stateData.suppKeys = &this->supportedKeys;
+	this->stateData.states = &this->states;
+	this->stateData.gridSize = this->gridSize;
 }
 
 void Game::initWindow() {
 
-	// Take window data from window.ini
-	std::ifstream ifs("Config/window.ini");
-	this->videoModes = sf::VideoMode::getFullscreenModes();
-
-	std::string title = "SURVIVOR.MS";
-	sf::VideoMode window_size = sf::VideoMode::getDesktopMode();
-	unsigned int fps = 144;
-	bool vsyncEnabled = false;
-	bool fullscreen = false;
-	unsigned antialiasing_lvl = 0;
-
-	if (ifs.is_open()) {
-		std::getline(ifs, title);
-		ifs >> window_size.width >> window_size.height;
-		ifs >> fps;
-		ifs >> vsyncEnabled;
-		ifs >> fullscreen;
-		ifs >> antialiasing_lvl;
-	}
-
-	ifs.close();
-
-	this->fullscreen = fullscreen;
-
-	this->windowSettings.antialiasingLevel = antialiasing_lvl;
-
-	if(fullscreen)
-		this->window = new sf::RenderWindow(window_size, title, sf::Style::Fullscreen, windowSettings);
+	if(this->gfxSettings.fullscreen)
+		this->window = new sf::RenderWindow(
+			this->gfxSettings.resolution, 
+			this->gfxSettings.title,
+			sf::Style::Fullscreen, 
+			this->gfxSettings.contextSettings
+		);
 	else
-		this->window = new sf::RenderWindow(window_size, title, sf::Style::Titlebar | sf::Style::Close, windowSettings);
+		this->window = new sf::RenderWindow(
+			this->gfxSettings.resolution,
+			this->gfxSettings.title,
+			sf::Style::Titlebar | sf::Style::Close, 
+			this->gfxSettings.contextSettings
+		);
 	
 	//this->window = new sf::RenderWindow(window_size, title, sf::Style::Titlebar | sf::Style::Close);
-	this->window->setFramerateLimit(fps);
-	this->window->setVerticalSyncEnabled(vsyncEnabled);
+	this->window->setFramerateLimit(this->gfxSettings.maxFps);
+	this->window->setVerticalSyncEnabled(this->gfxSettings.verticalSync);
 }
 
 void Game::initKeys() {
@@ -73,7 +72,7 @@ void Game::initKeys() {
 
 void Game::initStates() {
 
-	this->states.push(new MainMenuState(this->window, &this->supportedKeys, &this->states));
+	this->states.push(new MainMenuState(&this->stateData));
 	//this->states.push(new GameState(this->window, &this->supportedKeys));
 
 }
@@ -82,8 +81,10 @@ void Game::initStates() {
 Game::Game() {
 
 	this->initVariables();
+	this->initGraphicsSettings();
 	this->initWindow();
 	this->initKeys();
+	this->initStateData();
 	this->initStates();
 
 }

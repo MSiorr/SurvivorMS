@@ -1,23 +1,20 @@
-#include "MainMenuState.h"
-
 #ifndef GAME_H
 #define GAME_H
 
+#include "MainMenuState.h"
 
 class Game {
 private:
 
-    // Var
+    StateData stateData;
+    GraphicsSettings gfxSettings;
     sf::RenderWindow* window;
-
     sf::Event ev;
-    std::vector<sf::VideoMode> videoModes;
-    sf::ContextSettings windowSettings;
-
-    bool fullscreen;
 
     sf::Clock dtTime;
     float dt; // deltaTime
+
+    float gridSize;
 
     std::stack<State*> states;
 
@@ -26,8 +23,10 @@ private:
 
     // Init
     void initVariables();
+    void initGraphicsSettings();
     void initWindow();
     void initKeys();
+    void initStateData();
     void initStates();
 
 public:

@@ -53,7 +53,7 @@ void MainMenuState::initButtons() {
 
 	short btnCount = 0;
 
-	this->buttons["GAME_STATE"] = new Button(
+	this->buttons["GAME_STATE"] = new gui::Button(
 		centerX, centerY + btnCount * spaceYMultip * btnHeight, 
 		btnWidth, btnHeight,
 		&this->font, "NEW GAME", fontSize,
@@ -61,7 +61,7 @@ void MainMenuState::initButtons() {
 		sf::Color(0, 0, 0, 200), sf::Color(0, 0, 0, 140), sf::Color(0, 0, 0, 50));
 	btnCount++;
 	
-	this->buttons["SETTINGS_STATE"] = new Button(
+	this->buttons["SETTINGS_STATE"] = new gui::Button(
 		centerX, centerY + btnCount * spaceYMultip * btnHeight, 
 		btnWidth, btnHeight,
 		&this->font, "SETTINGS", fontSize,
@@ -69,7 +69,7 @@ void MainMenuState::initButtons() {
 		sf::Color(0, 0, 0, 200), sf::Color(0, 0, 0, 140), sf::Color(0, 0, 0, 50));
 	btnCount++;
 
-	this->buttons["EDITOR_STATE"] = new Button(
+	this->buttons["EDITOR_STATE"] = new gui::Button(
 		centerX, centerY + btnCount * spaceYMultip * btnHeight, 
 		btnWidth, btnHeight,
 		&this->font, "EDITOR", fontSize,
@@ -77,7 +77,7 @@ void MainMenuState::initButtons() {
 		sf::Color(0, 0, 0, 200), sf::Color(0, 0, 0, 140), sf::Color(0, 0, 0, 50));
 	btnCount++;
 
-	this->buttons["EXIT_STATE"] = new Button(
+	this->buttons["EXIT_STATE"] = new gui::Button(
 		centerX, centerY + btnCount * spaceYMultip * btnHeight, 
 		btnWidth, btnHeight,
 		&this->font, "EXIT", fontSize,
@@ -87,8 +87,8 @@ void MainMenuState::initButtons() {
 
 }
 
-MainMenuState::MainMenuState(sf::RenderWindow* window, std::map<std::string, int>* suppKeys, std::stack<State*>* states)
-	: State(window, suppKeys, states) {
+MainMenuState::MainMenuState(StateData* stateData)
+	: State(stateData) {
 
 	this->initVariables();
 	this->initBackground();
@@ -119,11 +119,15 @@ void MainMenuState::updateButtons() {
 	}
 
 	if (this->buttons["GAME_STATE"]->isPressed()) {
-		this->states->push(new GameState(this->window, this->supportedKeys, this->states));
+		this->states->push(new GameState(this->stateData));
+	}
+
+	if (this->buttons["SETTINGS_STATE"]->isPressed()) {
+		this->states->push(new SettingsState(this->stateData));
 	}
 
 	if (this->buttons["EDITOR_STATE"]->isPressed()) {
-		this->states->push(new EditorState(this->window, this->supportedKeys, this->states));
+		this->states->push(new EditorState(this->stateData));
 	}
 
 	if (this->buttons["EXIT_STATE"]->isPressed()) {
