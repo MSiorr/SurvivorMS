@@ -75,7 +75,7 @@ void SettingsState::initGui() {
 	float centerListX = this->window->getSize().x / 2.f - listWidth / 2.f;
 	float centerListY = this->window->getSize().y / 2.f - listHeight / 2.f;
 
-	this->dropDownLists["RESOLUTION"] = new gui::DropDownList(centerListX + listWidth / 1.8f, centerListY, listWidth, listHeight, this->font, modesStr.data(), modesStr.size());
+	this->dropDownLists["RESOLUTION"] = new gui::DropDownList(centerListX + listWidth / 1.8f, centerListY, listWidth, listHeight, this->font, modesStr.data(), static_cast<unsigned>(modesStr.size()));
 }
 
 void SettingsState::initText() {

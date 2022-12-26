@@ -18,8 +18,8 @@ void EditorState::initVariables() {
 void EditorState::initView() {
 
 	this->view.setSize(sf::Vector2f(
-		this->stateData->gfxSettings->resolution.width,
-		this->stateData->gfxSettings->resolution.height
+		static_cast<float>(this->stateData->gfxSettings->resolution.width),
+		static_cast<float>(this->stateData->gfxSettings->resolution.height)
 	));
 
 	this->view.setCenter(
@@ -41,7 +41,7 @@ void EditorState::initFonts() {
 void EditorState::initText() {
 
 	this->cursorTxt.setFont(this->font);
-	this->cursorTxt.setCharacterSize(12.f);
+	this->cursorTxt.setCharacterSize(12);
 	this->cursorTxt.setFillColor(sf::Color::White);
 }
 
@@ -93,6 +93,8 @@ void EditorState::initGui() {
 	this->textureSelector = new gui::TextureSelector(20.f, 20.f, 800.f, 200.f, 
 		this->stateData->gridSize, this->tileMap->getTileSheet(),
 		this->font, "TS");
+
+
 }
 
 void EditorState::initTileMap() {

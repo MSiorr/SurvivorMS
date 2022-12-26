@@ -35,7 +35,6 @@ private:
 
 			this->sprite.setTexture(this->textureSheet, true);
 			this->sprite.setTextureRect(this->startRect);
-			this->sprite.setScale(4, 4);
 		}
 
 		const bool& isDone() const {

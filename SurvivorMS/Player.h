@@ -3,6 +3,8 @@
 
 #include "Entity.h"
 
+class Entity;
+
 class Player :
 	public Entity {
 private:
@@ -19,6 +21,7 @@ public:
 	void updateAttack();
 	void updateAnimation(const float& dt);
 	void update(const float& dt);
+	void render(sf::RenderTarget& target);
 };
 
 #endif 

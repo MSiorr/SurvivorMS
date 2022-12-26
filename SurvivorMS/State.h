@@ -12,7 +12,11 @@ class State;
 class StateData {
 public:
 	StateData() {
-
+		this->window = nullptr;
+		this->suppKeys = nullptr;
+		this->states = nullptr;
+		this->gfxSettings = nullptr;
+		this->gridSize = 0.f;
 	};
 
 	sf::RenderWindow* window;

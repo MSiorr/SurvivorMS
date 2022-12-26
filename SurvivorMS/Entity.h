@@ -5,6 +5,10 @@
 #include "AnimationComponent.h"
 #include "HitboxComponent.h"
 
+class MovementComponent;
+class AnimationComponent;
+class HitboxComponent;
+
 class Entity {
 private:
 
@@ -27,12 +31,19 @@ public:
 	void createAnimationComponent(sf::Texture& textureSheet);
 
 	virtual const sf::Vector2f& getPosition() const;
+	virtual const sf::Vector2i getGridPosition(const int gridSizeI) const;
+	virtual const sf::FloatRect getGlobalBounds() const;
+	virtual const sf::FloatRect getNextPositionBounds(const float& dt) const;
 
 	virtual void setPosition(const float x, const float y);
 
 	virtual void move(const float dirX, const float dirY, const float& dt);
-	virtual void update(const float& dt);
-	virtual void render(sf::RenderTarget& target);
+	void stopVelocity();
+	void stopVelocityX();
+	void stopVelocityY();
+
+	virtual void update(const float& dt) = 0;
+	virtual void render(sf::RenderTarget& target) = 0;
 };
 
 #endif

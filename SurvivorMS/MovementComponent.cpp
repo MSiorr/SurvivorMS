@@ -62,6 +62,22 @@ const bool MovementComponent::getState(const short unsigned state) const {
 	return false;
 }
 
+void MovementComponent::stopVelocity() {
+
+	this->velocity.x = 0.f;
+	this->velocity.y = 0.f;
+}
+
+void MovementComponent::stopVelocityX() {
+
+	this->velocity.x = 0.f;
+}
+
+void MovementComponent::stopVelocityY() {
+
+	this->velocity.y = 0.f;
+}
+
 void MovementComponent::move(const float dirX, const float dirY, const float& dt) {
 
 	// ACCELERATION
