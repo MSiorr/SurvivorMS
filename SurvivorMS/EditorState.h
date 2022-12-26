@@ -13,6 +13,8 @@ class TileMap;
 class EditorState :
     public State {
 private:
+	sf::View view;
+
 	PauseMenu* pMenu;
 
 	sf::Text cursorTxt;
@@ -32,10 +34,12 @@ private:
 
 	gui::TextureSelector* textureSelector;
 
+	float cameraSpeed;
 	bool collision;
 	short type;
 
 	void initVariables();
+	void initView();
 	void initBackground();
 	void initFonts();
 	void initText();
@@ -52,6 +56,7 @@ public:
 	//Fun
 
 	void updateInput(const float& dt);
+	void updateEditorCameraInput(const float& dt);
 	void updateEditorInput(const float& dt);
 	void updateButtons();
 	void updateGui(const float& dt);
