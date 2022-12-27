@@ -91,7 +91,7 @@
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="PlayerGUI.cpp">
-      <Filter>Pliki źródłowe</Filter>
+      <Filter>GUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -150,7 +150,15 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="PlayerGUI.h">
-      <Filter>Pliki nagłówkowe</Filter>
+      <Filter>GUI</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="vertex_shader.vert">
+      <Filter>Pliki źródłowe</Filter>
+    </None>
+    <None Include="fragment_shader.frag">
+      <Filter>Pliki źródłowe</Filter>
+    </None>
   </ItemGroup>
 </Project>

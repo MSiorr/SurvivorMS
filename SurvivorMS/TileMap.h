@@ -48,8 +48,8 @@ public:
 
 	void updateCollision(Entity* entity, const float& dt);
 	void update(const float& dt);
-	void renderDeferred(sf::RenderTarget& target);
-	void render(sf::RenderTarget& target, const sf::Vector2i& gridPos);
+	void renderDeferred(sf::RenderTarget& target, sf::Shader* shader = NULL, const sf::Vector2f playerPos = sf::Vector2f(0, 0));
+	void render(sf::RenderTarget& target, const sf::Vector2i& gridPos, sf::Shader* shader = NULL, sf::Vector2f playerPos = sf::Vector2f(0, 0), const bool showCollision = false);
 };
 
 #endif 

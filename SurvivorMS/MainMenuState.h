@@ -21,7 +21,6 @@ private:
 	std::map<std::string, gui::Button*> buttons;
 
 	void initVariables();
-	void initBackground();
 	void initFonts();
 	void initKeyBinds();
 	void initGui();

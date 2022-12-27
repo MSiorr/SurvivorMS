@@ -7,7 +7,7 @@ class Tile {
 private:
 
 protected:
-	sf::RectangleShape shape;
+	sf::Sprite shape;
 	bool collision;
 	short type;
 
@@ -25,7 +25,7 @@ public:
 
 	const bool intersects(const sf::FloatRect bounds) const;
 	void update(const float& dt);
-	void render(sf::RenderTarget& target);
+	void render(sf::RenderTarget& target, sf::Shader* shader = NULL, const sf::Vector2f playerPos = sf::Vector2f(0,0));
 };
 
 #endif 

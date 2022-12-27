@@ -2,6 +2,7 @@
 #define PLAYERGUI_H
 
 #include "Player.h"
+#include "Gui.h"
 
 class Player;
 
@@ -9,6 +10,7 @@ class PlayerGUI {
 private:
 	Player* player;
 
+	sf::VideoMode& vm;
 	sf::Font font;
 
 	// Level Bar
@@ -37,7 +39,7 @@ private:
 	void initLevelBar();
 
 public:
-	PlayerGUI(Player* player);
+	PlayerGUI(Player* player, sf::VideoMode& vm);
 	virtual ~PlayerGUI();
 
 	void updateHPBar();

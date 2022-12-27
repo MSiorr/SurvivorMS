@@ -76,13 +76,21 @@ void GameState::initPauseMenu() {
 	);
 }
 
+void GameState::initShaders() {
+
+	if(!this->coreShader.loadFromFile("vertex_shader.vert", "fragment_shader.frag")){
+		
+		std::cout << "ERROR WITH SHADERS" << "\n";
+	}
+}
+
 void GameState::initPlayer() {
 	this->player = new Player(0, 0, this->textures["PLAYER_SHEET"]);
 }
 
 void GameState::initPlayerGUI() {
 
-	this->playerGUI = new PlayerGUI(this->player);
+	this->playerGUI = new PlayerGUI(this->player, this->stateData->gfxSettings->resolution);
 }
 
 void GameState::initTileMap() {
@@ -100,6 +108,7 @@ GameState::GameState(StateData* stateData)
 	this->initKeyBinds();
 	this->initTextures();
 	this->initPauseMenu();
+	this->initShaders();
 	this->initPlayer();
 	this->initPlayerGUI();
 	this->initTileMap();
@@ -115,8 +124,8 @@ GameState::~GameState() {
 void GameState::updateView(const float& dt) {
 
 	this->view.setCenter(
-		std::floor(this->player->getPosition().x * 100.f) / 100.f,
-		std::floor(this->player->getPosition().y * 100.f) / 100.f
+		std::floor((this->player->getPosition().x + (static_cast<float>(this->mousePosWindow.x) - static_cast<float>(this->stateData->gfxSettings->resolution.width / 2)) / 5.f) * 100.f) / 100.f,
+		std::floor((this->player->getPosition().y + (static_cast<float>(this->mousePosWindow.y) - static_cast<float>(this->stateData->gfxSettings->resolution.height / 2)) / 5.f) * 100.f) / 100.f
 	);
 }
 
@@ -207,11 +216,19 @@ void GameState::render(sf::RenderTarget* target) {
 	this->renderTexture.clear();
 
 	this->renderTexture.setView(this->view);
-	this->tileMap->render(this->renderTexture, this->player->getGridPosition(static_cast<int>(this->stateData->gridSize)));
+	this->tileMap->render(this->renderTexture, 
+		this->player->getGridPosition(static_cast<int>(this->stateData->gridSize)), 
+		&this->coreShader, 
+		this->player->getCenter()
+	);
 
-	this->player->render(this->renderTexture);
+	this->player->render(this->renderTexture, &this->coreShader, true);
 
-	this->tileMap->renderDeferred(this->renderTexture);
+	this->tileMap->renderDeferred(
+		this->renderTexture, 
+		&this->coreShader,
+		this->player->getCenter()
+	);
 
 
 	this->renderTexture.setView(this->renderTexture.getDefaultView());

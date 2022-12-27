@@ -91,7 +91,7 @@ void SettingsState::initGui() {
 
 	this->optionsText.setFont(this->font);
 	this->optionsText.setPosition(sf::Vector2f(centerTxTX - gui::p2pX(12.5f, vm) / 1.8f, centerTxtY + 4.f));
-	this->optionsText.setCharacterSize(gui::calcCharSize(vm) * 0.8f);
+	this->optionsText.setCharacterSize(static_cast<unsigned>(gui::calcCharSize(vm) * 0.8));
 	this->optionsText.setFillColor(sf::Color(255, 255, 255, 255));
 
 	this->optionsText.setString(

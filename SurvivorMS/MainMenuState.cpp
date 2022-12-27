@@ -5,20 +5,6 @@ void MainMenuState::initVariables() {
 
 }
 
-void MainMenuState::initBackground() {
-
-	this->bg.setSize(sf::Vector2f(
-		static_cast<float>(this->window->getSize().x),
-		static_cast<float>(this->window->getSize().y)
-	));
-
-	if (!this->bgTexture.loadFromFile("Resources/Images/Backgrounds/bg.png")) {
-		throw "BG LOAD ERROR";
-	}
-
-	this->bg.setTexture(&this->bgTexture);
-}
-
 void MainMenuState::initFonts() {
 	if (!this->font.loadFromFile("Fonts/trebuc.ttf")) {
 		throw("ERROR::LOAD FONT IN MENU STATE");
@@ -46,6 +32,21 @@ void MainMenuState::initGui() {
 
 	const sf::VideoMode& vm = this->stateData->gfxSettings->resolution;
 
+
+	// BG
+	this->bg.setSize(sf::Vector2f(
+		static_cast<float>(vm.width),
+		static_cast<float>(vm.height)
+	));
+
+	if (!this->bgTexture.loadFromFile("Resources/Images/Backgrounds/bg.png")) {
+		throw "BG LOAD ERROR";
+	}
+
+	this->bg.setTexture(&this->bgTexture);
+
+
+	// BTNS
 	float btnWidth = gui::p2pX(18.75f, vm);
 	float btnHeight = gui::p2pY(8.33f, vm);
 	unsigned fontSize = gui::calcCharSize(vm);
@@ -105,7 +106,6 @@ MainMenuState::MainMenuState(StateData* stateData)
 	: State(stateData) {
 
 	this->initVariables();
-	this->initBackground();
 	this->initFonts();
 	this->initKeyBinds();
 	this->initGui();

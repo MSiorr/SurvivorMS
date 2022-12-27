@@ -355,38 +355,42 @@ void TileMap::updateCollision(Entity* entity, const float& dt) {
 void TileMap::update(const float& dt) {
 }
 
-void TileMap::renderDeferred(sf::RenderTarget& target) {
+void TileMap::renderDeferred(sf::RenderTarget& target, sf::Shader* shader, const sf::Vector2f playerPos) {
 
 	while (!this->deferredRenderStack.empty()) {
 
-		this->deferredRenderStack.top()->render(target);
+		if (shader) 
+			this->deferredRenderStack.top()->render(target, shader, playerPos);
+		else
+			this->deferredRenderStack.top()->render(target);
+		
 		this->deferredRenderStack.pop();
 	}
 }
 
-void TileMap::render(sf::RenderTarget& target, const sf::Vector2i& gridPos) {
+void TileMap::render(sf::RenderTarget& target, const sf::Vector2i& gridPos, sf::Shader* shader, sf::Vector2f playerPos, const bool showCollision) {
 
 	this->layer = 0;
 
-	this->fromX = gridPos.x - 4;
+	this->fromX = gridPos.x - 12;
 	if (this->fromX < 0)
 		this->fromX = 0;
 	else if (this->fromX > this->maxSizeWorldGrid.x)
 		this->fromX = this->maxSizeWorldGrid.x;
 
-	this->toX = gridPos.x + 5;
+	this->toX = gridPos.x + 13;
 	if (this->toX < 0)
 		this->toX = 0;
 	else if (this->toX > this->maxSizeWorldGrid.x)
 		this->toX = this->maxSizeWorldGrid.x ;
 
-	this->fromY = gridPos.y - 3;
+	this->fromY = gridPos.y - 11;
 	if (this->fromY < 0)
 		this->fromY = 0;
 	else if (this->fromY > this->maxSizeWorldGrid.y)
 		this->fromY = this->maxSizeWorldGrid.y ;
 
-	this->toY = gridPos.y + 5;
+	this->toY = gridPos.y + 13;
 	if (this->toY < 0)
 		this->toY = 0;
 	else if (this->toY > this->maxSizeWorldGrid.y)
@@ -402,13 +406,19 @@ void TileMap::render(sf::RenderTarget& target, const sf::Vector2i& gridPos) {
 
 				} else {
 
-					this->map[i][j][this->layer][k]->render(target);
+					if (shader)
+						this->map[i][j][this->layer][k]->render(target, shader, playerPos);
+					else
+						this->map[i][j][this->layer][k]->render(target);
+
 				}
+				if (showCollision) {
 
-				if (this->map[i][j][this->layer][k]->getCollision()) {
+					if (this->map[i][j][this->layer][k]->getCollision()) {
 
-					this->collisionBox.setPosition(this->map[i][j][this->layer][k]->getPosition());
-					target.draw(this->collisionBox);
+						this->collisionBox.setPosition(this->map[i][j][this->layer][k]->getPosition());
+						target.draw(this->collisionBox);
+					}
 				}
 			}
 		}

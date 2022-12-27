@@ -21,6 +21,8 @@ private:
 	sf::Font font;
 	PauseMenu* pMenu;
 
+	sf::Shader coreShader;
+
 	Player* player;
 	PlayerGUI* playerGUI;
 
@@ -31,6 +33,7 @@ private:
 	void initKeyBinds();
 	void initTextures();
 	void initPauseMenu();
+	void initShaders();
 	void initPlayer();
 	void initPlayerGUI();
 	void initTileMap();
