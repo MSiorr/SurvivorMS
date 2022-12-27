@@ -18,6 +18,8 @@ private:
 
 	sf::RectangleShape collisionBox;
 
+	std::stack<Tile*> deferredRenderStack;
+
 	std::vector<std::vector<std::vector<std::vector<Tile*>>>> map;
 	sf::Texture tileSheet;
 
@@ -36,6 +38,7 @@ public:
 	virtual ~TileMap();
 
 	const sf::Texture* getTileSheet() const;
+	const int getLayerSize(const int x, const int y, const int layer) const;
 
 	void saveToFile(const std::string path);
 	void loadFromFile(const std::string path);
@@ -45,7 +48,8 @@ public:
 
 	void updateCollision(Entity* entity, const float& dt);
 	void update(const float& dt);
-	void render(sf::RenderTarget& target, Entity* entity = NULL);
+	void renderDeferred(sf::RenderTarget& target);
+	void render(sf::RenderTarget& target, const sf::Vector2i& gridPos);
 };
 
 #endif 

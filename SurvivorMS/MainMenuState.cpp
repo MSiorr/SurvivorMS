@@ -42,10 +42,13 @@ void MainMenuState::initKeyBinds() {
 
 }
 
-void MainMenuState::initButtons() {
-	float btnWidth = 240.f;
-	float btnHeight = 60.f;
-	unsigned fontSize = 30;
+void MainMenuState::initGui() {
+
+	const sf::VideoMode& vm = this->stateData->gfxSettings->resolution;
+
+	float btnWidth = gui::p2pX(18.75f, vm);
+	float btnHeight = gui::p2pY(8.33f, vm);
+	unsigned fontSize = gui::calcCharSize(vm);
 	float centerX = this->window->getSize().x / 2.f - btnWidth / 2.f;
 	float centerY = this->window->getSize().y / 2.f - btnHeight / 2.f;
 
@@ -87,6 +90,17 @@ void MainMenuState::initButtons() {
 
 }
 
+void MainMenuState::resetGui() {
+
+	for (auto& it : this->buttons) {
+		delete it.second;
+	}
+
+	this->buttons.clear();
+
+	this->initGui();
+}
+
 MainMenuState::MainMenuState(StateData* stateData)
 	: State(stateData) {
 
@@ -94,7 +108,8 @@ MainMenuState::MainMenuState(StateData* stateData)
 	this->initBackground();
 	this->initFonts();
 	this->initKeyBinds();
-	this->initButtons();
+	this->initGui();
+	this->resetGui();
 
 	//this->bg.setSize(sf::Vector2f(window->getSize().x, window->getSize().y));
 	//this->bg.setFillColor(sf::Color::Blue);

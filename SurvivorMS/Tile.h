@@ -1,7 +1,7 @@
 #ifndef TILE_H
 #define TILE_H
 
-enum TileTypes { DEFAULT = 0, DAMAGING };
+enum TileTypes { DEFAULT = 0, DAMAGING, ONTOP };
 
 class Tile {
 private:
@@ -21,6 +21,7 @@ public:
 	const sf::Vector2f& getPosition() const;
 	const sf::FloatRect getGlobalBounds() const;
 	const std::string getAsString() const;
+	const short& getType() const;
 
 	const bool intersects(const sf::FloatRect bounds) const;
 	void update(const float& dt);

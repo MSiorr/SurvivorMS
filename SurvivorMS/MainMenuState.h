@@ -24,7 +24,8 @@ private:
 	void initBackground();
 	void initFonts();
 	void initKeyBinds();
-	void initButtons();
+	void initGui();
+	void resetGui();
 
 public:
 	MainMenuState(StateData* stateData);

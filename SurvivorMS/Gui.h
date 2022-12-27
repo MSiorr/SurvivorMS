@@ -4,6 +4,11 @@
 enum BUTTONSTATES {BTN_IDLE = 0, BTN_HOVER, BTN_ACTIVE};
 
 namespace gui {
+
+	const float p2pX(const float perc, const sf::VideoMode& vm);
+	const float p2pY(const float perc, const sf::VideoMode& vm);
+	const unsigned calcCharSize(const sf::VideoMode& vm);
+
 	class Button {
 	private:
 		short unsigned btnState;
@@ -60,7 +65,7 @@ namespace gui {
 		bool showList;
 
 	public:
-		DropDownList(float x, float y, float width, float height, sf::Font& font, std::string list[], unsigned elementsCount, unsigned defaultIndex = 0);
+		DropDownList(float x, float y, float width, float height, float fontSize, sf::Font& font, std::string list[], unsigned elementsCount, unsigned defaultIndex = 0);
 		~DropDownList();
 
 		const bool getKeytime();

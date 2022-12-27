@@ -6,6 +6,7 @@ void Entity::initVariables() {
 	this->hitboxComponent = nullptr;
 	this->movementComponent = nullptr;
 	this->animationComponent = nullptr;
+	this->attributeComponent = nullptr;
 }
 
 Entity::Entity() {
@@ -19,6 +20,7 @@ Entity::~Entity() {
 	delete this->hitboxComponent;
 	delete this->movementComponent;
 	delete this->animationComponent;
+	delete this->attributeComponent;
 }
 
 void Entity::move(const float dirX, const float dirY, const float& dt) {
@@ -90,6 +92,10 @@ void Entity::createMovementComponent(const float maxVelocity, const float accele
 
 void Entity::createAnimationComponent(sf::Texture& textureSheet) {
 	this->animationComponent = new AnimationComponent(this->sprite, textureSheet);
+}
+
+void Entity::createAttributeComponent(const unsigned lvl) {
+	this->attributeComponent = new AttributeComponent(lvl);
 }
 
 void Entity::stopVelocity() {

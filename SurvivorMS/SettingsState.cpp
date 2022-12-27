@@ -5,20 +5,6 @@ void SettingsState::initVariables() {
 	this->modes = sf::VideoMode::getFullscreenModes();
 }
 
-void SettingsState::initBackground() {
-
-	this->bg.setSize(sf::Vector2f(
-		static_cast<float>(this->window->getSize().x),
-		static_cast<float>(this->window->getSize().y)
-	));
-
-	if (!this->bgTexture.loadFromFile("Resources/Images/Backgrounds/bg.png")) {
-		throw "BG LOAD ERROR";
-	}
-
-	this->bg.setTexture(&this->bgTexture);
-}
-
 void SettingsState::initFonts() {
 	if (!this->font.loadFromFile("Fonts/trebuc.ttf")) {
 		throw("ERROR::LOAD FONT IN MENU STATE");
@@ -43,9 +29,27 @@ void SettingsState::initKeyBinds() {
 }
 
 void SettingsState::initGui() {
-	float btnWidth = 240.f;
-	float btnHeight = 60.f;
-	unsigned fontSize = 30;
+
+	const sf::VideoMode& vm = this->stateData->gfxSettings->resolution;
+
+
+	// BG
+	this->bg.setSize(sf::Vector2f(
+		static_cast<float>(vm.width),
+		static_cast<float>(vm.height)
+	));
+
+	if (!this->bgTexture.loadFromFile("Resources/Images/Backgrounds/bg.png")) {
+		throw "BG LOAD ERROR";
+	}
+
+	this->bg.setTexture(&this->bgTexture);
+
+
+	// BTNS
+	float btnWidth = gui::p2pX(18.75f, vm);
+	float btnHeight = gui::p2pY(8.33f, vm);
+	unsigned fontSize = gui::calcCharSize(vm);
 	float centerX = this->window->getSize().x / 2.f - btnWidth / 2.f;
 	float centerY = this->window->getSize().y / 2.f - btnHeight / 2.f;
 
@@ -65,27 +69,29 @@ void SettingsState::initGui() {
 		sf::Color(70, 70, 70, 200), sf::Color(250, 250, 250, 250), sf::Color(20, 20, 20, 50),
 		sf::Color(0, 0, 0, 200), sf::Color(0, 0, 0, 140), sf::Color(0, 0, 0, 50));
 
+
+	// DROP DOWN LIST
 	std::vector<std::string> modesStr;
 	
 	for (auto& it : this->modes) {
 		modesStr.push_back(std::to_string(it.width) + 'x' + std::to_string(it.height));
 	}
 
-	float listWidth = 160.f, listHeight = 40.f;
+	float listWidth = gui::p2pX(12.5f, vm), listHeight = gui::p2pY(5.55f, vm);
 	float centerListX = this->window->getSize().x / 2.f - listWidth / 2.f;
 	float centerListY = this->window->getSize().y / 2.f - listHeight / 2.f;
+	float listFontSize = gui::calcCharSize(vm) * 0.4f;
 
-	this->dropDownLists["RESOLUTION"] = new gui::DropDownList(centerListX + listWidth / 1.8f, centerListY, listWidth, listHeight, this->font, modesStr.data(), static_cast<unsigned>(modesStr.size()));
-}
+	this->dropDownLists["RESOLUTION"] = new gui::DropDownList(centerListX + listWidth / 1.8f, centerListY, listWidth, listHeight, listFontSize, this->font, modesStr.data(), static_cast<unsigned>(modesStr.size()));
 
-void SettingsState::initText() {
 
-	float centerX = this->window->getSize().x / 2.f - 160.f / 2.f;
-	float centerY = this->window->getSize().y / 2.f - 40.f / 2.f;
+	// OPTIONS TXT
+	float centerTxTX = this->window->getSize().x / 2.f - gui::p2pX(12.5f, vm) / 2.f;
+	float centerTxtY = this->window->getSize().y / 2.f - gui::p2pY(5.55f, vm) / 2.f;
 
 	this->optionsText.setFont(this->font);
-	this->optionsText.setPosition(sf::Vector2f(centerX - 160.f / 1.8f, centerY + 4.f));
-	this->optionsText.setCharacterSize(24);
+	this->optionsText.setPosition(sf::Vector2f(centerTxTX - gui::p2pX(12.5f, vm) / 1.8f, centerTxtY + 4.f));
+	this->optionsText.setCharacterSize(gui::calcCharSize(vm) * 0.8f);
 	this->optionsText.setFillColor(sf::Color(255, 255, 255, 255));
 
 	this->optionsText.setString(
@@ -94,15 +100,30 @@ void SettingsState::initText() {
 
 }
 
+void SettingsState::resetGui() {
+
+	for (auto& it : this->buttons) {
+		delete it.second;
+	}
+
+	for (auto& it2 : this->dropDownLists) {
+		delete it2.second;
+	}
+
+	this->buttons.clear();
+	this->dropDownLists.clear();
+
+	this->initGui();
+}
+
 SettingsState::SettingsState(StateData* stateData)
 	: State(stateData) {
 
 	this->initVariables();
-	this->initBackground();
 	this->initFonts();
 	this->initKeyBinds();
 	this->initGui();
-	this->initText();
+	this->resetGui();
 }
 
 SettingsState::~SettingsState() {
@@ -127,7 +148,13 @@ void SettingsState::updateInput(const float& dt) {
 		this->stateData->gfxSettings->resolution = this->modes[this->dropDownLists["RESOLUTION"]->getActiveElementID()];
 
 		this->window->create(this->stateData->gfxSettings->resolution, this->stateData->gfxSettings->title, sf::Style::Default);
+	
+		this->resetGui();
 	}
+
+	/*for (auto& it : this->dropDownLists) {
+		it.second->update(this->mousePosWindow, dt);
+	}*/
 
 }
 

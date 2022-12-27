@@ -1,6 +1,28 @@
 #include "stdafx.h"
 #include "Gui.h"
 
+
+const float gui::p2pX(const float perc, const sf::VideoMode& vm) {
+
+	//convert % value to pixel value relative to reoslution in the X-axis
+
+	return std::floor(static_cast<float>(vm.width) * (perc / 100.f));
+}
+
+const float gui::p2pY(const float perc, const sf::VideoMode& vm) {
+
+	//convert % value to pixel value relative to reoslution in the Y-axis
+
+	return std::floor(static_cast<float>(vm.height) * (perc / 100.f));
+}
+
+const unsigned gui::calcCharSize(const sf::VideoMode& vm) {
+
+	//calculate character size for curr resolution
+
+	return static_cast<unsigned>((vm.width + vm.height) / 66);
+}
+
 gui::Button::Button(float x, float y, float width, float height,
 	sf::Font* font, std::string text, unsigned characterSize,
 	sf::Color textIdleColor, sf::Color textHoverColor, sf::Color textActiveColor,
@@ -120,7 +142,7 @@ void gui::Button::render(sf::RenderTarget& target) {
 
 gui::DropDownList::DropDownList(
 	float x, float y, float width, float height,
-	sf::Font& font, std::string list[], 
+	float fontSize, sf::Font& font, std::string list[], 
 	unsigned elementsCount, unsigned defaultIndex
 ) :
 	font(font), showList(false), keytimeMax(1.f), keytime(0.f) {
@@ -218,7 +240,7 @@ gui::TextureSelector::TextureSelector(float x, float y, float width, float heigh
 	this->gridSize = gridSize;
 	this->active = false;
 
-	float offset = 80.f;
+	float offset = gridSize;
 
 	this->hidden = false;
 

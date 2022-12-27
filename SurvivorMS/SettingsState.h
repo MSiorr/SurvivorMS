@@ -20,12 +20,10 @@ private:
 	std::vector<sf::VideoMode> modes;
 
 	void initVariables();
-	void initBackground();
 	void initFonts();
 	void initKeyBinds();
 	void initGui();
-	void initText();
-
+	void resetGui();
 
 public:
 	SettingsState(StateData* stateData);

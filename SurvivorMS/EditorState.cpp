@@ -13,6 +13,7 @@ void EditorState::initVariables() {
 	this->type = TileTypes::DEFAULT;
 
 	this->cameraSpeed = 200.f;
+	this->layer = 0;
 }
 
 void EditorState::initView() {
@@ -63,11 +64,41 @@ void EditorState::initKeyBinds() {
 }
 
 void EditorState::initPauseMenu() {
-	this->pMenu = new PauseMenu(*window, this->font);
 
-	this->pMenu->addButton("SAVE", -50.f, "SAVE");
+	sf::VideoMode& vm = this->stateData->gfxSettings->resolution;
+
+	this->pMenu = new PauseMenu(vm, this->font);
+
+	/*this->pMenu->addButton("SAVE", -50.f, "SAVE");
 	this->pMenu->addButton("LOAD", 25.f, "LOAD");
-	this->pMenu->addButton("QUIT", 100.f, "QUIT");
+	this->pMenu->addButton("QUIT", 100.f, "QUIT");*/
+
+	this->pMenu->addButton(
+		"SAVE",
+		-gui::p2pY(6.94f, vm),
+		gui::p2pX(18.75f, vm),
+		gui::p2pY(8.33f, vm),
+		gui::calcCharSize(vm),
+		"SAVE"
+	);
+
+	this->pMenu->addButton(
+		"LOAD",
+		gui::p2pY(3.47f, vm),
+		gui::p2pX(18.75f, vm),
+		gui::p2pY(8.33f, vm),
+		gui::calcCharSize(vm),
+		"LOAD"
+	);
+
+	this->pMenu->addButton(
+		"QUIT",
+		gui::p2pY(13.8f, vm),
+		gui::p2pX(18.75f, vm),
+		gui::p2pY(8.33f, vm),
+		gui::calcCharSize(vm),
+		"QUIT"
+	);
 }
 
 void EditorState::initButtons() {
@@ -99,7 +130,7 @@ void EditorState::initGui() {
 
 void EditorState::initTileMap() {
 
-	this->tileMap = new TileMap(this->stateData->gridSize, 10, 10, "Resources/Images/Tiles/tilesheet1.png");
+	this->tileMap = new TileMap(this->stateData->gridSize, 100, 100, "Resources/Images/Tiles/tilesheet1.png");
 
 }
 
@@ -238,7 +269,8 @@ void EditorState::updateGui(const float& dt) {
 		"\n" << this->mousePosGrid.x << " " << this->mousePosGrid.y <<
 		"\n" << this->textureRect.left << " " << this->textureRect.top <<
 		"\n" << "Collision: " << this->collision <<
-		"\n" << "Type: " << this->type;
+		"\n" << "Type: " << this->type <<
+		"\n" << "Tiles: " << this->tileMap->getLayerSize(this->mousePosGrid.x, this->mousePosGrid.y, this->layer);
 
 	this->cursorTxt.setString(ss.str());
 
@@ -310,11 +342,14 @@ void EditorState::render(sf::RenderTarget* target) {
 		target = this->window;
 
 	target->setView(this->view);
-	this->tileMap->render(*target);
+	this->tileMap->render(*target, this->mousePosGrid);
+
+	this->tileMap->renderDeferred(*target);
 
 	target->setView(this->window->getDefaultView());
 	this->renderButtons(*target);
 	this->renderGui(*target);
+
 
 	if (this->paused) {
 		
