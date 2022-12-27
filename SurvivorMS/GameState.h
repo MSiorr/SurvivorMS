@@ -5,16 +5,20 @@
 #include "PauseMenu.h"
 #include "TileMap.h"
 #include "PlayerGUI.h"
+#include "Kunai.h"
 
 class PauseMenu;
 class TileMap;
 class State;
 class Player;
 class PlayerGUI;
+class Kunai;
 
 class GameState : public State {
 private:
 	sf::View view;
+	sf::Vector2i viewGridPos;
+
 	sf::RenderTexture renderTexture;
 	sf::Sprite renderSprite;
 

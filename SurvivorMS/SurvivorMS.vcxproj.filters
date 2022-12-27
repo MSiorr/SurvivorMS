@@ -31,6 +31,12 @@
     <Filter Include="Map">
       <UniqueIdentifier>{8536fbe2-6944-494a-890e-21a3cfbce69d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Item">
+      <UniqueIdentifier>{d89e1acf-9252-4554-acad-c05b7f7dd38e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Item\PlayerWeapon">
+      <UniqueIdentifier>{86ca3e6f-93b3-4f47-944a-40839a498f4b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -93,6 +99,15 @@
     <ClCompile Include="PlayerGUI.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Kunai.cpp">
+      <Filter>Item\PlayerWeapon</Filter>
+    </ClCompile>
+    <ClCompile Include="SkillComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -151,6 +166,15 @@
     </ClInclude>
     <ClInclude Include="PlayerGUI.h">
       <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Kunai.h">
+      <Filter>Item\PlayerWeapon</Filter>
+    </ClInclude>
+    <ClInclude Include="SkillComponent.h">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

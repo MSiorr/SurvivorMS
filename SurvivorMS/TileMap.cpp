@@ -2,21 +2,23 @@
 #include "TileMap.h"
 
 void TileMap::clear() {
-	for (int i = 0; i < this->maxSizeWorldGrid.x; i++) {
-		for (int j = 0; j < this->maxSizeWorldGrid.y; j++) {
-			for (int k = 0; k < this->layers; k++) {
-				for (int l = 0; l < this->map[i][j][k].size(); l++) {
+	if (!this->map.empty()) {
+		for (int i = 0; i < this->maxSizeWorldGrid.x; i++) {
+			for (int j = 0; j < this->maxSizeWorldGrid.y; j++) {
+				for (int k = 0; k < this->layers; k++) {
+					for (int l = 0; l < this->map[i][j][k].size(); l++) {
 
-					delete this->map[i][j][k][l];
-					this->map[i][j][k][l] = nullptr;
+						delete this->map[i][j][k][l];
+						this->map[i][j][k][l] = nullptr;
+					}
+					this->map[i][j][k].clear();
 				}
-				this->map[i][j][k].clear();
+				this->map[i][j].clear();
 			}
-			this->map[i][j].clear();
+			this->map[i].clear();
 		}
-		this->map[i].clear();
+		this->map.clear();
 	}
-	this->map.clear();
 }
 
 TileMap::TileMap(float gridSize, int width, int height, std::string textureFile) {
@@ -64,9 +66,40 @@ TileMap::TileMap(float gridSize, int width, int height, std::string textureFile)
 	this->collisionBox.setOutlineColor(sf::Color::Red);
 }
 
+TileMap::TileMap(const std::string fileName) {
+
+	this->fromX = 0;
+	this->toX = 0;
+	this->fromY = 0;
+	this->toY = 0;
+	this->layer = 0;
+
+	this->loadFromFile(fileName);
+
+	this->collisionBox.setSize(sf::Vector2f(this->gridSizeF, this->gridSizeF));
+	this->collisionBox.setFillColor(sf::Color(255, 0, 0, 50));
+	this->collisionBox.setOutlineThickness(-1.f);
+	this->collisionBox.setOutlineColor(sf::Color::Red);
+}
+
 TileMap::~TileMap() {
 
 	this->clear();
+
+}
+
+const bool TileMap::tileEmpty(const int x, const int y, const int z) const {
+	
+	if (
+		x >= 0 && x < this->maxSizeWorldGrid.x &&
+		y >= 0 && y < this->maxSizeWorldGrid.y &&
+		z >= 0 && z < this->layers
+		) {
+
+		return this->map[x][y][z].empty();
+	}
+
+	return false;
 
 }
 
@@ -86,6 +119,14 @@ const int TileMap::getLayerSize(const int x, const int y, const int layer) const
 	}
 
 	return -1;
+}
+
+const sf::Vector2i& TileMap::getMaxSizeGrid() const {
+	return this->maxSizeWorldGrid;
+}
+
+const sf::Vector2f& TileMap::getMaxSizeF() const {
+	return this->maxSizeWorldF;
 }
 
 void TileMap::saveToFile(const std::string path) {
@@ -154,6 +195,8 @@ void TileMap::loadFromFile(const std::string path) {
 		this->gridSizeI = gridSize;
 		this->maxSizeWorldGrid.x = size.x;
 		this->maxSizeWorldGrid.y = size.y;
+		this->maxSizeWorldF.x = static_cast<float>(size.x * gridSizeF);
+		this->maxSizeWorldF.y = static_cast<float>(size.y * gridSizeF);
 		this->layers = layers;
 		this->textureFile = textureFile;
 
@@ -372,25 +415,25 @@ void TileMap::render(sf::RenderTarget& target, const sf::Vector2i& gridPos, sf::
 
 	this->layer = 0;
 
-	this->fromX = gridPos.x - 12;
+	this->fromX = gridPos.x - 15;
 	if (this->fromX < 0)
 		this->fromX = 0;
 	else if (this->fromX > this->maxSizeWorldGrid.x)
 		this->fromX = this->maxSizeWorldGrid.x;
 
-	this->toX = gridPos.x + 13;
+	this->toX = gridPos.x + 16;
 	if (this->toX < 0)
 		this->toX = 0;
 	else if (this->toX > this->maxSizeWorldGrid.x)
 		this->toX = this->maxSizeWorldGrid.x ;
 
-	this->fromY = gridPos.y - 11;
+	this->fromY = gridPos.y - 8;
 	if (this->fromY < 0)
 		this->fromY = 0;
 	else if (this->fromY > this->maxSizeWorldGrid.y)
 		this->fromY = this->maxSizeWorldGrid.y ;
 
-	this->toY = gridPos.y + 13;
+	this->toY = gridPos.y + 9;
 	if (this->toY < 0)
 		this->toY = 0;
 	else if (this->toY > this->maxSizeWorldGrid.y)

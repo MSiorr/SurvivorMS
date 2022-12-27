@@ -7,6 +7,7 @@ void Entity::initVariables() {
 	this->movementComponent = nullptr;
 	this->animationComponent = nullptr;
 	this->attributeComponent = nullptr;
+	this->skillComponent = nullptr;
 }
 
 Entity::Entity() {
@@ -21,6 +22,7 @@ Entity::~Entity() {
 	delete this->movementComponent;
 	delete this->animationComponent;
 	delete this->attributeComponent;
+	delete this->skillComponent;
 }
 
 void Entity::move(const float dirX, const float dirY, const float& dt) {
@@ -110,6 +112,10 @@ void Entity::createAnimationComponent(sf::Texture& textureSheet) {
 
 void Entity::createAttributeComponent(const unsigned lvl) {
 	this->attributeComponent = new AttributeComponent(lvl);
+}
+
+void Entity::createSkillComponent() {
+	this->skillComponent = new SkillComponent();
 }
 
 void Entity::stopVelocity() {

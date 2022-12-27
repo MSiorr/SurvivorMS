@@ -330,24 +330,25 @@ void gui::TextureSelector::update(const sf::Vector2i& mousePosWindow, const floa
 	
 	if (!this->hidden) {
 
+		this->active = false;
+
 		if (this->bounds.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosWindow))) {
+
 			this->active = true;
-		} else {
-			this->active = false;
-		}
+ 
+			if (this->active) {
 
-		if (this->active) {
-
-			this->mousePosGrid.x = (mousePosWindow.x - static_cast<int>(this->bounds.getPosition().x)) / static_cast<unsigned>(this->gridSize);
-			this->mousePosGrid.y = (mousePosWindow.y - static_cast<int>(this->bounds.getPosition().y)) / static_cast<unsigned>(this->gridSize);
+				this->mousePosGrid.x = (mousePosWindow.x - static_cast<int>(this->bounds.getPosition().x)) / static_cast<unsigned>(this->gridSize);
+				this->mousePosGrid.y = (mousePosWindow.y - static_cast<int>(this->bounds.getPosition().y)) / static_cast<unsigned>(this->gridSize);
 		
-			this->selector.setPosition(
-				this->bounds.getPosition().x + this->mousePosGrid.x * this->gridSize,
-				this->bounds.getPosition().y + this->mousePosGrid.y * this->gridSize
-			);
+				this->selector.setPosition(
+					this->bounds.getPosition().x + this->mousePosGrid.x * this->gridSize,
+					this->bounds.getPosition().y + this->mousePosGrid.y * this->gridSize
+				);
 
-			this->textureRect.left = static_cast<int>(this->selector.getPosition().x - this->bounds.getPosition().x);
-			this->textureRect.top = static_cast<int>(this->selector.getPosition().y - this->bounds.getPosition().y);
+				this->textureRect.left = static_cast<int>(this->selector.getPosition().x - this->bounds.getPosition().x);
+				this->textureRect.top = static_cast<int>(this->selector.getPosition().y - this->bounds.getPosition().y);
+			}
 		}
 	}
 
@@ -364,4 +365,62 @@ void gui::TextureSelector::render(sf::RenderTarget& target) {
 	}
 
 	this->hideBtn->render(target);
+}
+
+
+// ==============================================
+
+
+gui::ProgressBar::ProgressBar(float _x, float _y, float _width, float _height, float charSizeMultip, int maxValue, sf::VideoMode& vm, sf::Font* font) {
+	
+	float width = gui::p2pX(_width, vm);
+	float height = gui::p2pY(_height, vm);
+	float x = gui::p2pX(_x, vm);
+	float y = gui::p2pY(_y, vm);
+
+	this->maxWidth = width;
+	this->maxValue = maxValue;
+
+	this->back.setSize(sf::Vector2f(width, height));
+	this->back.setFillColor(sf::Color(50, 50, 50, 200));
+	this->back.setPosition(x, y);
+
+	this->inner.setSize(sf::Vector2f(width, height));
+	this->inner.setFillColor(sf::Color(250, 20, 20, 200));
+	this->inner.setPosition(this->back.getPosition());
+
+	if (font) {
+		this->text.setFont(*font);
+		this->text.setCharacterSize(static_cast<unsigned>(gui::calcCharSize(vm) * charSizeMultip));
+		this->text.setPosition(
+			this->inner.getPosition().x + gui::p2pX(0.53f, vm),
+			this->inner.getPosition().y + gui::p2pY(0.5f, vm)
+		);
+	}
+}
+
+gui::ProgressBar::~ProgressBar() {
+
+}
+
+void gui::ProgressBar::update(const int currVal) {
+
+	float percent = static_cast<float>(currVal) / static_cast<float>(this->maxValue);
+
+	this->inner.setSize(
+		sf::Vector2f(
+			static_cast<float>(std::floor(this->maxWidth * percent)),
+			this->inner.getSize().y
+		)
+	);
+
+	this->barString = std::to_string(currVal) + " / " + std::to_string(maxValue);
+	this->text.setString(this->barString);
+}
+
+void gui::ProgressBar::render(sf::RenderTarget& target) {
+
+	target.draw(this->back);
+	target.draw(this->inner);
+	target.draw(this->text);
 }

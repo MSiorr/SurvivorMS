@@ -14,22 +14,27 @@ void Player::initComponents() {
 	
 }
 
+void Player::initAnimations() {
+
+	this->animationComponent->addAnim("IDLE", 16.f, 0, 0, 3, 0, 46, 64);
+	this->animationComponent->addAnim("RUN", 12.f, 4, 0, 7, 0, 46, 64);
+	this->animationComponent->addAnim("HURT", 12.f, 7, 0, 9, 0, 46, 64);
+}
+
 Player::Player(float x, float y, sf::Texture& textureSheet) : Entity() {
 
 	this->initVariables();
 
-	this->setPosition(x, y);
 
 	this->createHitboxComponent(0, 0, 46, 64);
 	this->createMovementComponent(300.f, 2400.f, 800.f);
 	this->createAnimationComponent(textureSheet);
 	this->createAttributeComponent(1);
-
-	this->animationComponent->addAnim("IDLE", 16.f, 0, 0, 3, 0, 46, 64);
-	this->animationComponent->addAnim("RUN", 12.f, 4, 0, 7, 0, 46, 64);
-	this->animationComponent->addAnim("HURT", 12.f, 7, 0, 9, 0, 46, 64);
+	this->createSkillComponent();
 
 	//this->initComponents();
+	this->setPosition(x, y);
+	this->initAnimations();
 }
 
 Player::~Player() {
@@ -41,26 +46,17 @@ AttributeComponent* Player::getAttributeComponent() {
 
 void Player::loseHP(const int hp) {
 
-	this->attributeComponent->hp -= hp;
-
-	if (this->attributeComponent->hp < 0)
-		this->attributeComponent->hp = 0;
+	this->attributeComponent->loseHP(hp);
 }
 
 void Player::gainHP(const int hp) {
 
-	this->attributeComponent->hp += hp;
-
-	if (this->attributeComponent->hp > this->attributeComponent->hpMax)
-		this->attributeComponent->hp = this->attributeComponent->hpMax;
+	this->attributeComponent->gainHP(hp);
 }
 
 void Player::loseExp(const int exp) {
 
-	this->attributeComponent->exp -= exp;
-
-	if (this->attributeComponent->exp < 0)
-		this->attributeComponent->exp = 0;
+	this->attributeComponent->loseExp(exp);
 }
 
 void Player::gainExp(const int exp) {
@@ -70,17 +66,17 @@ void Player::gainExp(const int exp) {
 
 void Player::updateAttack() {
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
-		this->attacking = true;
+		//this->attacking = true;
 	}
 }
 
 void Player::updateAnimation(const float& dt) {
 	
-	if (this->attacking) {
+	/*if (this->attacking) {
 
 		if (this->animationComponent->play("HURT", dt, true))
 			this->attacking = false;
-	}
+	}*/
 
 	if (this->movementComponent->getState(IDLE))
 		this->animationComponent->play("IDLE", dt);
@@ -111,7 +107,7 @@ void Player::updateAnimation(const float& dt) {
 	}
 }
 
-void Player::update(const float& dt) {
+void Player::update(const float& dt, sf::Vector2f& mousePosView) {
 
 	this->movementComponent->update(dt);
 
