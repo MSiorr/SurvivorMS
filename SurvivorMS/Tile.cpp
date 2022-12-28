@@ -54,7 +54,7 @@ const bool Tile::intersects(const sf::FloatRect bounds) const {
 	return this->shape.getGlobalBounds().intersects(bounds);
 }
 
-void Tile::update(const float& dt) {
+void Tile::update() {
 }
 
 void Tile::render(sf::RenderTarget& target, sf::Shader* shader, const sf::Vector2f playerPos) {

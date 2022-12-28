@@ -371,7 +371,7 @@ void gui::TextureSelector::render(sf::RenderTarget& target) {
 // ==============================================
 
 
-gui::ProgressBar::ProgressBar(float _x, float _y, float _width, float _height, float charSizeMultip, int maxValue, sf::VideoMode& vm, sf::Font* font) {
+gui::ProgressBar::ProgressBar(float _x, float _y, float _width, float _height, float charSizeMultip, int maxValue, sf::Color innerColor, sf::VideoMode& vm, sf::Font* font) {
 	
 	float width = gui::p2pX(_width, vm);
 	float height = gui::p2pY(_height, vm);
@@ -386,7 +386,7 @@ gui::ProgressBar::ProgressBar(float _x, float _y, float _width, float _height, f
 	this->back.setPosition(x, y);
 
 	this->inner.setSize(sf::Vector2f(width, height));
-	this->inner.setFillColor(sf::Color(250, 20, 20, 200));
+	this->inner.setFillColor(innerColor);
 	this->inner.setPosition(this->back.getPosition());
 
 	if (font) {
@@ -401,6 +401,11 @@ gui::ProgressBar::ProgressBar(float _x, float _y, float _width, float _height, f
 
 gui::ProgressBar::~ProgressBar() {
 
+}
+
+void gui::ProgressBar::updateMaxVal(const float val) {
+
+	this->maxValue = val;
 }
 
 void gui::ProgressBar::update(const int currVal) {

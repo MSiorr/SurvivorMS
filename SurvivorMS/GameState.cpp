@@ -174,8 +174,7 @@ void GameState::updatePlayerGUI(const float& dt) {
 
 void GameState::updateTileMap(const float& dt) {
 
-	this->tileMap->update(dt);
-	this->tileMap->updateCollision(this->player, dt);
+	this->tileMap->update(this->player, dt);
 }
 
 void GameState::updatePlayerInput(const float& dt) {
@@ -223,6 +222,7 @@ void GameState::update(const float& dt) {
 		this->updatePlayerInput(dt);
 
 		this->updateTileMap(dt);
+
 		this->player->update(dt, this->mousePosView);
 
 		this->playerGUI->update(dt);

@@ -125,9 +125,15 @@ namespace gui {
 		sf::RectangleShape inner;
 
 	public:
-		ProgressBar(float x, float y, float width, float height, float _charSizeMultip, int maxValue, sf::VideoMode& vm, sf::Font* font = NULL);
+		ProgressBar(
+			float x, float y, 
+			float width, float height, 
+			float _charSizeMultip, 
+			int maxValue, sf::Color innerColor,
+			sf::VideoMode& vm, sf::Font* font = NULL);
 		~ProgressBar();
 
+		void updateMaxVal(const float val);
 
 		void update(const int currVal);
 		void render(sf::RenderTarget& target);

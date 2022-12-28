@@ -3,9 +3,9 @@
 
 void TileMap::clear() {
 	if (!this->map.empty()) {
-		for (int i = 0; i < this->maxSizeWorldGrid.x; i++) {
-			for (int j = 0; j < this->maxSizeWorldGrid.y; j++) {
-				for (int k = 0; k < this->layers; k++) {
+		for (int i = 0; i < this->map.size(); i++) {
+			for (int j = 0; j < this->map[i].size(); j++) {
+				for (int k = 0; k < this->map[i][j].size(); k++) {
 					for (int l = 0; l < this->map[i][j][k].size(); l++) {
 
 						delete this->map[i][j][k][l];
@@ -283,7 +283,7 @@ void TileMap::removeTile(const int x, const int y, const int z) {
 	}
 }
 
-void TileMap::updateCollision(Entity* entity, const float& dt) {
+void TileMap::update(Entity* entity, const float& dt) {
 
 	if (entity->getPosition().x < 0.f) {
 
@@ -340,6 +340,8 @@ void TileMap::updateCollision(Entity* entity, const float& dt) {
 		for (int j = fromY; j < toY; j++) {
 			for (int k = 0; k < this->map[i][j][this->layer].size(); k++) {
 
+				this->map[i][j][this->layer][k]->update();
+
 				sf::FloatRect entityBounds = entity->getGlobalBounds();
 				sf::FloatRect nextEntityBounds = entity->getNextPositionBounds(dt);
 				sf::FloatRect wallBounds = this->map[i][j][this->layer][k]->getGlobalBounds();
@@ -393,9 +395,6 @@ void TileMap::updateCollision(Entity* entity, const float& dt) {
 		}
 	}
 
-}
-
-void TileMap::update(const float& dt) {
 }
 
 void TileMap::renderDeferred(sf::RenderTarget& target, sf::Shader* shader, const sf::Vector2f playerPos) {

@@ -50,8 +50,7 @@ public:
 	void addTile(const int x, const int y, const int z, const sf::IntRect& textureRect, const bool& collision, const short& type);
 	void removeTile(const int x, const int y, const int z);
 
-	void updateCollision(Entity* entity, const float& dt);
-	void update(const float& dt);
+	void update(Entity* entity, const float& dt);
 	void renderDeferred(sf::RenderTarget& target, sf::Shader* shader = NULL, const sf::Vector2f playerPos = sf::Vector2f(0, 0));
 	void render(sf::RenderTarget& target, const sf::Vector2i& gridPos, sf::Shader* shader = NULL, sf::Vector2f playerPos = sf::Vector2f(0, 0), const bool showCollision = false);
 };

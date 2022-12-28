@@ -6,6 +6,7 @@
 #include "TileMap.h"
 #include "PlayerGUI.h"
 #include "Kunai.h"
+#include "Enemy.h"
 
 class PauseMenu;
 class TileMap;
@@ -13,6 +14,7 @@ class State;
 class Player;
 class PlayerGUI;
 class Kunai;
+class Enemy;
 
 class GameState : public State {
 private:
@@ -31,6 +33,7 @@ private:
 	PlayerGUI* playerGUI;
 
 	TileMap* tileMap;
+
 	void initDefferedRender();
 	void initView();
 	void initFonts();

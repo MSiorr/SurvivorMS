@@ -1,7 +1,7 @@
 #ifndef TILE_H
 #define TILE_H
 
-enum TileTypes { DEFAULT = 0, DAMAGING, ONTOP };
+enum TileTypes { DEFAULT = 0, DAMAGING, ONTOP, ENEMYSPAWNER };
 
 class Tile {
 private:
@@ -24,8 +24,8 @@ public:
 	const short& getType() const;
 
 	const bool intersects(const sf::FloatRect bounds) const;
-	void update(const float& dt);
-	void render(sf::RenderTarget& target, sf::Shader* shader = NULL, const sf::Vector2f playerPos = sf::Vector2f(0,0));
+	virtual void update();
+	virtual void render(sf::RenderTarget& target, sf::Shader* shader = NULL, const sf::Vector2f playerPos = sf::Vector2f(0,0));
 };
 
 #endif 
