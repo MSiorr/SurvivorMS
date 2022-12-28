@@ -8,19 +8,17 @@ void Enemy::initVariables() {
 
 void Enemy::initAnimations() {
 
-	this->animationComponent->addAnim("IDLE", 16.f, 0, 0, 3, 0, 46, 64);
-	this->animationComponent->addAnim("RUN", 12.f, 4, 0, 7, 0, 46, 64);
-	this->animationComponent->addAnim("HURT", 12.f, 7, 0, 9, 0, 46, 64);
+	this->animationComponent->addAnim("IDLE", 16.f, 0, 0, 3, 0, 52, 64);
+	this->animationComponent->addAnim("RUN", 12.f, 4, 0, 7, 0, 52, 64);
 }
 
-Enemy::Enemy(EnemySpawner& enemySpawner, float x, float y, sf::Texture& textureSheet) 
-	: Entity(), enemySpawner(&enemySpawner) {
+Enemy::Enemy(float x, float y, sf::Texture& textureSheet) 
+	: Entity() {
 
 	this->initVariables();
 
-
-	this->createHitboxComponent(0, 0, 46, 64);
-	this->createMovementComponent(300.f, 2400.f, 800.f);
+	this->createHitboxComponent(13, 12, 32, 52);
+	this->createMovementComponent(50.f, 1600.f, 1000.f);
 	this->createAnimationComponent(textureSheet);
 
 	//this->initComponents();
@@ -75,12 +73,12 @@ void Enemy::update(const float& dt, sf::Vector2f& mousePosView) {
 
 }
 
-void Enemy::render(sf::RenderTarget& target, sf::Shader* shader, const bool showHitbox) {
+void Enemy::render(sf::RenderTarget& target, sf::Shader* shader, const sf::Vector2f lightPos, const bool showHitbox) {
 
 	if (shader) {
 
 		shader->setUniform("hasTexture", true);
-		shader->setUniform("lightPos", this->getCenter());
+		shader->setUniform("lightPos", lightPos);
 
 		target.draw(this->sprite, shader);
 	} else {

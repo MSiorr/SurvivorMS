@@ -129,6 +129,10 @@ const sf::Vector2f& TileMap::getMaxSizeF() const {
 	return this->maxSizeWorldF;
 }
 
+const bool TileMap::checkType(const int x, const int y, const int z, const int type) const {
+	return this->map[x][y][this->layer].back()->getType() == type;
+}
+
 void TileMap::saveToFile(const std::string path) {
 	/*FORMAT:
 		BASIC:
@@ -270,14 +274,29 @@ void TileMap::addTile(const int x, const int y, const int z, const sf::IntRect& 
 
 }
 
-void TileMap::removeTile(const int x, const int y, const int z) {
+void TileMap::removeTile(const int x, const int y, const int z, const int type) {
 
-	if (x < this->maxSizeWorldGrid.x && y < this->maxSizeWorldGrid.y && z < this->layers && x >= 0 && y >= 0 && z >= 0) {
+	if (x < this->maxSizeWorldGrid.x && 
+		y < this->maxSizeWorldGrid.y && 
+		z < this->layers && 
+		x >= 0 && y >= 0 && z >= 0) {
 
 		if (!this->map[x][y][z].empty()) {
 
-			delete this->map[x][y][z][this->map[x][y][z].size() - 1];
-			this->map[x][y][z].pop_back();
+			if (type >= 0) {
+
+				if (this->map[x][y][z].back()->getType() == type) {
+
+					delete this->map[x][y][z][this->map[x][y][z].size() - 1];
+					this->map[x][y][z].pop_back();
+				}
+
+			} else {
+
+				delete this->map[x][y][z][this->map[x][y][z].size() - 1];
+				this->map[x][y][z].pop_back();
+			}
+
 		}
 
 	}
@@ -461,6 +480,12 @@ void TileMap::render(sf::RenderTarget& target, const sf::Vector2i& gridPos, sf::
 						this->collisionBox.setPosition(this->map[i][j][this->layer][k]->getPosition());
 						target.draw(this->collisionBox);
 					}
+				}
+
+				if (this->map[i][j][this->layer][k]->getType() == TileTypes::ENEMYSPAWNER) {
+
+					this->collisionBox.setPosition(this->map[i][j][this->layer][k]->getPosition());
+					target.draw(this->collisionBox);
 				}
 			}
 		}

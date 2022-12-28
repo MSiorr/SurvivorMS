@@ -43,12 +43,13 @@ public:
 	const int getLayerSize(const int x, const int y, const int layer) const;
 	const sf::Vector2i& getMaxSizeGrid() const;
 	const sf::Vector2f& getMaxSizeF() const;
+	const bool checkType(const int x, const int y, const int z, const int type) const;
 
 	void saveToFile(const std::string path);
 	void loadFromFile(const std::string path);
 
 	void addTile(const int x, const int y, const int z, const sf::IntRect& textureRect, const bool& collision, const short& type);
-	void removeTile(const int x, const int y, const int z);
+	void removeTile(const int x, const int y, const int z, const int type = -1);
 
 	void update(Entity* entity, const float& dt);
 	void renderDeferred(sf::RenderTarget& target, sf::Shader* shader = NULL, const sf::Vector2f playerPos = sf::Vector2f(0, 0));

@@ -11,19 +11,19 @@ class Enemy :
 	public Entity {
 private:
 
-	EnemySpawner* enemySpawner;
+	// EnemySpawner* enemySpawner;
 
 	void initVariables();
 	void initAnimations();
 
 public:
-	Enemy(EnemySpawner& enemySpawner, float x, float y, sf::Texture& textureSheet);
+	Enemy(float x, float y, sf::Texture& textureSheet);
 	virtual ~Enemy();
 
 	void updateAnimation(const float& dt);
 
 	void update(const float& dt, sf::Vector2f& mousePosView);
-	void render(sf::RenderTarget& target, sf::Shader* shader, const bool showHitbox);
+	void render(sf::RenderTarget& target, sf::Shader* shader = NULL, const sf::Vector2f lightPos = sf::Vector2f(), const bool showHitbox = false);
 };
 
 #endif 

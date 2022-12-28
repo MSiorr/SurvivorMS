@@ -119,12 +119,12 @@ void Player::update(const float& dt, sf::Vector2f& mousePosView) {
 
 }
 
-void Player::render(sf::RenderTarget& target, sf::Shader* shader, const bool showHitbox) {
+void Player::render(sf::RenderTarget& target, sf::Shader* shader, const sf::Vector2f lightPos, const bool showHitbox) {
 
 	if (shader) {
 
 		shader->setUniform("hasTexture", true);
-		shader->setUniform("lightPos", this->getCenter());
+		shader->setUniform("lightPos", lightPos);
 
 		target.draw(this->sprite, shader);
 	} else {

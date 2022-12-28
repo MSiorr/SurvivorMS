@@ -52,7 +52,7 @@ public:
 	void stopVelocityY();
 
 	virtual void update(const float& dt, sf::Vector2f& mousePosView) = 0;
-	virtual void render(sf::RenderTarget& target, sf::Shader* shader, const bool showHitbox = false) = 0;
+	virtual void render(sf::RenderTarget& target, sf::Shader* shader, const sf::Vector2f lightPos, const bool showHitbox = false) = 0;
 };
 
 #endif

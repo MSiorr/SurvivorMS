@@ -6,6 +6,7 @@
 #include "TileMap.h"
 #include "EditorMode.h"
 #include "DefaultEditorMode.h"
+#include "EnemyEditorMode.h"
 
 class State;
 class StateData;
@@ -16,8 +17,9 @@ class Tile;
 class EditorMode;
 class EditorStateData;
 class DefaultEditorMode;
+class EnemyEditorMode;
 
-enum EditorModes {DEFAULT_MODE = 0, ENEMY_MODE};
+enum EditorModes {DEFAULT_EDITOR_MODE = 0, ENEMY_EDITOR_MODE};
 
 
 class EditorState :
@@ -37,6 +39,7 @@ private:
 	TileMap* tileMap;
 
 	std::vector<EditorMode*> modes;
+	unsigned activeMode;
 
 	void initVariables();
 	void initEditorStateData();
@@ -62,9 +65,11 @@ public:
 	void updateButtons();
 	void updateGui(const float& dt);
 	void updatePauseMenuButtons();
+	void updateModes(const float& dt);
 	void update(const float& dt);
 	void renderButtons(sf::RenderTarget& target);
 	void renderGui(sf::RenderTarget& target);
+	void renderModes(sf::RenderTarget& target);
 	void render(sf::RenderTarget* target = NULL);
 };
 

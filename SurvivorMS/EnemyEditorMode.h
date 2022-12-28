@@ -1,38 +1,38 @@
-#ifndef DEFAULTEDITORMODE_H
-#define DEFAULTEDITORMODE_H
+#ifndef ENEMYEDITORMODE_H
+#define ENEMYEDITORMODE_H
 
 #include "EditorMode.h"
+#include "EnemySpawner.h"
 
 class State;
 class StateData;
 class EditorMode;
 class Tile;
 class TileMap;
+class EnemySpawner;
 
-class DefaultEditorMode :
-	public EditorMode {
+
+class EnemyEditorMode :
+    public EditorMode {
 private:
 
 	sf::Text cursorTxt;
 	sf::RectangleShape sidebar;
-	sf::IntRect textureRect;
 	sf::RectangleShape selectorRect;
-	gui::TextureSelector* textureSelector;
 
-	bool collision;
-	short type;
-	int layer;
-	bool tileAddLock;
+	sf::IntRect textureRect;
+
+	int type;
+	int amount;
+	int timeToSpawn;
+	float maxDist;
 
 	void initVariables();
 	void initGui();
 
-protected:
-
-
 public:
-	DefaultEditorMode(StateData* stateData, TileMap* tileMap, EditorStateData* editorStateData);
-	virtual ~DefaultEditorMode();
+	EnemyEditorMode(StateData* stateData, TileMap* tileMap, EditorStateData* editorStateData);
+	virtual ~EnemyEditorMode();
 
 	void updateInput(const float& dt);
 	void updateGui(const float& dt);

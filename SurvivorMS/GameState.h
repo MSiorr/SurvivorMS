@@ -34,6 +34,8 @@ private:
 
 	TileMap* tileMap;
 
+	std::vector<Enemy*> activeEnemies;
+
 	void initDefferedRender();
 	void initView();
 	void initFonts();
