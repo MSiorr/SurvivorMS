@@ -140,7 +140,8 @@
     <ClCompile Include="EditorMode.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyEditorMode.cpp" />
-    <ClCompile Include="EnemySpawner.cpp" />
+    <ClCompile Include="EnemySpawnerTile.cpp" />
+    <ClCompile Include="EnemySystem.cpp" />
     <ClCompile Include="GraphicsSettings.cpp" />
     <ClCompile Include="Gui.cpp" />
     <ClCompile Include="EditorState.cpp" />
@@ -152,9 +153,11 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenuState.cpp" />
     <ClCompile Include="MovementComponent.cpp" />
+    <ClCompile Include="Orc.cpp" />
     <ClCompile Include="PauseMenu.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerGUI.cpp" />
+    <ClCompile Include="RegularTile.cpp" />
     <ClCompile Include="SettingsState.cpp" />
     <ClCompile Include="SkillComponent.cpp" />
     <ClCompile Include="State.cpp" />
@@ -172,7 +175,8 @@
     <ClInclude Include="EditorMode.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyEditorMode.h" />
-    <ClInclude Include="EnemySpawner.h" />
+    <ClInclude Include="EnemySpawnerTile.h" />
+    <ClInclude Include="EnemySystem.h" />
     <ClInclude Include="GraphicsSettings.h" />
     <ClInclude Include="Gui.h" />
     <ClInclude Include="EditorState.h" />
@@ -183,9 +187,11 @@
     <ClInclude Include="Item.h" />
     <ClInclude Include="MainMenuState.h" />
     <ClInclude Include="MovementComponent.h" />
+    <ClInclude Include="Orc.h" />
     <ClInclude Include="PauseMenu.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerGUI.h" />
+    <ClInclude Include="RegularTile.h" />
     <ClInclude Include="SettingsState.h" />
     <ClInclude Include="SkillComponent.h" />
     <ClInclude Include="State.h" />

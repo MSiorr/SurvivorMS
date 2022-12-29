@@ -2,10 +2,10 @@
 #define ENEMY_H
 
 #include "Entity.h"
-#include "EnemySpawner.h"
+#include "EnemySpawnerTile.h"
 
 class Entity;
-class EnemySpawner;
+class EnemySpawnerTile;
 
 class Enemy :
 	public Entity {
@@ -13,17 +13,17 @@ private:
 
 	// EnemySpawner* enemySpawner;
 
-	void initVariables();
-	void initAnimations();
+	virtual void initVariables() = 0;
+	virtual void initAnimations() = 0;
 
 public:
-	Enemy(float x, float y, sf::Texture& textureSheet);
+	Enemy();
 	virtual ~Enemy();
 
-	void updateAnimation(const float& dt);
+	virtual void updateAnimation(const float& dt) = 0;
 
-	void update(const float& dt, sf::Vector2f& mousePosView);
-	void render(sf::RenderTarget& target, sf::Shader* shader = NULL, const sf::Vector2f lightPos = sf::Vector2f(), const bool showHitbox = false);
+	virtual void update(const float& dt, sf::Vector2f& mousePosView) = 0;
+	virtual void render(sf::RenderTarget& target, sf::Shader* shader = NULL, const sf::Vector2f lightPos = sf::Vector2f(), const bool showHitbox = false) = 0;
 };
 
 #endif 

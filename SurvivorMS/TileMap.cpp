@@ -142,7 +142,11 @@ void TileMap::saveToFile(const std::string path) {
 		texture file
 
 		ALL TILES:
-		gridPos x y layer, Texture rect x y, type
+		type
+		gridPos x y layer, 
+		Texture rect x y, 
+		collision,
+		tile specific data...
 	*/
 
 	std::ofstream ofs;
@@ -239,13 +243,38 @@ void TileMap::loadFromFile(const std::string path) {
 			std::cout << "ERROR::TILEMAP:: WITH GRASS TEXTURE" << "\n";
 		}
 
-		while (ifs >> x >> y >> z >> trX >> trY >> collision >> type) {
+		while (ifs >> x >> y >> z >> type) {
+			if (type == TileTypes::ENEMYSPAWNER) {
 
-			this->map[x][y][z].push_back(new Tile(
-				x, y, this->gridSizeF, this->tileSheet, 
-				sf::IntRect(trX, trY, this->gridSizeI, this->gridSizeI), 
-				collision, type
-			));
+				int enemyType = 0;
+				int enemyAmount = 0;
+				int enemyTimeToSpawn = 0;
+				int enemyMaxDist = 0;
+
+				ifs >> trX >> trY 
+					>> enemyType >> enemyAmount >> enemyTimeToSpawn >> enemyMaxDist;
+
+				this->map[x][y][z].push_back(new EnemySpawnerTile(
+					x, y,
+					this->gridSizeF,
+					this->tileSheet,
+					sf::IntRect(trX, trY, this->gridSizeI, this->gridSizeI),
+					enemyType,
+					enemyAmount,
+					enemyTimeToSpawn, 
+					enemyMaxDist
+				));
+
+			} else {
+
+				ifs >> trX >> trY >> collision;
+
+				this->map[x][y][z].push_back(new RegularTile(
+					type, x, y, this->gridSizeF, this->tileSheet,
+					sf::IntRect(trX, trY, this->gridSizeI, this->gridSizeI),
+					collision
+				));
+			}
 		}
 
 
@@ -261,15 +290,37 @@ void TileMap::addTile(const int x, const int y, const int z, const sf::IntRect& 
 
 	if (x < this->maxSizeWorldGrid.x && y < this->maxSizeWorldGrid.y && z < this->layers && x >= 0 && y >= 0 && z >= 0) {
 
-		this->map[x][y][z].push_back(new Tile(
-			x, y, 
-			this->gridSizeF, 
-			this->tileSheet, 
-			textureRect, 
-			collision, 
-			type
-		));
+		if (type == TileTypes::DEFAULT) {
 
+			this->map[x][y][z].push_back(new RegularTile(
+				type,
+				x, y,
+				this->gridSizeF, 
+				this->tileSheet, 
+				textureRect, 
+				collision
+			));
+		} 
+
+	}
+
+}
+
+void TileMap::addTile(const int x, const int y, const int z, const sf::IntRect& textureRect,
+	const int enemyType, const int enemyAmount, const int enemyTimeToSpawn, const int enemyMaxDistance ) {
+
+	if (x < this->maxSizeWorldGrid.x && y < this->maxSizeWorldGrid.y && z < this->layers && x >= 0 && y >= 0 && z >= 0) {
+
+		this->map[x][y][z].push_back(new EnemySpawnerTile(
+			x, y,
+			this->gridSizeF,
+			this->tileSheet,
+			textureRect,
+			enemyType,
+			enemyAmount,
+			enemyTimeToSpawn,
+			enemyMaxDistance
+		));
 	}
 
 }
@@ -302,14 +353,13 @@ void TileMap::removeTile(const int x, const int y, const int z, const int type) 
 	}
 }
 
-void TileMap::update(Entity* entity, const float& dt) {
+void TileMap::updateWorldBoundsCollision(Entity* entity, const float& dt) {
 
 	if (entity->getPosition().x < 0.f) {
 
 		entity->stopVelocityX();
 		entity->setPosition(0.f, entity->getPosition().y);
-	}
-	else if (entity->getPosition().x + entity->getGlobalBounds().width > this->maxSizeWorldF.x) {
+	} else if (entity->getPosition().x + entity->getGlobalBounds().width > this->maxSizeWorldF.x) {
 
 		entity->stopVelocityX();
 		entity->setPosition(this->maxSizeWorldF.x - entity->getGlobalBounds().width, entity->getPosition().y);
@@ -319,12 +369,15 @@ void TileMap::update(Entity* entity, const float& dt) {
 
 		entity->stopVelocityY();
 		entity->setPosition(entity->getPosition().x, 0);
-	}
-	else if (entity->getPosition().y + entity->getGlobalBounds().height > this->maxSizeWorldF.y) {
+	} else if (entity->getPosition().y + entity->getGlobalBounds().height > this->maxSizeWorldF.y) {
 
 		entity->stopVelocityY();
 		entity->setPosition(entity->getPosition().x, this->maxSizeWorldF.y - entity->getGlobalBounds().height);
 	}
+
+}
+
+void TileMap::updateTileCollision(Entity* entity, const float& dt) {
 
 	//TILES
 	this->layer = 0;
@@ -352,21 +405,19 @@ void TileMap::update(Entity* entity, const float& dt) {
 		this->toY = 0;
 	else if (this->toY > this->maxSizeWorldGrid.y)
 		this->toY = this->maxSizeWorldGrid.y;
-	
-	
+
+
 
 	for (int i = fromX; i < toX; i++) {
 		for (int j = fromY; j < toY; j++) {
 			for (int k = 0; k < this->map[i][j][this->layer].size(); k++) {
 
-				this->map[i][j][this->layer][k]->update();
-
 				sf::FloatRect entityBounds = entity->getGlobalBounds();
 				sf::FloatRect nextEntityBounds = entity->getNextPositionBounds(dt);
 				sf::FloatRect wallBounds = this->map[i][j][this->layer][k]->getGlobalBounds();
-			
+
 				if (this->map[i][j][this->layer][k]->getCollision() && this->map[i][j][this->layer][k]->intersects(nextEntityBounds)) {
-				
+
 					// BOTTOM COLLISION
 					if (entityBounds.top < wallBounds.top
 						&& entityBounds.top + entityBounds.height < wallBounds.top + wallBounds.height
@@ -387,7 +438,7 @@ void TileMap::update(Entity* entity, const float& dt) {
 						entity->setPosition(entityBounds.left, wallBounds.top + wallBounds.height);
 						//std::cout << "TOP" << "\n";
 					}
-				
+
 					// RIGHT COLLISION
 					if (entityBounds.left < wallBounds.left
 						&& entityBounds.left + entityBounds.width < wallBounds.left + wallBounds.width
@@ -413,6 +464,69 @@ void TileMap::update(Entity* entity, const float& dt) {
 			}
 		}
 	}
+
+}
+
+void TileMap::updateTiles(Entity* entity, const float& dt, EnemySystem& enemySystem) {
+
+	//TILES
+	this->layer = 0;
+
+	this->fromX = entity->getGridPosition(this->gridSizeI).x - 15;
+	if (this->fromX < 0)
+		this->fromX = 0;
+	else if (this->fromX > this->maxSizeWorldGrid.x)
+		this->fromX = this->maxSizeWorldGrid.x;
+
+	this->toX = entity->getGridPosition(this->gridSizeI).x + 16;
+	if (this->toX < 0)
+		this->toX = 0;
+	else if (this->toX > this->maxSizeWorldGrid.x)
+		this->toX = this->maxSizeWorldGrid.x;
+
+	this->fromY = entity->getGridPosition(this->gridSizeI).y - 8;
+	if (this->fromY < 0)
+		this->fromY = 0;
+	else if (this->fromY > this->maxSizeWorldGrid.y)
+		this->fromY = this->maxSizeWorldGrid.y;
+
+	this->toY = entity->getGridPosition(this->gridSizeI).y + 9;
+	if (this->toY < 0)
+		this->toY = 0;
+	else if (this->toY > this->maxSizeWorldGrid.y)
+		this->toY = this->maxSizeWorldGrid.y;
+
+
+
+	for (int i = fromX; i < toX; i++) {
+		for (int j = fromY; j < toY; j++) {
+			for (int k = 0; k < this->map[i][j][this->layer].size(); k++) {
+
+				this->map[i][j][this->layer][k]->update();
+
+				if (this->map[i][j][this->layer][k]->getType() == TileTypes::ENEMYSPAWNER) {
+
+					EnemySpawnerTile* es = dynamic_cast<EnemySpawnerTile*>(this->map[i][j][this->layer][k]);
+
+					if (es && !es->getSpawned()) {
+						
+						enemySystem.createEnemy(ORC, i * this->gridSizeF, j * this->gridSizeF);
+						es->setSpawned(true);
+					}
+
+				}
+
+			}
+		}
+	}
+
+}
+
+void TileMap::update(Entity* entity, const float& dt) {
+
+	
+
+	
 
 }
 

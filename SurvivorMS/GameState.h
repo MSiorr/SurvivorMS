@@ -6,15 +6,6 @@
 #include "TileMap.h"
 #include "PlayerGUI.h"
 #include "Kunai.h"
-#include "Enemy.h"
-
-class PauseMenu;
-class TileMap;
-class State;
-class Player;
-class PlayerGUI;
-class Kunai;
-class Enemy;
 
 class GameState : public State {
 private:
@@ -35,6 +26,7 @@ private:
 	TileMap* tileMap;
 
 	std::vector<Enemy*> activeEnemies;
+	EnemySystem* enemySystem;
 
 	void initDefferedRender();
 	void initView();
@@ -45,6 +37,7 @@ private:
 	void initShaders();
 	void initPlayer();
 	void initPlayerGUI();
+	void initEnemySystem();
 	void initTileMap();
 
 public:
@@ -58,6 +51,8 @@ public:
 	void updatePlayerGUI(const float& dt);
 	void updatePauseMenuButtons();
 	void updateTileMap(const float& dt);
+	void updatePlayer(const float& dt);
+	void updateEnemies(const float& dt);
 	void update(const float& dt);
 	void render(sf::RenderTarget* target = NULL);
 };

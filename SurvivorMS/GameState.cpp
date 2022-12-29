@@ -97,6 +97,11 @@ void GameState::initPlayerGUI() {
 	this->playerGUI = new PlayerGUI(this->player, this->stateData->gfxSettings->resolution);
 }
 
+void GameState::initEnemySystem() {
+
+	this->enemySystem = new EnemySystem(this->activeEnemies, this->textures);
+}
+
 void GameState::initTileMap() {
 
 	//this->tileMap = new TileMap(this->stateData->gridSize, 100, 100, "Resources/Images/Tiles/tilesheet1.png");
@@ -115,13 +120,8 @@ GameState::GameState(StateData* stateData)
 	this->initShaders();
 	this->initPlayer();
 	this->initPlayerGUI();
+	this->initEnemySystem();
 	this->initTileMap();
-
-	this->activeEnemies.push_back(new Enemy(200.f, 100.f, this->textures["ENEMY_SHEET"]));
-	this->activeEnemies.push_back(new Enemy(500.f, 200.f, this->textures["ENEMY_SHEET"]));
-	this->activeEnemies.push_back(new Enemy(600.f, 300.f, this->textures["ENEMY_SHEET"]));
-	this->activeEnemies.push_back(new Enemy(400.f, 500.f, this->textures["ENEMY_SHEET"]));
-	this->activeEnemies.push_back(new Enemy(200.f, 400.f, this->textures["ENEMY_SHEET"]));
 }
 
 GameState::~GameState() {
@@ -129,6 +129,7 @@ GameState::~GameState() {
 	delete this->player;
 	delete this->playerGUI;
 	delete this->tileMap;
+	delete this->enemySystem;
 
 	for (size_t i = 0; i < this->activeEnemies.size(); i++) {
 
@@ -182,21 +183,6 @@ void GameState::updateInput(const float& dt) {
 	}
 }
 
-void GameState::updatePlayerGUI(const float& dt) {
-
-	this->playerGUI->update(dt);
-}
-
-void GameState::updateTileMap(const float& dt) {
-
-	this->tileMap->update(this->player, dt);
-
-	for (auto* i : this->activeEnemies) {
-
-		this->tileMap->update(i, dt);
-	}
-}
-
 void GameState::updatePlayerInput(const float& dt) {
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keyBinds.at("MOVE_LEFT")))) {
@@ -223,12 +209,41 @@ void GameState::updatePlayerInput(const float& dt) {
 	}
 }
 
+void GameState::updatePlayerGUI(const float& dt) {
+
+	this->playerGUI->update(dt);
+}
+
 void GameState::updatePauseMenuButtons() {
 	if (this->pMenu->isButtonPressed("QUIT") && this->getKeytime()) {
 		this->endState();
 	}
 }
 
+void GameState::updateTileMap(const float& dt) {
+
+	this->tileMap->updateWorldBoundsCollision(this->player, dt);
+	this->tileMap->updateTileCollision(this->player, dt);
+	this->tileMap->updateTiles(this->player, dt, *this->enemySystem);
+
+	//this->tileMap->update(this->player, dt);
+
+	for (auto* i : this->activeEnemies) {
+
+		this->tileMap->updateWorldBoundsCollision(i, dt);
+		this->tileMap->updateTileCollision(i, dt);
+	}
+}
+
+void GameState::updatePlayer(const float& dt) {
+
+	//this->activeEnemies.push_back(new Orc(200.f, 100.f, this->textures["ENEMY_SHEET"]));
+
+}
+
+void GameState::updateEnemies(const float& dt) {
+
+}
 
 void GameState::update(const float& dt) {
 
@@ -257,7 +272,6 @@ void GameState::update(const float& dt) {
 		this->pMenu->update(this->mousePosWindow);
 		this->updatePauseMenuButtons();
 	}
-
 
 }
 

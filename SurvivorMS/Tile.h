@@ -13,19 +13,22 @@ protected:
 
 public:
 	Tile();
-	Tile(int gridX, int gridY, float gridSizeF, const sf::Texture& texture, const sf::IntRect& textureRect,
-		bool collision = false, short type = TileTypes::DEFAULT);
+	Tile(short type, int gridX, int gridY, float gridSizeF, const sf::Texture& texture, const sf::IntRect& textureRect,
+		const bool collision = false);
 	virtual ~Tile();
 
-	const bool getCollision() const;
-	const sf::Vector2f& getPosition() const;
-	const sf::FloatRect getGlobalBounds() const;
-	const std::string getAsString() const;
 	const short& getType() const;
 
-	const bool intersects(const sf::FloatRect bounds) const;
-	virtual void update();
-	virtual void render(sf::RenderTarget& target, sf::Shader* shader = NULL, const sf::Vector2f playerPos = sf::Vector2f(0,0));
+	virtual const sf::Vector2f& getPosition() const;
+	virtual const sf::FloatRect getGlobalBounds() const;
+	virtual const bool& getCollision() const;
+
+	virtual const bool intersects(const sf::FloatRect bounds) const;
+
+	virtual const std::string getAsString() const = 0;
+
+	virtual void update() = 0;
+	virtual void render(sf::RenderTarget& target, sf::Shader* shader = NULL, const sf::Vector2f playerPos = sf::Vector2f(0,0)) = 0;
 };
 
 #endif 

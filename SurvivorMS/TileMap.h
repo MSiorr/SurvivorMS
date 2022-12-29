@@ -1,11 +1,13 @@
 #ifndef TILEMAP_H
 #define TILEMAP_H
 
-#include "Tile.h"
-#include "Entity.h"
+#include "EnemySpawnerTile.h"
+#include "RegularTile.h"
+#include "EnemySystem.h"
 
-class Tile;
+class RegularTile;
 class Entity;
+class EnemySpawnerTile;
 
 class TileMap {
 private:
@@ -49,9 +51,15 @@ public:
 	void loadFromFile(const std::string path);
 
 	void addTile(const int x, const int y, const int z, const sf::IntRect& textureRect, const bool& collision, const short& type);
+	void addTile(const int x, const int y, const int z, const sf::IntRect& textureRect,
+		const int enemyType, const int enemyAmount, const int enemyTimeToSpawn, const int enemyMaxDistance);
 	void removeTile(const int x, const int y, const int z, const int type = -1);
 
+	void updateWorldBoundsCollision(Entity* entity, const float& dt);
+	void updateTileCollision(Entity* entity, const float& dt);
+	void updateTiles(Entity* entity, const float& dt, EnemySystem& enemySystem);
 	void update(Entity* entity, const float& dt);
+
 	void renderDeferred(sf::RenderTarget& target, sf::Shader* shader = NULL, const sf::Vector2f playerPos = sf::Vector2f(0, 0));
 	void render(sf::RenderTarget& target, const sf::Vector2i& gridPos, sf::Shader* shader = NULL, sf::Vector2f playerPos = sf::Vector2f(0, 0), const bool showCollision = false);
 };

@@ -114,7 +114,7 @@
     <ClCompile Include="SkillComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="EnemySpawner.cpp">
+    <ClCompile Include="EnemySpawnerTile.cpp">
       <Filter>Map\Tile</Filter>
     </ClCompile>
     <ClCompile Include="EditorMode.cpp">
@@ -127,6 +127,15 @@
       <Filter>States\Editor Modes</Filter>
     </ClCompile>
     <ClCompile Include="Enemy.cpp">
+      <Filter>Entities\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Orc.cpp">
+      <Filter>Entities\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="RegularTile.cpp">
+      <Filter>Map\Tile</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemySystem.cpp">
       <Filter>Entities\Enemies</Filter>
     </ClCompile>
   </ItemGroup>
@@ -197,7 +206,7 @@
     <ClInclude Include="SkillComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="EnemySpawner.h">
+    <ClInclude Include="EnemySpawnerTile.h">
       <Filter>Map\Tile</Filter>
     </ClInclude>
     <ClInclude Include="EditorMode.h">
@@ -210,6 +219,15 @@
       <Filter>States\Editor Modes</Filter>
     </ClInclude>
     <ClInclude Include="Enemy.h">
+      <Filter>Entities\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Orc.h">
+      <Filter>Entities\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="RegularTile.h">
+      <Filter>Map\Tile</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemySystem.h">
       <Filter>Entities\Enemies</Filter>
     </ClInclude>
   </ItemGroup>

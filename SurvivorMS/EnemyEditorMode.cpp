@@ -44,7 +44,8 @@ void EnemyEditorMode::updateInput(const float& dt) {
 
 		if (!this->sidebar.getGlobalBounds().contains(sf::Vector2f(*this->editorStateData->mousePosWindow))) {
 
-			this->tileMap->addTile(this->editorStateData->mousePosGrid->x, this->editorStateData->mousePosGrid->y, 0, this->textureRect, false, TileTypes::ENEMYSPAWNER);
+			this->tileMap->addTile(this->editorStateData->mousePosGrid->x, this->editorStateData->mousePosGrid->y, 0, this->textureRect,
+				this->type, this->amount, this->timeToSpawn, this->maxDist);
 
 		}
 	} else if (sf::Mouse::isButtonPressed(sf::Mouse::Right) && this->getKeytime()) {
@@ -53,6 +54,52 @@ void EnemyEditorMode::updateInput(const float& dt) {
 
 			this->tileMap->removeTile(this->editorStateData->mousePosGrid->x, this->editorStateData->mousePosGrid->y, 0, TileTypes::ENEMYSPAWNER);
 		}
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->editorStateData->keyBinds->at("TYPE_UP"))) && this->getKeytime()) {
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)) {
+
+			if (this->type > 0)
+				this->type--;
+		} else if (this->type < 100)
+			this->type++;
+		else
+			this->type = 0;
+
+	} else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->editorStateData->keyBinds->at("AMOUNT_UP"))) && this->getKeytime()) {
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)) {
+
+			if (this->amount > 0)
+				this->amount--;
+		} else if (this->amount < 100)
+			this->amount++;
+		else
+			this->amount = 0;
+
+	} else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->editorStateData->keyBinds->at("TTS_UP"))) && this->getKeytime()) {
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)) {
+
+			if (this->timeToSpawn > 0)
+				this->timeToSpawn--;
+		} else if (this->timeToSpawn < 1000)
+			this->timeToSpawn++;
+		else
+			this->timeToSpawn = 0;
+
+	} else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->editorStateData->keyBinds->at("MD_UP"))) && this->getKeytime()) {
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)) {
+
+			if (this->maxDist > 0)
+				this->maxDist--;
+		} else if (this->maxDist < 10-0)
+			this->maxDist++;
+		else
+			this->maxDist = 0;
+
 	}
 
 }
