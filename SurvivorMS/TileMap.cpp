@@ -506,12 +506,12 @@ void TileMap::updateTiles(Entity* entity, const float& dt, EnemySystem& enemySys
 
 				if (this->map[i][j][this->layer][k]->getType() == TileTypes::ENEMYSPAWNER) {
 
-					EnemySpawnerTile* es = dynamic_cast<EnemySpawnerTile*>(this->map[i][j][this->layer][k]);
+					EnemySpawnerTile* est = dynamic_cast<EnemySpawnerTile*>(this->map[i][j][this->layer][k]);
 
-					if (es && !es->getSpawned()) {
+					if (est && !est->getSpawned() && est->getEnemyCounter() < est->getEnemyAmount()) {
 						
-						enemySystem.createEnemy(ORC, i * this->gridSizeF, j * this->gridSizeF);
-						es->setSpawned(true);
+						enemySystem.createEnemy(ORC, i * this->gridSizeF, j * this->gridSizeF, *est);
+						est->setSpawned(true);
 					}
 
 				}

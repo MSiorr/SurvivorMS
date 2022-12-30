@@ -52,6 +52,10 @@ void AttributeComponent::gainExp(const int exp) {
 	this->updateLvl();
 }
 
+const bool AttributeComponent::isDead() const {
+	return this->hp <= 0;
+}
+
 void AttributeComponent::updateStats(const bool reset) {
 
 	this->hpMax			= this->vitality * 5 + this->vitality + this->strength / 2 + this->intelligence / 5;
@@ -62,7 +66,7 @@ void AttributeComponent::updateStats(const bool reset) {
 	this->luck			= this->intelligence * 2 + this->intelligence / 5;
 
 	if(reset)
-		this->hp = this->hpMax / 2;
+		this->hp = this->hpMax;
 }
 
 void AttributeComponent::updateLvl() {

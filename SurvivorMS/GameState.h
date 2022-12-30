@@ -6,6 +6,7 @@
 #include "TileMap.h"
 #include "PlayerGUI.h"
 #include "Kunai.h"
+#include "TextTagSystem.h"
 
 class GameState : public State {
 private:
@@ -28,6 +29,8 @@ private:
 	std::vector<Enemy*> activeEnemies;
 	EnemySystem* enemySystem;
 
+	TextTagSystem* tts;
+
 	void initDefferedRender();
 	void initView();
 	void initFonts();
@@ -39,6 +42,7 @@ private:
 	void initPlayerGUI();
 	void initEnemySystem();
 	void initTileMap();
+	void initSystems();
 
 public:
 	GameState(StateData* stateData);
@@ -53,6 +57,7 @@ public:
 	void updateTileMap(const float& dt);
 	void updatePlayer(const float& dt);
 	void updateEnemies(const float& dt);
+	void updateCombat(Enemy* enemy, const int index, const float& dt);
 	void update(const float& dt);
 	void render(sf::RenderTarget* target = NULL);
 };

@@ -3,11 +3,13 @@
 
 EnemySpawnerTile::EnemySpawnerTile(int gridX, int gridY, float gridSizeF,
 	const sf::Texture& texture, const sf::IntRect& textureRect,
-	int enemyType, int enemyAmount, int enemyTimeToSpawn, float enemyMaxDistance
+	int enemyType, int enemyAmount, sf::Int32 enemyTimeToSpawn, float enemyMaxDistance
 ) : Tile(TileTypes::ENEMYSPAWNER, gridX, gridY, gridSizeF, texture, textureRect, false) {
 
 	this->enemyType = enemyType;
 	this->enemyAmount = enemyAmount;
+	this->enemiesCounter = 0;
+	this->enemySpawnTimer.restart();
 	this->enemyTimeToSpawn = enemyTimeToSpawn;
 	this->enemyMaxDistance = enemyMaxDistance;
 
@@ -40,13 +42,50 @@ const bool& EnemySpawnerTile::getSpawned() const {
 	return this->spawned;
 }
 
+const int& EnemySpawnerTile::getEnemyCounter() const {
+	return this->enemiesCounter;
+}
+
+const int& EnemySpawnerTile::getEnemyAmount() const {
+	return this->enemyAmount;
+}
+
+const bool EnemySpawnerTile::canSpawn() const {
+
+	if (this->enemySpawnTimer.getElapsedTime().asMilliseconds() >= this->enemyTimeToSpawn) {
+
+		return true;
+	}
+
+	return false;
+}
+
+void EnemySpawnerTile::increaseEnemyCounter() {
+
+	if (this->enemiesCounter > this->enemyAmount)
+		this->enemiesCounter = this->enemyAmount;
+	else
+		++this->enemiesCounter;
+}
+
+void EnemySpawnerTile::decreaseEnemyCounter() {
+
+	if (this->enemiesCounter < 0)
+		this->enemiesCounter = 0;
+	else
+		--this->enemiesCounter;
+}
+
 void EnemySpawnerTile::setSpawned(const bool spawned) {
 
 	this->spawned = spawned;
+	this->enemySpawnTimer.restart();
 }
 
 void EnemySpawnerTile::update() {
 
+	if (this->canSpawn())
+		this->spawned = false;
 
 }
 

@@ -37,6 +37,8 @@ public:
 	void loseExp(const int exp);
 	void gainExp(const int exp);
 
+	const bool isDead() const;
+
 	void updateStats(const bool reset);
 	void updateLvl();
 

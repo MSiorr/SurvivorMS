@@ -2,6 +2,7 @@
 #define PLAYER_H
 
 #include "Entity.h"
+#include "Kunai.h"
 
 class Entity;
 
@@ -10,6 +11,8 @@ class Player :
 private:
 
 	bool attacking;
+
+	Kunai* weapon;
 
 	void initVariables();
 	void initComponents();
@@ -20,13 +23,13 @@ public:
 	virtual ~Player();
 
 	AttributeComponent* getAttributeComponent();
+	Kunai* getWeapon() const;
 
 	void loseHP(const int hp);
 	void gainHP(const int hp);
 	void loseExp(const int exp);
 	void gainExp(const int exp);
 
-	void updateAttack();
 	void updateAnimation(const float& dt);
 	void update(const float& dt, sf::Vector2f& mousePosView);
 	void render(sf::RenderTarget& target, sf::Shader* shader = NULL, const sf::Vector2f lightPos = sf::Vector2f(), const bool showHitbox = false);

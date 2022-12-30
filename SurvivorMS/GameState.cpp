@@ -104,8 +104,12 @@ void GameState::initEnemySystem() {
 
 void GameState::initTileMap() {
 
-	//this->tileMap = new TileMap(this->stateData->gridSize, 100, 100, "Resources/Images/Tiles/tilesheet1.png");
 	this->tileMap = new TileMap("text.slmp");
+}
+
+void GameState::initSystems() {
+
+	this->tts = new TextTagSystem("Fonts/trebuc.ttf");
 }
 
 GameState::GameState(StateData* stateData)
@@ -122,6 +126,7 @@ GameState::GameState(StateData* stateData)
 	this->initPlayerGUI();
 	this->initEnemySystem();
 	this->initTileMap();
+	this->initSystems();
 }
 
 GameState::~GameState() {
@@ -130,6 +135,7 @@ GameState::~GameState() {
 	delete this->playerGUI;
 	delete this->tileMap;
 	delete this->enemySystem;
+	delete this->tts;
 
 	for (size_t i = 0; i < this->activeEnemies.size(); i++) {
 
@@ -227,12 +233,6 @@ void GameState::updateTileMap(const float& dt) {
 	this->tileMap->updateTiles(this->player, dt, *this->enemySystem);
 
 	//this->tileMap->update(this->player, dt);
-
-	for (auto* i : this->activeEnemies) {
-
-		this->tileMap->updateWorldBoundsCollision(i, dt);
-		this->tileMap->updateTileCollision(i, dt);
-	}
 }
 
 void GameState::updatePlayer(const float& dt) {
@@ -243,6 +243,37 @@ void GameState::updatePlayer(const float& dt) {
 
 void GameState::updateEnemies(const float& dt) {
 
+	unsigned index = 0;
+	for (auto* enemy : this->activeEnemies) {
+
+		enemy->update(dt, this->mousePosView);
+
+		this->tileMap->updateWorldBoundsCollision(enemy, dt);
+		this->tileMap->updateTileCollision(enemy, dt);
+
+		this->updateCombat(enemy, index, dt);
+
+		if (enemy->isDead()) {
+
+			this->enemySystem->removeEnemy(index);
+			--index;
+		}
+
+		++index;
+	}
+
+}
+
+void GameState::updateCombat(Enemy* enemy, const int index, const float& dt) {
+
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+		
+		if (this->player->getWeapon()->getAttackTimer()) {
+
+			this->tts->addTextTag(DEFAULT_TAG, this->player->getCenter().x, this->player->getCenter().y, "test");
+			std::cout << "ATTACK" << "\n";
+		}
+	}
 }
 
 void GameState::update(const float& dt) {
@@ -262,10 +293,9 @@ void GameState::update(const float& dt) {
 
 		this->playerGUI->update(dt);
 
-		for (auto* i : this->activeEnemies) {
+		this->updateEnemies(dt);
 
-			i->update(dt, this->mousePosView);
-		}
+		this->tts->update(dt);
 
 	} else {
 
@@ -290,9 +320,9 @@ void GameState::render(sf::RenderTarget* target) {
 		this->player->getCenter()
 	);
 
-	for (auto* i : this->activeEnemies) {
+	for (auto* enemy : this->activeEnemies) {
 
-		i->render(this->renderTexture, &this->coreShader, this->player->getCenter(), true);
+		enemy->render(this->renderTexture, &this->coreShader, this->player->getCenter(), true);
 	}
 
 	this->player->render(this->renderTexture, &this->coreShader, this->player->getCenter(), true);
@@ -303,6 +333,7 @@ void GameState::render(sf::RenderTarget* target) {
 		this->player->getCenter()
 	);
 
+	this->tts->render(this->renderTexture);
 
 	this->renderTexture.setView(this->renderTexture.getDefaultView());
 	this->playerGUI->render(this->renderTexture);

@@ -43,6 +43,7 @@ public:
 	virtual const sf::Vector2i getGridPosition(const int gridSizeI) const;
 	virtual const sf::FloatRect getGlobalBounds() const;
 	virtual const sf::FloatRect getNextPositionBounds(const float& dt) const;
+	virtual const float getDistance(const Entity& entity) const;
 
 	virtual void setPosition(const float x, const float y);
 

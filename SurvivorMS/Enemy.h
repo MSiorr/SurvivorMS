@@ -4,21 +4,26 @@
 #include "Entity.h"
 #include "EnemySpawnerTile.h"
 
-class Entity;
-class EnemySpawnerTile;
 
 class Enemy :
 	public Entity {
 private:
 
-	// EnemySpawner* enemySpawner;
+	EnemySpawnerTile& enemySpawnerTile;
 
 	virtual void initVariables() = 0;
 	virtual void initAnimations() = 0;
 
 public:
-	Enemy();
+	Enemy(EnemySpawnerTile& enemySpawnerTile);
 	virtual ~Enemy();
+
+	EnemySpawnerTile& getEnemySpawnerTile();
+
+	virtual void takeDamage(const int damage);
+	virtual const bool isDead() const;
+
+	virtual const AttributeComponent* getAttributeComp() const;
 
 	virtual void updateAnimation(const float& dt) = 0;
 

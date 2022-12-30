@@ -11,19 +11,29 @@ private:
 
 	int enemyType;
 	int enemyAmount;
-	int enemyTimeToSpawn;
+	int enemiesCounter;
+	sf::Clock enemySpawnTimer;
+	sf::Int32 enemyTimeToSpawn;
+
 	int enemyMaxDistance;
 
 	bool spawned;
 
+
 public:
 	EnemySpawnerTile(int gridX, int gridY, float gridSizeF,
 		const sf::Texture& texture, const sf::IntRect& textureRect, 
-		int enemyType, int enemyAmount, int enemyTimeToSpawn, float enemyMaxDistance);
+		int enemyType, int enemyAmount, sf::Int32 enemyTimeToSpawn, float enemyMaxDistance);
 	virtual ~EnemySpawnerTile();
 
 	const std::string getAsString() const;
 	const bool& getSpawned() const;
+	const int& getEnemyCounter() const;
+	const int& getEnemyAmount() const;
+
+	const bool canSpawn() const;
+	void increaseEnemyCounter();
+	void decreaseEnemyCounter();
 
 	void setSpawned(const bool spawned);
 

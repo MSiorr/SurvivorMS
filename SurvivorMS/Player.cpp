@@ -4,6 +4,7 @@
 void Player::initVariables() {
 
 	this->attacking = false;
+	this->weapon = new Kunai();
 
 }
 
@@ -44,6 +45,10 @@ AttributeComponent* Player::getAttributeComponent() {
 	return this->attributeComponent;
 }
 
+Kunai* Player::getWeapon() const {
+	return this->weapon;
+}
+
 void Player::loseHP(const int hp) {
 
 	this->attributeComponent->loseHP(hp);
@@ -62,12 +67,6 @@ void Player::loseExp(const int exp) {
 void Player::gainExp(const int exp) {
 
 	this->attributeComponent->gainExp(exp);
-}
-
-void Player::updateAttack() {
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
-		//this->attacking = true;
-	}
 }
 
 void Player::updateAnimation(const float& dt) {
@@ -110,8 +109,6 @@ void Player::updateAnimation(const float& dt) {
 void Player::update(const float& dt, sf::Vector2f& mousePosView) {
 
 	this->movementComponent->update(dt);
-
-	this->updateAttack();
 
 	this->updateAnimation(dt);
 	

@@ -16,7 +16,8 @@ public:
 	EnemySystem(std::vector<Enemy*>& activeEnemies, std::map<std::string, sf::Texture>& textures);
 	virtual ~EnemySystem();
 
-	void createEnemy(const short type, const float x, const float y);
+	void createEnemy(const short type, const float x, const float y, EnemySpawnerTile& enemySpawnerTile);
+	void removeEnemy(const int index);
 
 	void update(const float& dt);
 	void render(sf::RenderTarget& target);
