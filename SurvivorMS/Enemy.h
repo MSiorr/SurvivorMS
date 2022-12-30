@@ -7,9 +7,12 @@
 
 class Enemy :
 	public Entity {
-private:
+protected:
 
 	EnemySpawnerTile& enemySpawnerTile;
+
+	sf::Clock damageTimer;
+	sf::Int32 damageTimerMax;
 
 	virtual void initVariables() = 0;
 	virtual void initAnimations() = 0;
@@ -19,6 +22,9 @@ public:
 	virtual ~Enemy();
 
 	EnemySpawnerTile& getEnemySpawnerTile();
+	const bool getDamageTimerDone() const;
+
+	void resetDamageTimer();
 
 	virtual void takeDamage(const int damage);
 	virtual const bool isDead() const;

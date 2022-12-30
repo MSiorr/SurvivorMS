@@ -123,6 +123,30 @@ void Entity::createSkillComponent() {
 	this->skillComponent = new SkillComponent();
 }
 
+void Entity::createAIComponent() {
+	this->skillComponent = new SkillComponent();
+}
+
+HitboxComponent* Entity::getHitboxComponent() {
+	return this->hitboxComponent;
+}
+
+MovementComponent* Entity::getMovementComponent() {
+	return this->movementComponent;
+}
+
+AnimationComponent* Entity::getAnimationComponent() {
+	return this->animationComponent;
+}
+
+AttributeComponent* Entity::getAttributeComponent() {
+	return this->attributeComponent;
+}
+
+SkillComponent* Entity::getSkillComponent() {
+	return this->skillComponent;
+}
+
 void Entity::stopVelocity() {
 
 	if (this->movementComponent)

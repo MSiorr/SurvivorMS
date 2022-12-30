@@ -49,6 +49,26 @@ Kunai* Player::getWeapon() const {
 	return this->weapon;
 }
 
+const bool Player::getDamageTimer() {
+	if (this->damageTimer.getElapsedTime().asMilliseconds() >= this->damageTimerMax) {
+
+		this->damageTimer.restart();
+		return true;
+	}
+	return false;
+}
+
+const std::string Player::toStringCharacterTab() const {
+	std::stringstream ss;
+	AttributeComponent* ac = this->attributeComponent;
+
+	ss << "Level: " << ac->lvl << "\n"
+		<< "Exp: " << ac->exp << "\n"
+		<< "Exp next: " << ac->expNext << "\n";
+
+	return ss.str();
+}
+
 void Player::loseHP(const int hp) {
 
 	this->attributeComponent->loseHP(hp);

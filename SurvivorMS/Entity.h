@@ -37,6 +37,13 @@ public:
 	void createAnimationComponent(sf::Texture& textureSheet);
 	void createAttributeComponent(const unsigned lvl);
 	void createSkillComponent();
+	void createAIComponent();
+
+	virtual HitboxComponent* getHitboxComponent();
+	virtual MovementComponent* getMovementComponent();
+	virtual AnimationComponent* getAnimationComponent();
+	virtual AttributeComponent* getAttributeComponent();
+	virtual SkillComponent* getSkillComponent();
 
 	virtual const sf::Vector2f& getPosition() const;
 	virtual const sf::Vector2f getCenter() const;

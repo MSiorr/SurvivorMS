@@ -14,6 +14,9 @@ private:
 
 	Kunai* weapon;
 
+	sf::Clock damageTimer;
+	sf::Int32 damageTimerMax;
+
 	void initVariables();
 	void initComponents();
 	void initAnimations();
@@ -24,6 +27,9 @@ public:
 
 	AttributeComponent* getAttributeComponent();
 	Kunai* getWeapon() const;
+	const bool getDamageTimer();
+
+	const std::string toStringCharacterTab() const;
 
 	void loseHP(const int hp);
 	void gainHP(const int hp);

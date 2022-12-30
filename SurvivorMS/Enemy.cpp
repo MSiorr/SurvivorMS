@@ -1,10 +1,15 @@
 #include "stdafx.h"
 #include "Enemy.h"
 
+void Enemy::initVariables() {
+
+	this->damageTimerMax = 100;
+}
 
 Enemy::Enemy(EnemySpawnerTile& enemySpawnerTile)
 	: Entity(), enemySpawnerTile(enemySpawnerTile) {
 
+	this->initVariables();
 }
 
 Enemy::~Enemy() {
@@ -12,6 +17,15 @@ Enemy::~Enemy() {
 
 EnemySpawnerTile& Enemy::getEnemySpawnerTile() {
 	return this->enemySpawnerTile;
+}
+
+const bool Enemy::getDamageTimerDone() const {
+	return this->damageTimer.getElapsedTime().asMilliseconds() >= this->damageTimerMax;
+}
+
+void Enemy::resetDamageTimer() {
+
+	this->damageTimer.restart();
 }
 
 void Enemy::takeDamage(const int damage) {

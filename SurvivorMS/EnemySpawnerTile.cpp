@@ -13,7 +13,7 @@ EnemySpawnerTile::EnemySpawnerTile(int gridX, int gridY, float gridSizeF,
 	this->enemyTimeToSpawn = enemyTimeToSpawn;
 	this->enemyMaxDistance = enemyMaxDistance;
 
-	this->spawned = false;
+	this->firstSpawn = true;
 }
 
 EnemySpawnerTile::~EnemySpawnerTile() {
@@ -38,10 +38,6 @@ const std::string EnemySpawnerTile::getAsString() const {
 	return ss.str();
 }
 
-const bool& EnemySpawnerTile::getSpawned() const {
-	return this->spawned;
-}
-
 const int& EnemySpawnerTile::getEnemyCounter() const {
 	return this->enemiesCounter;
 }
@@ -50,42 +46,31 @@ const int& EnemySpawnerTile::getEnemyAmount() const {
 	return this->enemyAmount;
 }
 
-const bool EnemySpawnerTile::canSpawn() const {
+const bool EnemySpawnerTile::getSpawnTimer() {
 
-	if (this->enemySpawnTimer.getElapsedTime().asMilliseconds() >= this->enemyTimeToSpawn) {
+	if (this->enemySpawnTimer.getElapsedTime().asMilliseconds() >= this->enemyTimeToSpawn || this->firstSpawn) {
 
+		this->enemySpawnTimer.restart();
+		this->firstSpawn = false;
 		return true;
 	}
-
 	return false;
 }
 
 void EnemySpawnerTile::increaseEnemyCounter() {
 
-	if (this->enemiesCounter > this->enemyAmount)
-		this->enemiesCounter = this->enemyAmount;
-	else
+	if (this->enemiesCounter < this->enemyAmount)
 		++this->enemiesCounter;
 }
 
 void EnemySpawnerTile::decreaseEnemyCounter() {
 
-	if (this->enemiesCounter < 0)
-		this->enemiesCounter = 0;
-	else
+	if (this->enemiesCounter > 0)
 		--this->enemiesCounter;
-}
-
-void EnemySpawnerTile::setSpawned(const bool spawned) {
-
-	this->spawned = spawned;
-	this->enemySpawnTimer.restart();
 }
 
 void EnemySpawnerTile::update() {
 
-	if (this->canSpawn())
-		this->spawned = false;
 
 }
 

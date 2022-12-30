@@ -116,7 +116,7 @@ void EditorState::initModes() {
 
 void EditorState::initTileMap() {
 
-	this->tileMap = new TileMap(this->stateData->gridSize, 64, 64, "Resources/Images/Tiles/tilesheet3.png");
+	this->tileMap = new TileMap(this->stateData->gridSize, 100, 100, "Resources/Images/Tiles/tilesheet3.png");
 
 }
 

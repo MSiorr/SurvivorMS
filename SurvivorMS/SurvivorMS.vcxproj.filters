@@ -46,6 +46,15 @@
     <Filter Include="Systems">
       <UniqueIdentifier>{75f7164e-0da1-4135-a447-0365140c1117}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GUI\PlayerGUITabs">
+      <UniqueIdentifier>{4ec85444-fe26-4998-a60f-7fc87aca256f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AI">
+      <UniqueIdentifier>{be7826b9-0728-4911-9d13-f9e15725e862}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AI\Options">
+      <UniqueIdentifier>{4027ef42-501c-4364-a474-6ea61f796a73}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -111,9 +120,6 @@
     <ClCompile Include="Item.cpp">
       <Filter>Item</Filter>
     </ClCompile>
-    <ClCompile Include="Kunai.cpp">
-      <Filter>Item\PlayerWeapon</Filter>
-    </ClCompile>
     <ClCompile Include="SkillComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
@@ -143,6 +149,30 @@
     </ClCompile>
     <ClCompile Include="TextTagSystem.cpp">
       <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerGUITabs.cpp">
+      <Filter>GUI\PlayerGUITabs</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterTab.cpp">
+      <Filter>GUI\PlayerGUITabs</Filter>
+    </ClCompile>
+    <ClCompile Include="Tab.cpp">
+      <Filter>GUI\PlayerGUITabs</Filter>
+    </ClCompile>
+    <ClCompile Include="AIOption.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="AIFollow.cpp">
+      <Filter>AI\Options</Filter>
+    </ClCompile>
+    <ClCompile Include="AIComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Kunai.cpp">
+      <Filter>Item\PlayerWeapon</Filter>
+    </ClCompile>
+    <ClCompile Include="VectorMath.cpp">
+      <Filter>Pliki źródłowe</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -212,9 +242,6 @@
     <ClInclude Include="SkillComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="EnemySpawnerTile.h">
-      <Filter>Map\Tile</Filter>
-    </ClInclude>
     <ClInclude Include="EditorMode.h">
       <Filter>States\Editor Modes</Filter>
     </ClInclude>
@@ -238,6 +265,30 @@
     </ClInclude>
     <ClInclude Include="TextTagSystem.h">
       <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerGUITabs.h">
+      <Filter>GUI\PlayerGUITabs</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterTab.h">
+      <Filter>GUI\PlayerGUITabs</Filter>
+    </ClInclude>
+    <ClInclude Include="Tab.h">
+      <Filter>GUI\PlayerGUITabs</Filter>
+    </ClInclude>
+    <ClInclude Include="AIOption.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="AIFollow.h">
+      <Filter>AI\Options</Filter>
+    </ClInclude>
+    <ClInclude Include="AIComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="VectorMath.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemySpawnerTile.h">
+      <Filter>Map\Tile</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

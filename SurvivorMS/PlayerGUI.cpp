@@ -53,6 +53,11 @@ void PlayerGUI::initLevelBar() {
 	);
 }
 
+void PlayerGUI::initPlayerTabs(sf::VideoMode& vm, sf::Font& font, Player& player) {
+
+	this->playerTabs = new PlayerGUITabs(vm, font, player);
+}
+
 PlayerGUI::PlayerGUI(Player* player, sf::VideoMode& vm) : vm(vm) {
 
 	this->player = player;
@@ -61,10 +66,24 @@ PlayerGUI::PlayerGUI(Player* player, sf::VideoMode& vm) : vm(vm) {
 	this->initHPBar();
 	this->initExpBar();
 	this->initLevelBar();
+	this->initPlayerTabs(vm, font, *player);
 
 }
 
 PlayerGUI::~PlayerGUI() {
+
+	delete this->hpBar;
+	delete this->expBar;
+	delete this->playerTabs;
+}
+
+const bool PlayerGUI::getTabsOpen() const {
+	
+	return this->playerTabs->tabsOpen();
+}
+
+void PlayerGUI::toggleCharacterTab() {
+	this->playerTabs->toggleTab(PLAYER_TABS::CHARACTER_TAB);
 }
 
 void PlayerGUI::updateHPBar() {
@@ -84,11 +103,17 @@ void PlayerGUI::updateLevelBar() {
 	this->levelBarText.setString(this->levelBarString);
 }
 
+void PlayerGUI::updatePlayerTabs() {
+
+	this->playerTabs->update();
+}
+
 void PlayerGUI::update(const float& dt) {
 
 	this->updateHPBar();
 	this->updateExpBar();
 	this->updateLevelBar();
+	this->updatePlayerTabs();
 }
 
 void PlayerGUI::renderHPBar(sf::RenderTarget& target) {
@@ -107,9 +132,16 @@ void PlayerGUI::renderLevelBar(sf::RenderTarget& target) {
 	target.draw(this->levelBarText);
 }
 
+void PlayerGUI::renderPlayerTabs(sf::RenderTarget& target) {
+
+	this->playerTabs->render(target);
+}
+
 void PlayerGUI::render(sf::RenderTarget& target) {
 
 	this->renderHPBar(target);
 	this->renderExpBar(target);
 	this->renderLevelBar(target);
+	this->renderPlayerTabs(target);
+
 }

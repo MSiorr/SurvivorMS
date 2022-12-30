@@ -2,18 +2,22 @@
 #define ORC_H
 
 #include "Enemy.h"
+#include "AIFollow.h"
 class Orc :
     public Enemy {
 private:
 
 	sf::RectangleShape hpBar;
 
+	AIFollow* follow;
+
 	void initVariables();
 	void initAnimations();
+	void initAI();
 	void initGui();
 
 public:
-	Orc(float x, float y, sf::Texture& textureSheet, EnemySpawnerTile& enemySpawnerTile);
+	Orc(float x, float y, sf::Texture& textureSheet, EnemySpawnerTile& enemySpawnerTile, Entity& player);
 	virtual ~Orc();
 
 	void takeDamage(const int damage);

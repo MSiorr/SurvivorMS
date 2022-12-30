@@ -88,6 +88,12 @@ void GameState::initShaders() {
 	}
 }
 
+void GameState::initKeyTime() {
+
+	this->keyTimeMax = 0.3f;
+	this->keyTimer.restart();
+}
+
 void GameState::initPlayer() {
 	this->player = new Player(220, 220, this->textures["PLAYER_SHEET"]);
 }
@@ -99,7 +105,7 @@ void GameState::initPlayerGUI() {
 
 void GameState::initEnemySystem() {
 
-	this->enemySystem = new EnemySystem(this->activeEnemies, this->textures);
+	this->enemySystem = new EnemySystem(this->activeEnemies, this->textures, *this->player);
 }
 
 void GameState::initTileMap() {
@@ -122,6 +128,7 @@ GameState::GameState(StateData* stateData)
 	this->initTextures();
 	this->initPauseMenu();
 	this->initShaders();
+	this->initKeyTime();
 	this->initPlayer();
 	this->initPlayerGUI();
 	this->initEnemySystem();
@@ -141,6 +148,16 @@ GameState::~GameState() {
 
 		delete this->activeEnemies[i];
 	}
+}
+
+const bool GameState::getKeyTime() {
+
+	if (this->keyTimer.getElapsedTime().asSeconds() >= this->keyTimeMax) {
+		this->keyTimer.restart();
+		return true;
+	}
+
+	return false;
 }
 
 void GameState::updateView(const float& dt) {
@@ -199,25 +216,21 @@ void GameState::updatePlayerInput(const float& dt) {
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keyBinds.at("MOVE_UP")))) {
 		this->player->move(0.f, -1.f, dt);
-		if (this->getKeytime()) {
-
-			this->player->gainHP(1);
-			this->player->gainExp(100);
-		}
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keyBinds.at("MOVE_DOWN")))) {
 		this->player->move(0.f, 1.f, dt);
-		if (this->getKeytime()) {
-
-			this->player->loseHP(1);
-			this->player->loseExp(100);
-		}
 	}
 }
 
 void GameState::updatePlayerGUI(const float& dt) {
 
 	this->playerGUI->update(dt);
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::C) && this->getKeyTime()) {
+
+		this->playerGUI->toggleCharacterTab();
+	}
+
 }
 
 void GameState::updatePauseMenuButtons() {
@@ -237,7 +250,7 @@ void GameState::updateTileMap(const float& dt) {
 
 void GameState::updatePlayer(const float& dt) {
 
-	//this->activeEnemies.push_back(new Orc(200.f, 100.f, this->textures["ENEMY_SHEET"]));
+	this->player->update(dt, this->mousePosView);
 
 }
 
@@ -289,9 +302,9 @@ void GameState::update(const float& dt) {
 
 		this->updateTileMap(dt);
 
-		this->player->update(dt, this->mousePosView);
+		this->updatePlayer(dt);
 
-		this->playerGUI->update(dt);
+		this->updatePlayerGUI(dt);
 
 		this->updateEnemies(dt);
 

@@ -3,13 +3,15 @@
 
 void Orc::initVariables() {
 
-
 }
 
 void Orc::initAnimations() {
 
 	this->animationComponent->addAnim("IDLE", 16.f, 0, 0, 3, 0, 52, 64);
 	this->animationComponent->addAnim("RUN", 12.f, 4, 0, 7, 0, 52, 64);
+}
+
+void Orc::initAI() {
 }
 
 void Orc::initGui() {
@@ -19,7 +21,7 @@ void Orc::initGui() {
 	this->hpBar.setPosition(this->sprite.getPosition());
 }
 
-Orc::Orc(float x, float y, sf::Texture& textureSheet, EnemySpawnerTile& enemySpawnerTile)
+Orc::Orc(float x, float y, sf::Texture& textureSheet, EnemySpawnerTile& enemySpawnerTile, Entity& player)
 	: Enemy(enemySpawnerTile) {
 
 	this->initVariables();
@@ -34,9 +36,13 @@ Orc::Orc(float x, float y, sf::Texture& textureSheet, EnemySpawnerTile& enemySpa
 	this->setPosition(x, y);
 
 	this->initAnimations();
+
+	this->follow = new AIFollow(*this, player);
 }
 
 Orc::~Orc() {
+
+	delete this->follow;
 }
 
 void Orc::takeDamage(const int damage) {
@@ -74,6 +80,12 @@ void Orc::updateAnimation(const float& dt) {
 		this->animationComponent->play("RUN", dt, this->movementComponent->getVelocity().y, this->movementComponent->getMaxVelocity());
 
 	}
+
+	if (this->damageTimer.getElapsedTime().asMilliseconds() <= this->damageTimerMax) {
+		this->sprite.setColor(sf::Color::Red);
+	} else {
+		this->sprite.setColor(sf::Color::White);
+	}
 }
 
 void Orc::update(const float& dt, sf::Vector2f& mousePosView) {
@@ -87,6 +99,8 @@ void Orc::update(const float& dt, sf::Vector2f& mousePosView) {
 	this->updateAnimation(dt);
 
 	this->hitboxComponent->update(dt);
+
+	this->follow->update(dt);
 
 }
 

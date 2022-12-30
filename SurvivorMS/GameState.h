@@ -31,6 +31,9 @@ private:
 
 	TextTagSystem* tts;
 
+	sf::Clock keyTimer;
+	float keyTimeMax;
+
 	void initDefferedRender();
 	void initView();
 	void initFonts();
@@ -38,6 +41,7 @@ private:
 	void initTextures();
 	void initPauseMenu();
 	void initShaders();
+	void initKeyTime();
 	void initPlayer();
 	void initPlayerGUI();
 	void initEnemySystem();
@@ -47,6 +51,8 @@ private:
 public:
 	GameState(StateData* stateData);
 	virtual ~GameState();
+
+	const bool getKeyTime();
 
 	//Fun
 	void updateView(const float& dt);
@@ -59,6 +65,7 @@ public:
 	void updateEnemies(const float& dt);
 	void updateCombat(Enemy* enemy, const int index, const float& dt);
 	void update(const float& dt);
+
 	void render(sf::RenderTarget* target = NULL);
 };
 

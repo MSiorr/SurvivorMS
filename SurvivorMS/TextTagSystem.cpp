@@ -12,9 +12,9 @@ void TextTagSystem::initVariables() {
 
 void TextTagSystem::initTagTemplates() {
 
-	this->tagTemplates[TAGTYPES::DEFAULT_TAG] = new TextTag(this->font, "", 100.f, 100.f, 0.f, -1.f, sf::Color::White, 40, 100.f, 200.f);
-	this->tagTemplates[TAGTYPES::DAMAGE_TAG] = new TextTag(this->font, "", 100.f, 100.f, 0.f, -1.f, sf::Color::Red, 40, 100.f, 200.f);
-	this->tagTemplates[TAGTYPES::EXPERIENCE_TAG] = new TextTag(this->font, "", 100.f, 100.f, 0.f, -1.f, sf::Color::Green, 55, 150.f, 250.f);
+	this->tagTemplates[TAGTYPES::DEFAULT_TAG] = new TextTag(this->font, "", 100.f, 100.f, 0.f, -1.f, sf::Color::White, 25, 100.f, true, 200.f, 200.f, 2);
+	this->tagTemplates[TAGTYPES::DAMAGE_TAG] = new TextTag(this->font, "", 100.f, 100.f, 0.f, -1.f, sf::Color::Red, 25, 100.f, true, 200.f, 200.f, 1);
+	this->tagTemplates[TAGTYPES::EXPERIENCE_TAG] = new TextTag(this->font, "", 100.f, 100.f, 0.f, -1.f, sf::Color::Green, 30, 200.f, true, 200.f, 200.f, 2);
 }
 
 TextTagSystem::TextTagSystem(std::string fontFile) {
