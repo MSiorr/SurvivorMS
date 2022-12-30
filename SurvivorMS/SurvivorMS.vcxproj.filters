@@ -55,6 +55,9 @@
     <Filter Include="AI\Options">
       <UniqueIdentifier>{4027ef42-501c-4364-a474-6ea61f796a73}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Entities\Player">
+      <UniqueIdentifier>{779e08f7-040e-4e58-bc8e-a3778871c3c6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -77,9 +80,6 @@
     </ClCompile>
     <ClCompile Include="MainMenuState.cpp">
       <Filter>States</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Entities</Filter>
     </ClCompile>
     <ClCompile Include="MovementComponent.cpp">
       <Filter>Components</Filter>
@@ -122,9 +122,6 @@
     </ClCompile>
     <ClCompile Include="SkillComponent.cpp">
       <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemySpawnerTile.cpp">
-      <Filter>Map\Tile</Filter>
     </ClCompile>
     <ClCompile Include="EditorMode.cpp">
       <Filter>States\Editor Modes</Filter>
@@ -174,6 +171,21 @@
     <ClCompile Include="VectorMath.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
+    <ClCompile Include="GameMenu.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Entities\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerData.cpp">
+      <Filter>Entities\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="EQItem.cpp">
+      <Filter>Entities\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemySpawnerTile.cpp">
+      <Filter>Map\Tile</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -193,9 +205,6 @@
     </ClInclude>
     <ClInclude Include="MainMenuState.h">
       <Filter>States</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Entities</Filter>
     </ClInclude>
     <ClInclude Include="MovementComponent.h">
       <Filter>Components</Filter>
@@ -220,9 +229,6 @@
     </ClInclude>
     <ClInclude Include="Gui.h">
       <Filter>GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="TileMap.h">
-      <Filter>Map</Filter>
     </ClInclude>
     <ClInclude Include="GraphicsSettings.h">
       <Filter>Pliki nagłówkowe</Filter>
@@ -289,6 +295,21 @@
     </ClInclude>
     <ClInclude Include="EnemySpawnerTile.h">
       <Filter>Map\Tile</Filter>
+    </ClInclude>
+    <ClInclude Include="GameMenu.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Entities\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerData.h">
+      <Filter>Entities\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="EQItem.h">
+      <Filter>Entities\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="TileMap.h">
+      <Filter>Map</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

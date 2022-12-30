@@ -24,14 +24,16 @@ const unsigned gui::calcCharSize(const sf::VideoMode& vm) {
 }
 
 gui::Button::Button(float x, float y, float width, float height,
-	sf::Font* font, std::string text, unsigned characterSize,
+	sf::Font* font, std::string textOrPath, unsigned characterSize,
 	sf::Color textIdleColor, sf::Color textHoverColor, sf::Color textActiveColor,
 	sf::Color idleColor, sf::Color hoverColor, sf::Color activeColor,
 	sf::Color outlineIdleColor, sf::Color outlineHoverColor, sf::Color outlineActiveColor,
-	short unsigned id ) {
+	bool graphicBtn, short unsigned id ) {
 
 	this->btnState = BUTTONSTATES::BTN_IDLE;
 	this->id = id;
+
+	this->graphicBtn = graphicBtn;
 
 	this->shape.setPosition(sf::Vector2f(x, y));
 	this->shape.setSize(sf::Vector2f(width, height));
@@ -39,16 +41,26 @@ gui::Button::Button(float x, float y, float width, float height,
 	this->shape.setOutlineThickness(1.f);
 	this->shape.setOutlineColor(outlineIdleColor);
 
-	this->font = font;
-	this->text.setFont(*this->font);
-	this->text.setString(text);
-	this->text.setFillColor(textIdleColor);
-	this->text.setCharacterSize(characterSize);
 
-	this->text.setPosition(
-		this->shape.getPosition().x + (this->shape.getGlobalBounds().width / 2.f) - this->text.getGlobalBounds().width / 1.9f,
-		this->shape.getPosition().y + (this->shape.getGlobalBounds().height / 2.f) - this->text.getGlobalBounds().height / 1.2f
-	);
+	if (!this->graphicBtn) {
+
+		this->font = font;
+		this->text.setFont(*this->font);
+		this->text.setString(textOrPath);
+		this->text.setFillColor(textIdleColor);
+		this->text.setCharacterSize(characterSize);
+
+		this->text.setPosition(
+			this->shape.getPosition().x + (this->shape.getGlobalBounds().width / 2.f) - this->text.getGlobalBounds().width / 1.9f,
+			this->shape.getPosition().y + (this->shape.getGlobalBounds().height / 2.f) - this->text.getGlobalBounds().height / 1.2f
+		);
+	} else {
+
+		if (!this->btnTexture.loadFromFile(textOrPath))
+			std::cout << "ERROR BTN GRAPHIC" << "\n";
+
+		this->shape.setTexture(&this->btnTexture);
+	}
 
 	this->textIdleColor = textIdleColor;
 	this->textHoverColor = textHoverColor;

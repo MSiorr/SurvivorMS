@@ -2,6 +2,7 @@
 #define MAINMENUSTATE_H
 
 #include "GameState.h"
+#include "GameMenu.h"
 #include "EditorState.h"
 #include "SettingsState.h"
 

@@ -57,18 +57,24 @@ void MainMenuState::initGui() {
 
 	short btnCount = 0;
 
-	this->buttons["GAME_STATE"] = new gui::Button(
+	this->buttons["CONTINUE_STATE"] = new gui::Button(
 		centerX, centerY + btnCount * spaceYMultip * btnHeight, 
 		btnWidth, btnHeight,
-		&this->font, "NEW GAME", fontSize,
+		&this->font, "CONTINUE", fontSize,
 		sf::Color(70, 70, 70, 200), sf::Color(250, 250, 250, 250), sf::Color(20, 20, 20, 50),
 		sf::Color(0, 0, 0, 200), sf::Color(0, 0, 0, 140), sf::Color(0, 0, 0, 50));
 	btnCount++;
 	
-	this->buttons["SETTINGS_STATE"] = new gui::Button(
+	/*this->buttons["SETTINGS_STATE"] = new gui::Button(
 		centerX, centerY + btnCount * spaceYMultip * btnHeight, 
 		btnWidth, btnHeight,
 		&this->font, "SETTINGS", fontSize,
+		sf::Color(70, 70, 70, 200), sf::Color(250, 250, 250, 250), sf::Color(20, 20, 20, 50),
+		sf::Color(0, 0, 0, 200), sf::Color(0, 0, 0, 140), sf::Color(0, 0, 0, 50));*/
+	this->buttons["GAME_STATE"] = new gui::Button(
+		centerX, centerY + btnCount * spaceYMultip * btnHeight,
+		btnWidth, btnHeight,
+		&this->font, "NEW GAME", fontSize,
 		sf::Color(70, 70, 70, 200), sf::Color(250, 250, 250, 250), sf::Color(20, 20, 20, 50),
 		sf::Color(0, 0, 0, 200), sf::Color(0, 0, 0, 140), sf::Color(0, 0, 0, 50));
 	btnCount++;
@@ -133,13 +139,17 @@ void MainMenuState::updateButtons() {
 		it.second->update(this->mousePosWindow);
 	}
 
-	if (this->buttons["GAME_STATE"]->isPressed()) {
-		this->states->push(new GameState(this->stateData));
+	if (this->buttons["CONTINUE_STATE"]->isPressed()) {
+		this->states->push(new GameMenu(this->stateData, false));
 	}
 
-	if (this->buttons["SETTINGS_STATE"]->isPressed()) {
-		this->states->push(new SettingsState(this->stateData));
+	if (this->buttons["GAME_STATE"]->isPressed()) {
+		this->states->push(new GameMenu(this->stateData, true));
 	}
+
+	/*if (this->buttons["SETTINGS_STATE"]->isPressed()) {
+		this->states->push(new SettingsState(this->stateData));
+	}*/
 
 	if (this->buttons["EDITOR_STATE"]->isPressed()) {
 		this->states->push(new EditorState(this->stateData));

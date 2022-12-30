@@ -14,9 +14,13 @@ namespace gui {
 		short unsigned btnState;
 		short unsigned id;
 
+		bool graphicBtn;
+
 		sf::RectangleShape shape;
 		sf::Font* font;
 		sf::Text text;
+
+		sf::Texture btnTexture;
 
 		sf::Color textIdleColor;
 		sf::Color textHoverColor;
@@ -32,13 +36,13 @@ namespace gui {
 
 	public:
 		Button(float x, float y, float width, float height,
-			sf::Font* font, std::string text, unsigned characterSize,
+			sf::Font* font, std::string textOrPath, unsigned characterSize,
 			sf::Color textIdleColor, sf::Color textHoverColor, sf::Color textActiveColor,
 			sf::Color idleColor, sf::Color hoverColor, sf::Color activeColor,
 			sf::Color outlineIdleColor = sf::Color::Transparent, 
 			sf::Color outlineHoverColor = sf::Color::Transparent, 
 			sf::Color outlineActiveColor = sf::Color::Transparent,
-			short unsigned id = 0);
+			bool graphicBtn = false, short unsigned id = 0);
 		virtual ~Button();
 
 		const bool isPressed() const;
