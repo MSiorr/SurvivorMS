@@ -144,7 +144,8 @@ void MainMenuState::updateButtons() {
 	}
 
 	if (this->buttons["GAME_STATE"]->isPressed()) {
-		this->states->push(new GameMenu(this->stateData, true));
+		this->states->push(new GameState(this->stateData));
+		//this->states->push(new GameMenu(this->stateData, true));
 	}
 
 	/*if (this->buttons["SETTINGS_STATE"]->isPressed()) {

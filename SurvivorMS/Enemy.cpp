@@ -33,6 +33,7 @@ void Enemy::takeDamage(const int damage) {
 	if (this->attributeComponent) {
 
 		this->attributeComponent->loseHP(damage);
+		
 	}
 
 }
@@ -41,7 +42,7 @@ const bool Enemy::isDead() const {
 
 	if (this->attributeComponent) {
 
-		this->attributeComponent->isDead();
+		return this->attributeComponent->isDead();
 	}
 
 	return false;

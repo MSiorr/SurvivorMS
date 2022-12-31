@@ -29,6 +29,8 @@ private:
 	std::vector<Enemy*> activeEnemies;
 	EnemySystem* enemySystem;
 
+	std::vector<Item*> items;
+
 	TextTagSystem* tts;
 
 	sf::Clock keyTimer;
@@ -63,6 +65,7 @@ public:
 	void updateTileMap(const float& dt);
 	void updatePlayer(const float& dt);
 	void updateEnemies(const float& dt);
+	void updateItems(const float& dt);
 	void updateCombat(Enemy* enemy, const int index, const float& dt);
 	void update(const float& dt);
 

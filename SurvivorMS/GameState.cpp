@@ -63,6 +63,10 @@ void GameState::initTextures() {
 		throw "ENEMY TEXTURE ERROR";
 	}
 
+	if (!this->textures["WEAPON_SHEET"].loadFromFile("Resources/Images/Sprites/weapon.png")) {
+		throw "WEAPON TEXTURE ERROR";
+	}
+
 }
 
 void GameState::initPauseMenu() {
@@ -148,6 +152,11 @@ GameState::~GameState() {
 
 		delete this->activeEnemies[i];
 	}
+
+	for (size_t i = 0; i < this->items.size(); i++) {
+
+		delete this->items[i];
+	}
 }
 
 const bool GameState::getKeyTime() {
@@ -220,6 +229,15 @@ void GameState::updatePlayerInput(const float& dt) {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keyBinds.at("MOVE_DOWN")))) {
 		this->player->move(0.f, 1.f, dt);
 	}
+
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+
+		if (this->player->getAttackTimer()) {
+
+			//this->tts->addTextTag(DEFAULT_TAG, this->player->getCenter().x, this->player->getCenter().y, "test");
+			this->items.push_back(new Kunai(true, this->player->getCenter().x, this->player->getCenter().y, this->textures["WEAPON_SHEET"], this->mousePosView));
+		}
+	}
 }
 
 void GameState::updatePlayerGUI(const float& dt) {
@@ -277,15 +295,48 @@ void GameState::updateEnemies(const float& dt) {
 
 }
 
+void GameState::updateItems(const float& dt) {
+
+	unsigned index = 0;
+	for (auto* item : this->items) {
+
+		item->update(dt);
+
+		if (item->isWeapon() && !item->isToDestroy()) {
+
+			Kunai* weapon = dynamic_cast<Kunai*>(item);
+			weapon->setToDestroy(this->tileMap->checkCollide(weapon->getCenter(), dt));
+		}
+
+		if (item->isToDestroy()) {
+
+			delete this->items[index];
+			this->items.erase(this->items.begin() + index);
+			--index;
+
+		}
+
+		++index;
+	}
+}
+
+
 void GameState::updateCombat(Enemy* enemy, const int index, const float& dt) {
 
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-		
-		if (this->player->getWeapon()->getAttackTimer()) {
+	for (auto* item : this->items) {
 
-			this->tts->addTextTag(DEFAULT_TAG, this->player->getCenter().x, this->player->getCenter().y, "test");
-			std::cout << "ATTACK" << "\n";
+		if (item->isWeapon() && !item->isToDestroy() && enemy->getGlobalBounds().intersects(item->getGlobalBounds())) {
+			Kunai* weapon = dynamic_cast<Kunai*>(item);
+
+			int dmg = static_cast<int>(weapon->getDamage());
+
+			enemy->takeDamage(dmg);
+			enemy->resetDamageTimer();
+			std::cout << "enemy: " << enemy->isDead() << "\n";
+			this->tts->addTextTag(TAGTYPES::DAMAGE_TAG, enemy->getCenter().x + 5.f, enemy->getCenter().y - 10.f, dmg);
+			weapon->setToDestroy(true);
 		}
+
 	}
 }
 
@@ -307,6 +358,7 @@ void GameState::update(const float& dt) {
 		this->updatePlayerGUI(dt);
 
 		this->updateEnemies(dt);
+		this->updateItems(dt);
 
 		this->tts->update(dt);
 
@@ -336,6 +388,11 @@ void GameState::render(sf::RenderTarget* target) {
 	for (auto* enemy : this->activeEnemies) {
 
 		enemy->render(this->renderTexture, &this->coreShader, this->player->getCenter(), true);
+	}
+
+	for (auto* item : this->items) {
+
+		item->render(this->renderTexture, &this->coreShader, this->player->getCenter(), true);
 	}
 
 	this->player->render(this->renderTexture, &this->coreShader, this->player->getCenter(), true);

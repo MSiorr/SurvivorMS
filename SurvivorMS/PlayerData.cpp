@@ -144,6 +144,7 @@ void PlayerData::lvlUp(const short key) {
             this->items.at(key)->lvlUp();
             this->loseGold(this->items.at(key)->getCost());
             this->calcStats();
+            this->saveToFile("playerData.txt");
         }
     } else {
         std::cout << "WRONG ITEM KEY" << "\n";

@@ -35,7 +35,7 @@ void DefaultEditorMode::initGui() {
 	this->selectorRect.setTexture(this->tileMap->getTileSheet());
 	this->selectorRect.setTextureRect(this->textureRect);
 
-	this->textureSelector = new gui::TextureSelector(20.f, 20.f, 10 * 64.f, 3 * 64.f,
+	this->textureSelector = new gui::TextureSelector(20.f, 20.f, 10 * 64.f, 9 * 64.f,
 		this->stateData->gridSize, this->tileMap->getTileSheet(),
 		*this->editorStateData->font, "TS");
 

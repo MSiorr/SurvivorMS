@@ -17,6 +17,9 @@ private:
 	sf::Clock damageTimer;
 	sf::Int32 damageTimerMax;
 
+	sf::Clock attackTimer;
+	sf::Int32 attackTimerMax;
+
 	void initVariables();
 	void initComponents();
 	void initAnimations();
@@ -28,6 +31,7 @@ public:
 	AttributeComponent* getAttributeComponent();
 	Kunai* getWeapon() const;
 	const bool getDamageTimer();
+	const bool getAttackTimer();
 
 	const std::string toStringCharacterTab() const;
 

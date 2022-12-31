@@ -46,6 +46,7 @@ public:
 	const sf::Vector2i& getMaxSizeGrid() const;
 	const sf::Vector2f& getMaxSizeF() const;
 	const bool checkType(const int x, const int y, const int z, const int type) const;
+	const bool checkCollide(sf::Vector2f pos, const float& dt);
 
 	void saveToFile(const std::string path);
 	void loadFromFile(const std::string path);

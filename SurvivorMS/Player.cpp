@@ -3,8 +3,11 @@
 
 void Player::initVariables() {
 
+	this->attackTimer.restart();
+	this->attackTimerMax = 500;
+
 	this->attacking = false;
-	this->weapon = new Kunai();
+	//this->weapon = new Kunai();
 
 }
 
@@ -53,6 +56,15 @@ const bool Player::getDamageTimer() {
 	if (this->damageTimer.getElapsedTime().asMilliseconds() >= this->damageTimerMax) {
 
 		this->damageTimer.restart();
+		return true;
+	}
+	return false;
+}
+
+const bool Player::getAttackTimer() {
+
+	if (this->attackTimer.getElapsedTime().asMilliseconds() >= this->attackTimerMax) {
+		this->attackTimer.restart();
 		return true;
 	}
 	return false;

@@ -53,7 +53,8 @@ void AttributeComponent::gainExp(const int exp) {
 }
 
 const bool AttributeComponent::isDead() const {
-	return this->hp <= 0;
+
+	return (this->hp <= 0.f);
 }
 
 void AttributeComponent::updateStats(const bool reset) {

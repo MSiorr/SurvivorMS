@@ -133,6 +133,66 @@ const bool TileMap::checkType(const int x, const int y, const int z, const int t
 	return this->map[x][y][this->layer].back()->getType() == type;
 }
 
+const bool TileMap::checkCollide(sf::Vector2f pos, const float& dt) {
+
+	bool collide = false;
+
+	if (pos.x < 0.f || pos.x > this->maxSizeWorldF.x ||
+		pos.y < 0.f || pos.y > this->maxSizeWorldF.y) {
+
+		collide = true;
+	}
+
+	if (!collide) {
+		sf::Vector2i gridPos(
+			static_cast<int>(pos.x) / this->gridSizeI,
+			static_cast<int>(pos.y) / this->gridSizeI
+		);
+	
+		this->layer = 0;
+
+		this->fromX = gridPos.x - 1;
+		if (this->fromX < 0)
+			this->fromX = 0;
+		else if (this->fromX > this->maxSizeWorldGrid.x)
+			this->fromX = this->maxSizeWorldGrid.x;
+
+		this->toX = gridPos.x + 3;
+		if (this->toX < 0)
+			this->toX = 0;
+		else if (this->toX > this->maxSizeWorldGrid.x)
+			this->toX = this->maxSizeWorldGrid.x;
+
+		this->fromY = gridPos.y - 1;
+		if (this->fromY < 0)
+			this->fromY = 0;
+		else if (this->fromY > this->maxSizeWorldGrid.y)
+			this->fromY = this->maxSizeWorldGrid.y;
+
+		this->toY = gridPos.y + 3;
+		if (this->toY < 0)
+			this->toY = 0;
+		else if (this->toY > this->maxSizeWorldGrid.y)
+			this->toY = this->maxSizeWorldGrid.y;
+
+		for (int i = fromX; i < toX && !collide; i++) {
+			for (int j = fromY; j < toY && !collide; j++) {
+				for (int k = 0; k < this->map[i][j][this->layer].size() && !collide; k++) {
+
+					sf::FloatRect wallBounds = this->map[i][j][this->layer][k]->getGlobalBounds();
+
+					if (this->map[i][j][this->layer][k]->getCollision() && wallBounds.contains(pos)) {
+
+						collide = true;
+					}
+				}
+			}
+		}
+	}
+
+	return collide;
+}
+
 void TileMap::saveToFile(const std::string path) {
 	/*FORMAT:
 		BASIC:

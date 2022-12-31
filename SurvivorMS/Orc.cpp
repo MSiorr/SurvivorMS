@@ -47,6 +47,8 @@ Orc::~Orc() {
 
 void Orc::takeDamage(const int damage) {
 
+	std::cout << this->attributeComponent->hp << "HP" << "\n";
+
 	this->attributeComponent->loseHP(damage);
 }
 
@@ -66,7 +68,7 @@ void Orc::updateAnimation(const float& dt) {
 	} else if (this->movementComponent->getState(MOVING_LEFT)) {
 
 		if (this->sprite.getScale().x > 0.f) {
-			this->sprite.setOrigin(46.f, 0.f);
+			this->sprite.setOrigin(60.f, 0.f);
 			this->sprite.setScale(-1.f, 1.f);
 		}
 
