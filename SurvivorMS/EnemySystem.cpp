@@ -24,9 +24,19 @@ void EnemySystem::createEnemy(const short type, const float x, const float y, En
 	}
 }
 
-void EnemySystem::removeEnemy(const int index) {
+void EnemySystem::removeEnemy(const int index, std::vector<Pickable*>* pickables) {
 
 	this->activeEnemies[index]->getEnemySpawnerTile().decreaseEnemyCounter();
+
+	pickables->push_back(new Coin(
+		this->activeEnemies[index]->getRandomPosAroundEnemy(),
+		this->textures["PICKABLE_SHEET"]
+	));
+
+	pickables->push_back(new ExpGem(
+		this->activeEnemies[index]->getRandomPosAroundEnemy(),
+		this->textures["PICKABLE_SHEET"]
+	));
 
 	delete this->activeEnemies[index];
 	this->activeEnemies.erase(this->activeEnemies.begin() + index);

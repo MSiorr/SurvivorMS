@@ -3,6 +3,9 @@
 
 void Player::initVariables() {
 
+	this->damageTimer.restart();
+	this->damageTimerMax = 500;
+
 	this->attackTimer.restart();
 	this->attackTimerMax = 500;
 
@@ -25,15 +28,15 @@ void Player::initAnimations() {
 	this->animationComponent->addAnim("HURT", 12.f, 7, 0, 9, 0, 46, 64);
 }
 
-Player::Player(float x, float y, sf::Texture& textureSheet) : Entity() {
+Player::Player(float x, float y, sf::Texture& textureSheet, PlayerData* playerData) : Entity() {
 
 	this->initVariables();
 
 
-	this->createHitboxComponent(0, 0, 46, 64);
+	this->createHitboxComponent(0, 16, 46, 48);
 	this->createMovementComponent(300.f, 2400.f, 800.f);
 	this->createAnimationComponent(textureSheet);
-	this->createAttributeComponent(1);
+	this->createAttributeComponent(1, playerData->getDMG(), playerData->getHP());
 	this->createSkillComponent();
 
 	//this->initComponents();

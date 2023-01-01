@@ -58,6 +58,9 @@
     <Filter Include="Entities\Player">
       <UniqueIdentifier>{779e08f7-040e-4e58-bc8e-a3778871c3c6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pickable">
+      <UniqueIdentifier>{cf0727bd-f00a-4204-841d-9a52b00b53a0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -186,6 +189,18 @@
     <ClCompile Include="EnemySpawnerTile.cpp">
       <Filter>Map\Tile</Filter>
     </ClCompile>
+    <ClCompile Include="GameOver.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Pickable.cpp">
+      <Filter>Pickable</Filter>
+    </ClCompile>
+    <ClCompile Include="Coin.cpp">
+      <Filter>Pickable</Filter>
+    </ClCompile>
+    <ClCompile Include="ExpGem.cpp">
+      <Filter>Pickable</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -310,6 +325,18 @@
     </ClInclude>
     <ClInclude Include="TileMap.h">
       <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOver.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Pickable.h">
+      <Filter>Pickable</Filter>
+    </ClInclude>
+    <ClInclude Include="Coin.h">
+      <Filter>Pickable</Filter>
+    </ClInclude>
+    <ClInclude Include="ExpGem.h">
+      <Filter>Pickable</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

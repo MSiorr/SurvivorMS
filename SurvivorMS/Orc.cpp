@@ -30,7 +30,7 @@ Orc::Orc(float x, float y, sf::Texture& textureSheet, EnemySpawnerTile& enemySpa
 	this->createHitboxComponent(13, 12, 32, 52);
 	this->createMovementComponent(50.f, 1600.f, 1000.f);
 	this->createAnimationComponent(textureSheet);
-	this->createAttributeComponent(1);
+	this->createAttributeComponent(1, 20, 100);
 
 	//this->initComponents();
 	this->setPosition(x, y);
@@ -46,8 +46,6 @@ Orc::~Orc() {
 }
 
 void Orc::takeDamage(const int damage) {
-
-	std::cout << this->attributeComponent->hp << "HP" << "\n";
 
 	this->attributeComponent->loseHP(damage);
 }

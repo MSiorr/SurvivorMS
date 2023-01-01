@@ -23,8 +23,10 @@ public:
 
 	EnemySpawnerTile& getEnemySpawnerTile();
 	const bool getDamageTimerDone() const;
+	const sf::Vector2f getRandomPosAroundEnemy();
 
 	void resetDamageTimer();
+
 
 	virtual void takeDamage(const int damage);
 	virtual const bool isDead() const;

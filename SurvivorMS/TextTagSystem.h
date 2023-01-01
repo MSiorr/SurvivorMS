@@ -143,9 +143,9 @@ public:
 	TextTagSystem(std::string fontFile);
 	~TextTagSystem();
 
-	void addTextTag(const unsigned tagType, const float x, const float y, const std::string txt);
-	void addTextTag(const unsigned tagType, const float x, const float y, const int val);
-	void addTextTag(const unsigned tagType, const float x, const float y, const float valF);
+	void addTextTag(const unsigned tagType, const float x, const float y, const std::string txt, const std::string prefix, const std::string postfix);
+	void addTextTag(const unsigned tagType, const float x, const float y, const int val, const std::string prefix, const std::string postfix);
+	void addTextTag(const unsigned tagType, const float x, const float y, const float valF, const std::string prefix, const std::string postfix);
 	void removeTextTag();
 
 	void update(const float& dt);

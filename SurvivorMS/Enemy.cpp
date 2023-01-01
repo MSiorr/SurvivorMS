@@ -23,6 +23,15 @@ const bool Enemy::getDamageTimerDone() const {
 	return this->damageTimer.getElapsedTime().asMilliseconds() >= this->damageTimerMax;
 }
 
+const sf::Vector2f Enemy::getRandomPosAroundEnemy() {
+	sf::Vector2f pos(0, 0);
+
+	pos.x = (rand() % 20) - 10 + this->getCenter().x;
+	pos.y = (rand() % 20) - 10 + this->getCenter().y;
+
+	return pos;
+}
+
 void Enemy::resetDamageTimer() {
 
 	this->damageTimer.restart();

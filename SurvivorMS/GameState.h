@@ -7,6 +7,9 @@
 #include "PlayerGUI.h"
 #include "Kunai.h"
 #include "TextTagSystem.h"
+#include "PlayerData.h"
+#include "GameOver.h"
+#include "Pickable.h"
 
 class GameState : public State {
 private:
@@ -18,6 +21,7 @@ private:
 
 	sf::Font font;
 	PauseMenu* pMenu;
+	GameOver* gameOvecScr;
 
 	sf::Shader coreShader;
 
@@ -30,11 +34,18 @@ private:
 	EnemySystem* enemySystem;
 
 	std::vector<Item*> items;
+	std::vector<Pickable*> pickables;
 
 	TextTagSystem* tts;
 
 	sf::Clock keyTimer;
 	float keyTimeMax;
+
+	PlayerData* playerData;
+	bool gameOver;
+
+	int goldCount;
+	int killCount;
 
 	void initDefferedRender();
 	void initView();
@@ -42,6 +53,7 @@ private:
 	void initKeyBinds();
 	void initTextures();
 	void initPauseMenu();
+	void initGameOverScreen();
 	void initShaders();
 	void initKeyTime();
 	void initPlayer();
@@ -51,7 +63,7 @@ private:
 	void initSystems();
 
 public:
-	GameState(StateData* stateData);
+	GameState(StateData* stateData, PlayerData* playerData);
 	virtual ~GameState();
 
 	const bool getKeyTime();
@@ -66,6 +78,7 @@ public:
 	void updatePlayer(const float& dt);
 	void updateEnemies(const float& dt);
 	void updateItems(const float& dt);
+	void updatePickables(const float& dt);
 	void updateCombat(Enemy* enemy, const int index, const float& dt);
 	void update(const float& dt);
 

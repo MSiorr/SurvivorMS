@@ -182,8 +182,6 @@ void GameMenu::initPlayerAvatar() {
 
 	float scale = static_cast<float>(vm.width) * 0.1468f / 46.f;
 
-	std::cout << scale << "\n";
-
 	this->playerAv.setScale(scale, scale);
 }
 
@@ -369,12 +367,12 @@ void GameMenu::updateButtons() {
 
 	if (this->buttons["PLAY_NORMAL"]->isPressed() && this->getKeytime()) {
 
-		this->states->push(new GameState(this->stateData));
+		this->states->push(new GameState(this->stateData, this->playerData));
 	}
 
 	if (this->buttons["PLAY_EDITOR"]->isPressed() && this->getKeytime()) {
 
-		this->states->push(new GameState(this->stateData));
+		this->states->push(new GameState(this->stateData, this->playerData));
 	}
 }
 

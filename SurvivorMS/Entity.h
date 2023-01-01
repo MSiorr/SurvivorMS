@@ -35,7 +35,7 @@ public:
 	void createHitboxComponent(float offsetX, float offsetY, float width, float height);
 	void createMovementComponent(const float maxVelocity, const float acceleration, const float deceleration);
 	void createAnimationComponent(sf::Texture& textureSheet);
-	void createAttributeComponent(const unsigned lvl);
+	void createAttributeComponent(const unsigned lvl, const unsigned dmg, const unsigned hp);
 	void createSkillComponent();
 	void createAIComponent();
 

@@ -1,18 +1,17 @@
 #include "stdafx.h"
 #include "AttributeComponent.h"
 
-AttributeComponent::AttributeComponent(int lvl) {
+AttributeComponent::AttributeComponent(int lvl, int dmg, int hpMax) {
 
 	this->lvl = lvl;
 	this->exp = 0;
 	this->expNext = static_cast<unsigned>((50 / 3) * (pow(this->lvl + 1, 3) - 6 * pow(this->lvl + 1, 2) + ((this->lvl + 1) * 17) - 12));
-	this->attributePoints = 2;
+	this->attributePoints = 0;
 
-	this->vitality = 1;
-	this->strength = 1;
-	this->dexterity = 1;
-	this->agility = 1;
-	this->intelligence = 1;
+	this->hp = hpMax;
+	this->hpMax = hpMax;
+
+	this->dmg = dmg;
 
 	this->updateLvl();
 	this->updateStats(true);
@@ -59,12 +58,6 @@ const bool AttributeComponent::isDead() const {
 
 void AttributeComponent::updateStats(const bool reset) {
 
-	this->hpMax			= this->vitality * 5 + this->vitality + this->strength / 2 + this->intelligence / 5;
-	this->dmgMin		= this->strength * 2 + this->strength / 4 + this->intelligence / 5;
-	this->dmgMax		= this->strength * 2 + this->strength / 2 + this->intelligence / 5;
-	this->accuracy		= this->dexterity * 5 + this->dexterity / 2 + this->intelligence / 5;
-	this->defence		= this->agility * 2 + this->agility / 4 + this->intelligence / 5;
-	this->luck			= this->intelligence * 2 + this->intelligence / 5;
 
 	if(reset)
 		this->hp = this->hpMax;

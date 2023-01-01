@@ -38,23 +38,26 @@ TextTagSystem::~TextTagSystem() {
 
 }
 
-void TextTagSystem::addTextTag(const unsigned tagType, const float x, const float y, const std::string txt) {
-
-	this->tags.push_back(new TextTag(this->tagTemplates[tagType], x, y, txt));
-}
-
-void TextTagSystem::addTextTag(const unsigned tagType, const float x, const float y, const int val) {
+void TextTagSystem::addTextTag(const unsigned tagType, const float x, const float y, const std::string txt, const std::string prefix, const std::string postfix) {
 
 	std::stringstream ss;
-	ss << val;
+	ss << prefix << " " << txt << " " << postfix;
 
 	this->tags.push_back(new TextTag(this->tagTemplates[tagType], x, y, ss.str()));
 }
 
-void TextTagSystem::addTextTag(const unsigned tagType, const float x, const float y, const float valF) {
+void TextTagSystem::addTextTag(const unsigned tagType, const float x, const float y, const int val, const std::string prefix, const std::string postfix) {
 
 	std::stringstream ss;
-	ss << valF;
+	ss << prefix << " " << val << " " << postfix;
+
+	this->tags.push_back(new TextTag(this->tagTemplates[tagType], x, y, ss.str()));
+}
+
+void TextTagSystem::addTextTag(const unsigned tagType, const float x, const float y, const float valF, const std::string prefix, const std::string postfix) {
+
+	std::stringstream ss;
+	ss << prefix << " " << valF << " " << postfix;
 
 	this->tags.push_back(new TextTag(this->tagTemplates[tagType], x, y, ss.str()));
 }

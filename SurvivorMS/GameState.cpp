@@ -67,6 +67,10 @@ void GameState::initTextures() {
 		throw "WEAPON TEXTURE ERROR";
 	}
 
+	if (!this->textures["PICKABLE_SHEET"].loadFromFile("Resources/Images/Sprites/pickableSheet.png")) {
+		throw "PICKABLE TEXTURE ERROR";
+	}
+
 }
 
 void GameState::initPauseMenu() {
@@ -84,6 +88,13 @@ void GameState::initPauseMenu() {
 	);
 }
 
+void GameState::initGameOverScreen() {
+
+	sf::VideoMode& vm = this->stateData->gfxSettings->resolution;
+
+	this->gameOvecScr = new GameOver(vm, this->font, this->states);
+}
+
 void GameState::initShaders() {
 
 	if(!this->coreShader.loadFromFile("vertex_shader.vert", "fragment_shader.frag")){
@@ -99,7 +110,7 @@ void GameState::initKeyTime() {
 }
 
 void GameState::initPlayer() {
-	this->player = new Player(220, 220, this->textures["PLAYER_SHEET"]);
+	this->player = new Player(220, 220, this->textures["PLAYER_SHEET"], this->playerData);
 }
 
 void GameState::initPlayerGUI() {
@@ -122,8 +133,11 @@ void GameState::initSystems() {
 	this->tts = new TextTagSystem("Fonts/trebuc.ttf");
 }
 
-GameState::GameState(StateData* stateData)
+GameState::GameState(StateData* stateData, PlayerData* playerData)
 	: State(stateData) {
+
+	this->playerData = playerData;
+	this->gameOver = false;
 
 	this->initDefferedRender();
 	this->initView();
@@ -131,6 +145,7 @@ GameState::GameState(StateData* stateData)
 	this->initKeyBinds();
 	this->initTextures();
 	this->initPauseMenu();
+	this->initGameOverScreen();
 	this->initShaders();
 	this->initKeyTime();
 	this->initPlayer();
@@ -142,6 +157,7 @@ GameState::GameState(StateData* stateData)
 
 GameState::~GameState() {
 	delete this->pMenu;
+	delete this->gameOvecScr;
 	delete this->player;
 	delete this->playerGUI;
 	delete this->tileMap;
@@ -156,6 +172,11 @@ GameState::~GameState() {
 	for (size_t i = 0; i < this->items.size(); i++) {
 
 		delete this->items[i];
+	}
+
+	for (size_t i = 0; i < this->pickables.size(); i++) {
+
+		delete this->pickables[i];
 	}
 }
 
@@ -235,7 +256,10 @@ void GameState::updatePlayerInput(const float& dt) {
 		if (this->player->getAttackTimer()) {
 
 			//this->tts->addTextTag(DEFAULT_TAG, this->player->getCenter().x, this->player->getCenter().y, "test");
-			this->items.push_back(new Kunai(true, this->player->getCenter().x, this->player->getCenter().y, this->textures["WEAPON_SHEET"], this->mousePosView));
+			this->items.push_back(new Kunai(true, 
+				this->player->getCenter().x, this->player->getCenter().y, 
+				this->player->getAttributeComponent()->dmg,
+				this->textures["WEAPON_SHEET"], this->mousePosView));
 		}
 	}
 }
@@ -270,6 +294,10 @@ void GameState::updatePlayer(const float& dt) {
 
 	this->player->update(dt, this->mousePosView);
 
+	if (this->player->getAttributeComponent()->isDead()) {
+		this->gameOver = true;
+	}
+
 }
 
 void GameState::updateEnemies(const float& dt) {
@@ -286,7 +314,7 @@ void GameState::updateEnemies(const float& dt) {
 
 		if (enemy->isDead()) {
 
-			this->enemySystem->removeEnemy(index);
+			this->enemySystem->removeEnemy(index, &this->pickables);
 			--index;
 		}
 
@@ -320,6 +348,28 @@ void GameState::updateItems(const float& dt) {
 	}
 }
 
+void GameState::updatePickables(const float& dt) {
+
+	unsigned index = 0;
+	for (auto* pickable : this->pickables) {
+
+		pickable->update(dt);
+
+		if (pickable->canPick(*this->player)) {
+			pickable->onPick(*this->player, this->goldCount);
+		}
+
+		if (pickable->isPicked()) {
+
+			delete this->pickables[index];
+			this->pickables.erase(this->pickables.begin() + index);
+			--index;
+		}
+
+		++index;
+	}
+}
+
 
 void GameState::updateCombat(Enemy* enemy, const int index, const float& dt) {
 
@@ -332,11 +382,16 @@ void GameState::updateCombat(Enemy* enemy, const int index, const float& dt) {
 
 			enemy->takeDamage(dmg);
 			enemy->resetDamageTimer();
-			std::cout << "enemy: " << enemy->isDead() << "\n";
-			this->tts->addTextTag(TAGTYPES::DAMAGE_TAG, enemy->getCenter().x + 5.f, enemy->getCenter().y - 10.f, dmg);
+			this->tts->addTextTag(TAGTYPES::DEFAULT_TAG, enemy->getCenter().x - 50.f, enemy->getCenter().y - 10.f, dmg, "", "DMG");
 			weapon->setToDestroy(true);
 		}
 
+	}
+
+	if (enemy->getGlobalBounds().intersects(this->player->getGlobalBounds()) && this->player->getDamageTimer()) {
+		int dmg = enemy->getAttributeComp()->dmg;
+		this->player->loseHP(dmg);
+		this->tts->addTextTag(TAGTYPES::DAMAGE_TAG, player->getPosition().x - 20.f, player->getPosition().y, dmg, "-", "HP");
 	}
 }
 
@@ -346,7 +401,7 @@ void GameState::update(const float& dt) {
 	this->updateKeytime(dt);
 	this->updateInput(dt);
 
-	if (!this->paused) {
+	if (!this->paused && !this->gameOver) {
 
 		this->updateView(dt);
 		this->updatePlayerInput(dt);
@@ -359,13 +414,17 @@ void GameState::update(const float& dt) {
 
 		this->updateEnemies(dt);
 		this->updateItems(dt);
+		this->updatePickables(dt);
 
 		this->tts->update(dt);
 
-	} else {
+	} else if(this->paused && !this->gameOver) {
 
 		this->pMenu->update(this->mousePosWindow);
 		this->updatePauseMenuButtons();
+	} else {
+
+		this->gameOvecScr->update(this->mousePosWindow);
 	}
 
 }
@@ -385,6 +444,11 @@ void GameState::render(sf::RenderTarget* target) {
 		this->player->getCenter()
 	);
 
+	for (auto* pickable : this->pickables) {
+
+		pickable->render(this->renderTexture, &this->coreShader, this->player->getCenter());
+	}
+
 	for (auto* enemy : this->activeEnemies) {
 
 		enemy->render(this->renderTexture, &this->coreShader, this->player->getCenter(), true);
@@ -392,7 +456,7 @@ void GameState::render(sf::RenderTarget* target) {
 
 	for (auto* item : this->items) {
 
-		item->render(this->renderTexture, &this->coreShader, this->player->getCenter(), true);
+		item->render(this->renderTexture, &this->coreShader, this->player->getCenter());
 	}
 
 	this->player->render(this->renderTexture, &this->coreShader, this->player->getCenter(), true);
@@ -408,10 +472,12 @@ void GameState::render(sf::RenderTarget* target) {
 	this->renderTexture.setView(this->renderTexture.getDefaultView());
 	this->playerGUI->render(this->renderTexture);
 
-	if (this->paused) {
+	if (this->paused && !this->gameOver) {
 		
-
 		this->pMenu->render(this->renderTexture);
+	} else if (this->gameOver) {
+
+		this->gameOvecScr->render(this->renderTexture);
 	}
 
 	//FINAL 

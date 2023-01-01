@@ -3,9 +3,6 @@
 
 void Kunai::initVariables() {
 
-	this->minDmg = 2;
-	this->maxDmg = 5;
-
 	this->speed = 500.f;
 	this->range = 16.f;
 	this->direction.x = 0.f;
@@ -13,8 +10,10 @@ void Kunai::initVariables() {
 }
 
 
-Kunai::Kunai(bool weaponBool, float x, float y, sf::Texture& textureSheet, sf::Vector2f mousePosView) 
+Kunai::Kunai(bool weaponBool, float x, float y, unsigned dmg, sf::Texture& textureSheet, sf::Vector2f mousePosView) 
 	: Item(weaponBool) {
+
+	this->dmg = dmg;
 
 	this->sprite.setPosition(x, y);
 	this->sprite.setTexture(textureSheet);
@@ -27,7 +26,7 @@ Kunai::~Kunai() {
 }
 
 const unsigned Kunai::getDamage() {
-	return (rand() % (this->maxDmg - this->minDmg + 1)) + (this->minDmg);
+	return this->dmg;
 }
 
 const sf::Vector2f Kunai::getCenter() {
@@ -54,8 +53,6 @@ void Kunai::attack(sf::Vector2f mousePosView) {
 
 	this->direction.x = dX / len;
 	this->direction.y = dY / len;
-
-	std::cout << this->direction.x << " " << this->direction.y << "\n";
 }
 
 void Kunai::update(const float& dt) {
@@ -66,7 +63,7 @@ void Kunai::update(const float& dt) {
 	);
 }
 
-void Kunai::render(sf::RenderTarget& target, sf::Shader* shader, const sf::Vector2f lightPos, const bool showHitbox) {
+void Kunai::render(sf::RenderTarget& target, sf::Shader* shader, const sf::Vector2f lightPos) {
 
 	if (shader) {
 

@@ -3,6 +3,7 @@
 
 #include "Entity.h"
 #include "Kunai.h"
+#include "PlayerData.h"
 
 class Entity;
 
@@ -25,7 +26,7 @@ private:
 	void initAnimations();
 
 public:
-	Player(float x, float y, sf::Texture& textureSheet);
+	Player(float x, float y, sf::Texture& textureSheet, PlayerData* playerData);
 	virtual ~Player();
 
 	AttributeComponent* getAttributeComponent();

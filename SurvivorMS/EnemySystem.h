@@ -2,6 +2,9 @@
 #define ENEMYSYSTEM_H
 
 #include "EnemySpawnerTile.h"
+#include "Pickable.h"
+#include "Coin.h"
+#include "ExpGem.h"
 #include "Orc.h"
 
 enum EnemyTypes {ORC = 0};
@@ -18,7 +21,7 @@ public:
 	virtual ~EnemySystem();
 
 	void createEnemy(const short type, const float x, const float y, EnemySpawnerTile& enemySpawnerTile);
-	void removeEnemy(const int index);
+	void removeEnemy(const int index, std::vector<Pickable*>* pickables);
 
 	void update(const float& dt);
 	void render(sf::RenderTarget& target);

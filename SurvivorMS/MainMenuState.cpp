@@ -139,29 +139,31 @@ void MainMenuState::updateButtons() {
 		it.second->update(this->mousePosWindow);
 	}
 
-	if (this->buttons["CONTINUE_STATE"]->isPressed()) {
+	if (this->buttons["CONTINUE_STATE"]->isPressed() && this->getKeytime()) {
 		this->states->push(new GameMenu(this->stateData, false));
 	}
 
-	if (this->buttons["GAME_STATE"]->isPressed()) {
-		this->states->push(new GameState(this->stateData));
-		//this->states->push(new GameMenu(this->stateData, true));
+	if (this->buttons["GAME_STATE"]->isPressed() && this->getKeytime()) {
+		//this->states->push(new GameState(this->stateData));
+		this->states->push(new GameMenu(this->stateData, true));
 	}
 
 	/*if (this->buttons["SETTINGS_STATE"]->isPressed()) {
 		this->states->push(new SettingsState(this->stateData));
 	}*/
 
-	if (this->buttons["EDITOR_STATE"]->isPressed()) {
+	if (this->buttons["EDITOR_STATE"]->isPressed() && this->getKeytime()) {
 		this->states->push(new EditorState(this->stateData));
 	}
 
-	if (this->buttons["EXIT_STATE"]->isPressed()) {
+	if (this->buttons["EXIT_STATE"]->isPressed() && this->getKeytime()) {
 		this->endState();
 	}
 }
 
 void MainMenuState::update(const float& dt) {
+
+	this->updateKeytime(dt);
 
 	this->updateMousePos();
 

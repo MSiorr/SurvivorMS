@@ -11,25 +11,12 @@ public:
 	int expNext;
 	int attributePoints;
 
-	int vitality;
-	int strength;
-	int dexterity;
-	int agility;
-	int intelligence;
-
 	int hp;
 	int hpMax;
 
-	int dmgMin;
-	int dmgMax;
+	int dmg;
 
-	int accuracy;
-
-	int defence;
-
-	int luck;
-
-	AttributeComponent(int lvl);
+	AttributeComponent(int lvl, int dmg, int hpMax);
 	virtual ~AttributeComponent();
 
 	void loseHP(const int hp);

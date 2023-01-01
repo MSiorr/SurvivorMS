@@ -140,6 +140,7 @@
     <ClCompile Include="AnimationComponent.cpp" />
     <ClCompile Include="AttributeComponent.cpp" />
     <ClCompile Include="CharacterTab.cpp" />
+    <ClCompile Include="Coin.cpp" />
     <ClCompile Include="DefaultEditorMode.cpp" />
     <ClCompile Include="EditorMode.cpp" />
     <ClCompile Include="Enemy.cpp" />
@@ -147,7 +148,9 @@
     <ClCompile Include="EnemySpawnerTile.cpp" />
     <ClCompile Include="EnemySystem.cpp" />
     <ClCompile Include="EQItem.cpp" />
+    <ClCompile Include="ExpGem.cpp" />
     <ClCompile Include="GameMenu.cpp" />
+    <ClCompile Include="GameOver.cpp" />
     <ClCompile Include="GraphicsSettings.cpp" />
     <ClCompile Include="Gui.cpp" />
     <ClCompile Include="EditorState.cpp" />
@@ -161,6 +164,7 @@
     <ClCompile Include="MovementComponent.cpp" />
     <ClCompile Include="Orc.cpp" />
     <ClCompile Include="PauseMenu.cpp" />
+    <ClCompile Include="Pickable.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerData.cpp" />
     <ClCompile Include="PlayerGUI.cpp" />
@@ -186,6 +190,7 @@
     <ClInclude Include="AnimationComponent.h" />
     <ClInclude Include="AttributeComponent.h" />
     <ClInclude Include="CharacterTab.h" />
+    <ClInclude Include="Coin.h" />
     <ClInclude Include="DefaultEditorMode.h" />
     <ClInclude Include="EditorMode.h" />
     <ClInclude Include="Enemy.h" />
@@ -193,7 +198,9 @@
     <ClInclude Include="EnemySpawnerTile.h" />
     <ClInclude Include="EnemySystem.h" />
     <ClInclude Include="EQItem.h" />
+    <ClInclude Include="ExpGem.h" />
     <ClInclude Include="GameMenu.h" />
+    <ClInclude Include="GameOver.h" />
     <ClInclude Include="GraphicsSettings.h" />
     <ClInclude Include="Gui.h" />
     <ClInclude Include="EditorState.h" />
@@ -206,6 +213,7 @@
     <ClInclude Include="MovementComponent.h" />
     <ClInclude Include="Orc.h" />
     <ClInclude Include="PauseMenu.h" />
+    <ClInclude Include="Pickable.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerData.h" />
     <ClInclude Include="PlayerGUI.h" />

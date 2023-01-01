@@ -23,7 +23,7 @@ public:
 	virtual const sf::FloatRect getGlobalBounds() const;
 
 	virtual void update(const float& dt) = 0;
-	virtual void render(sf::RenderTarget& target, sf::Shader* shader = NULL, const sf::Vector2f lightPos = sf::Vector2f(), const bool showHitbox = false) = 0;
+	virtual void render(sf::RenderTarget& target, sf::Shader* shader = NULL, const sf::Vector2f lightPos = sf::Vector2f()) = 0;
 };
 
 #endif 
