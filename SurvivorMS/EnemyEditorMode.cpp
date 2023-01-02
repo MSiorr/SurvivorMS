@@ -5,8 +5,8 @@ void EnemyEditorMode::initVariables() {
 
 	this->type = 0;
 	this->amount = 1;
-	this->timeToSpawn = 60;
-	this->maxDist = 1000.f;
+	this->timeToSpawn = 10;
+	this->maxDist = 500.f;
 
 }
 

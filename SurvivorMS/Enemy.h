@@ -11,6 +11,8 @@ protected:
 
 	EnemySpawnerTile& enemySpawnerTile;
 
+	bool noRedOnSpawn;
+
 	sf::Clock damageTimer;
 	sf::Int32 damageTimerMax;
 

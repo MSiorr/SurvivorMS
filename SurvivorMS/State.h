@@ -61,9 +61,9 @@ public:
 	const bool& getQuit() const;
 	const bool getKeytime();
 
-	void endState();
 	void pauseState();
 	void unpauseState();
+	virtual void endState();
 
 	virtual void updateMousePos(sf::View* view = NULL);
 	virtual void updateKeytime(const float& dt);

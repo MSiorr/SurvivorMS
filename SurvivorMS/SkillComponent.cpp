@@ -5,8 +5,7 @@ SkillComponent::SkillComponent() {
 
 	this->skills.push_back(Skill(SKILLS::HEALTH));
 	this->skills.push_back(Skill(SKILLS::ATTACK));
-	this->skills.push_back(Skill(SKILLS::DEFENCE));
-
+	this->skills.push_back(Skill(SKILLS::FIRERATE));
 }
 
 SkillComponent::~SkillComponent() {
@@ -14,7 +13,7 @@ SkillComponent::~SkillComponent() {
 
 }
 
-const int SkillComponent::getSkill(const int skill) const {
+const int SkillComponent::getSkillLvl(const int skill) const {
 	
 	if (skills.empty() || skill < 0 || skill >= this->skills.size())
 		throw "ERROR:: SKILL NOT EXIST " + skill;
@@ -22,10 +21,3 @@ const int SkillComponent::getSkill(const int skill) const {
 		return this->skills[skill].getLvl();
 }
 
-const void SkillComponent::gainExp(const int skill, const int exp) {
-
-	if (skills.empty() || skill < 0 || skill >= this->skills.size())
-		throw "ERROR:: SKILL NOT EXIST " + skill;
-	else
-		this->skills[skill].gainExp(exp);
-}

@@ -42,6 +42,8 @@ private:
     bool buyActive;
     short activeItem;
 
+    bool backFromGame;
+
     void initFonts();
     void initPlayerData(bool newGame);
     void initGold();

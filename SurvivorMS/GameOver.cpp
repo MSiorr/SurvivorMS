@@ -37,7 +37,7 @@ void GameOver::update(const sf::Vector2i& mousePosWindow) {
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
 
-		this->states->pop();
+		this->states->top()->endState();
 	}
 }
 

@@ -3,6 +3,7 @@
 
 void Orc::initVariables() {
 
+	this->noRedOnSpawn = true;
 }
 
 void Orc::initAnimations() {
@@ -17,7 +18,7 @@ void Orc::initAI() {
 void Orc::initGui() {
 
 	this->hpBar.setFillColor(sf::Color::Red);
-	this->hpBar.setSize(sf::Vector2f(60.f, 10.f));
+	this->hpBar.setSize(sf::Vector2f(60.f, 6.f));
 	this->hpBar.setPosition(this->sprite.getPosition());
 }
 
@@ -28,7 +29,7 @@ Orc::Orc(float x, float y, sf::Texture& textureSheet, EnemySpawnerTile& enemySpa
 	this->initGui();
 
 	this->createHitboxComponent(13, 12, 32, 52);
-	this->createMovementComponent(50.f, 1600.f, 1000.f);
+	this->createMovementComponent(100.f, 1200.f, 400.f);
 	this->createAnimationComponent(textureSheet);
 	this->createAttributeComponent(1, 20, 100);
 
@@ -48,6 +49,25 @@ Orc::~Orc() {
 void Orc::takeDamage(const int damage) {
 
 	this->attributeComponent->loseHP(damage);
+}
+
+const bool Orc::getDmgTimer() {
+
+	if (this->noRedOnSpawn) {
+
+		if (this->damageTimer.getElapsedTime().asMilliseconds() > this->damageTimerMax) {
+			this->noRedOnSpawn = false;
+		}
+
+		return false;
+	} else {
+
+		if (this->damageTimer.getElapsedTime().asMilliseconds() <= this->damageTimerMax) {
+			return true;
+		}
+	}
+
+	return false;
 }
 
 void Orc::updateAnimation(const float& dt) {
@@ -81,7 +101,7 @@ void Orc::updateAnimation(const float& dt) {
 
 	}
 
-	if (this->damageTimer.getElapsedTime().asMilliseconds() <= this->damageTimerMax) {
+	if (this->getDmgTimer()) {
 		this->sprite.setColor(sf::Color::Red);
 	} else {
 		this->sprite.setColor(sf::Color::White);
@@ -92,7 +112,7 @@ void Orc::update(const float& dt, sf::Vector2f& mousePosView) {
 
 	this->movementComponent->update(dt);
 
-	this->hpBar.setSize(sf::Vector2f(60.f * (static_cast<float>(this->attributeComponent->hp) / this->attributeComponent->hpMax), 10.f));
+	this->hpBar.setSize(sf::Vector2f(60.f * (static_cast<float>(this->attributeComponent->hp) / this->attributeComponent->hpMax), 6.f));
 	this->hpBar.setPosition(this->sprite.getPosition());
 	//this->updateAttack();
 

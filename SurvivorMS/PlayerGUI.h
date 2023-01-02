@@ -20,17 +20,23 @@ private:
 	// EXP Bar
 	gui::ProgressBar* expBar;
 
-	// HP Bar
-	gui::ProgressBar* hpBar;
+	sf::RectangleShape goldIcon;
+	sf::RectangleShape skullIcon;
+
+	sf::Texture goldTexture;
+	sf::Texture skullTexture;
+
+	sf::Text goldTxt;
+	sf::Text killCountTxt;
 
 	PlayerGUITabs* playerTabs;
 
 
 	void initFont();
-	void initHPBar();
 	void initExpBar();
 	void initLevelBar();
-
+	void initGold();
+	void initKillCounter();
 	void initPlayerTabs(sf::VideoMode& vm, sf::Font& font, Player& player);
 
 public:
@@ -40,17 +46,19 @@ public:
 	const bool getTabsOpen() const;
 	void toggleCharacterTab();
 
-	void updateHPBar();
 	void updateExpBar();
 	void updateLevelBar();
 	void updatePlayerTabs();
+	void updateGold(const float& gold);
+	void updateKillCounter(const float& kills);
 
-	void update(const float& dt);
+	void update(const float& dt, const float& gold, const float& kills);
 
-	void renderHPBar(sf::RenderTarget& target);
 	void renderExpBar(sf::RenderTarget& target);
 	void renderLevelBar(sf::RenderTarget& target);
 	void renderPlayerTabs(sf::RenderTarget& target);
+	void renderGold(sf::RenderTarget& target);
+	void renderKillCounter(sf::RenderTarget& target);
 
 	void render(sf::RenderTarget& target);
 };

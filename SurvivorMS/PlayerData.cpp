@@ -33,7 +33,7 @@ PlayerData::PlayerData(bool newGame) {
 
     this->gold = 0;
 
-    this->readFromFile("playerData.txt", newGame);
+    this->loadFromFile("playerData.txt", newGame);
 
     this->calcStats();
 }
@@ -141,8 +141,8 @@ void PlayerData::lvlUp(const short key) {
     if (this->items.at(key)) {
 
         if (this->canLvlUp(key)) {
-            this->items.at(key)->lvlUp();
             this->loseGold(this->items.at(key)->getCost());
+            this->items.at(key)->lvlUp();
             this->calcStats();
             this->saveToFile("playerData.txt");
         }
@@ -188,7 +188,7 @@ void PlayerData::saveToFile(std::string path) {
     }
 }
 
-void PlayerData::readFromFile(std::string path, bool newGame) {
+void PlayerData::loadFromFile(std::string path, bool newGame) {
 
     this->gold = 0;
     int weaponLvl = 1;

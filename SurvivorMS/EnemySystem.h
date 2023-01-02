@@ -20,7 +20,9 @@ public:
 	EnemySystem(std::vector<Enemy*>& activeEnemies, std::map<std::string, sf::Texture>& textures, Entity& player);
 	virtual ~EnemySystem();
 
-	void createEnemy(const short type, const float x, const float y, EnemySpawnerTile& enemySpawnerTile);
+	const sf::Vector2f randPos(float x, float y, float rad);
+
+	void createEnemy(const short type, const float x, const float y, const float gridSizeF, EnemySpawnerTile& enemySpawnerTile);
 	void removeEnemy(const int index, std::vector<Pickable*>* pickables);
 
 	void update(const float& dt);

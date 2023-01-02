@@ -36,14 +36,6 @@ void AttributeComponent::gainHP(const int hp) {
 		this->hp = this->hpMax;
 }
 
-void AttributeComponent::loseExp(const int exp) {
-
-	this->exp -= exp;
-
-	if (this->exp < 0)
-		this->exp = 0;
-}
-
 void AttributeComponent::gainExp(const int exp) {
 
 	this->exp += exp;
@@ -56,8 +48,12 @@ const bool AttributeComponent::isDead() const {
 	return (this->hp <= 0.f);
 }
 
-void AttributeComponent::updateStats(const bool reset) {
+const bool AttributeComponent::toUpgrade() const {
 
+	return this->attributePoints > 0;
+}
+
+void AttributeComponent::updateStats(const bool reset) {
 
 	if(reset)
 		this->hp = this->hpMax;

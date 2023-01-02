@@ -201,6 +201,12 @@
     <ClCompile Include="ExpGem.cpp">
       <Filter>Pickable</Filter>
     </ClCompile>
+    <ClCompile Include="Helpers.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="SkillChoose.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -337,6 +343,12 @@
     </ClInclude>
     <ClInclude Include="ExpGem.h">
       <Filter>Pickable</Filter>
+    </ClInclude>
+    <ClInclude Include="Helpers.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="SkillChoose.h">
+      <Filter>GUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

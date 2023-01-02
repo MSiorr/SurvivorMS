@@ -13,6 +13,8 @@ private:
 
 	bool attacking;
 
+	sf::RectangleShape hpBar;
+
 	Kunai* weapon;
 
 	sf::Clock damageTimer;
@@ -24,6 +26,7 @@ private:
 	void initVariables();
 	void initComponents();
 	void initAnimations();
+	void initGui();
 
 public:
 	Player(float x, float y, sf::Texture& textureSheet, PlayerData* playerData);
@@ -38,7 +41,6 @@ public:
 
 	void loseHP(const int hp);
 	void gainHP(const int hp);
-	void loseExp(const int exp);
 	void gainExp(const int exp);
 
 	void updateAnimation(const float& dt);

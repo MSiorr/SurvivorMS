@@ -284,6 +284,7 @@ void GameMenu::initGold() {
 GameMenu::GameMenu(StateData* stateData, bool newGame) : State(stateData) {
 
 	this->mainTopPadding = gui::p2pY(24.f, this->stateData->gfxSettings->resolution);
+	this->backFromGame = false;
 
 	this->initFonts();
 	this->initPlayerData(newGame);
@@ -367,11 +368,13 @@ void GameMenu::updateButtons() {
 
 	if (this->buttons["PLAY_NORMAL"]->isPressed() && this->getKeytime()) {
 
+		this->backFromGame = true;
 		this->states->push(new GameState(this->stateData, this->playerData));
 	}
 
 	if (this->buttons["PLAY_EDITOR"]->isPressed() && this->getKeytime()) {
 
+		this->backFromGame = true;
 		this->states->push(new GameState(this->stateData, this->playerData));
 	}
 }
@@ -388,6 +391,12 @@ void GameMenu::updateGold(const float& dt) {
 }
 
 void GameMenu::update(const float& dt) {
+
+	if (this->backFromGame) {
+		this->backFromGame = false;
+		this->playerData->loadFromFile("playerData.txt");
+		this->resetGUI();
+	}
 
 	this->updateKeytime(dt);
 	this->updateMousePos();

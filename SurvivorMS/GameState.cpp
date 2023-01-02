@@ -190,6 +190,13 @@ const bool GameState::getKeyTime() {
 	return false;
 }
 
+void GameState::endState() {
+
+	this->playerData->gainGold(this->goldCount);
+	this->playerData->saveToFile("playerData.txt");
+	this->states->pop();
+}
+
 void GameState::updateView(const float& dt) {
 
 	this->view.setCenter(
@@ -266,12 +273,12 @@ void GameState::updatePlayerInput(const float& dt) {
 
 void GameState::updatePlayerGUI(const float& dt) {
 
-	this->playerGUI->update(dt);
+	this->playerGUI->update(dt, goldCount, killCount);
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::C) && this->getKeyTime()) {
+	/*if (sf::Keyboard::isKeyPressed(sf::Keyboard::C) && this->getKeyTime()) {
 
 		this->playerGUI->toggleCharacterTab();
-	}
+	}*/
 
 }
 
@@ -315,6 +322,7 @@ void GameState::updateEnemies(const float& dt) {
 		if (enemy->isDead()) {
 
 			this->enemySystem->removeEnemy(index, &this->pickables);
+			++this->killCount;
 			--index;
 		}
 
@@ -441,7 +449,8 @@ void GameState::render(sf::RenderTarget* target) {
 	this->tileMap->render(this->renderTexture, 
 		this->viewGridPos, 
 		&this->coreShader, 
-		this->player->getCenter()
+		this->player->getCenter(),
+		true
 	);
 
 	for (auto* pickable : this->pickables) {

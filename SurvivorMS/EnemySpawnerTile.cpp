@@ -48,7 +48,7 @@ const int& EnemySpawnerTile::getEnemyAmount() const {
 
 const bool EnemySpawnerTile::getSpawnTimer() {
 
-	if (this->enemySpawnTimer.getElapsedTime().asMilliseconds() >= this->enemyTimeToSpawn || this->firstSpawn) {
+	if (this->enemySpawnTimer.getElapsedTime().asSeconds() >= this->enemyTimeToSpawn || this->firstSpawn) {
 
 		this->enemySpawnTimer.restart();
 		this->firstSpawn = false;

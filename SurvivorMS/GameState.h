@@ -68,6 +68,8 @@ public:
 
 	const bool getKeyTime();
 
+	void endState();
+
 	//Fun
 	void updateView(const float& dt);
 	void updateInput(const float& dt);

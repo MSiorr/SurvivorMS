@@ -157,6 +157,7 @@
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameState.cpp" />
+    <ClCompile Include="Helpers.cpp" />
     <ClCompile Include="HitboxComponent.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="main.cpp" />
@@ -171,6 +172,7 @@
     <ClCompile Include="PlayerGUITabs.cpp" />
     <ClCompile Include="RegularTile.cpp" />
     <ClCompile Include="SettingsState.cpp" />
+    <ClCompile Include="SkillChoose.cpp" />
     <ClCompile Include="SkillComponent.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -207,6 +209,7 @@
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameState.h" />
+    <ClInclude Include="Helpers.h" />
     <ClInclude Include="HitboxComponent.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="MainMenuState.h" />
@@ -220,6 +223,7 @@
     <ClInclude Include="PlayerGUITabs.h" />
     <ClInclude Include="RegularTile.h" />
     <ClInclude Include="SettingsState.h" />
+    <ClInclude Include="SkillChoose.h" />
     <ClInclude Include="SkillComponent.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="stdafx.h" />

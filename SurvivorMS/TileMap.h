@@ -4,6 +4,8 @@
 #include "EnemySpawnerTile.h"
 #include "RegularTile.h"
 #include "EnemySystem.h"
+#include "Helpers.h"
+#include "VectorMath.h"
 
 class RegularTile;
 class Entity;

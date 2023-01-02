@@ -9,12 +9,24 @@ EnemySystem::EnemySystem(std::vector<Enemy*>& activeEnemies, std::map<std::strin
 EnemySystem::~EnemySystem() {
 }
 
-void EnemySystem::createEnemy(const short type, const float x, const float y, EnemySpawnerTile& enemySpawnerTile) {
+const sf::Vector2f EnemySystem::randPos(float x, float y, float rad) {
+
+	sf::Vector2f pos;
+
+	pos.x = x + rand() % static_cast<int>(rad);
+	pos.y = y + rand() % static_cast<int>(rad / 2);
+
+	return pos;
+}
+
+void EnemySystem::createEnemy(const short type, const float x, const float y, const float gridSizeF, EnemySpawnerTile& enemySpawnerTile) {
+
+	sf::Vector2f pos = this->randPos(x, y, gridSizeF / 2);
 
 	switch (type) {
 	case EnemyTypes::ORC:
 
-		this->activeEnemies.push_back(new Orc(x, y, this->textures["ENEMY_SHEET"], enemySpawnerTile, this->player));
+		this->activeEnemies.push_back(new Orc(pos.x, pos.y, this->textures["ENEMY_SHEET"], enemySpawnerTile, this->player));
 		enemySpawnerTile.increaseEnemyCounter();
 
 		break;

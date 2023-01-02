@@ -44,7 +44,7 @@ public:
     void loseGold(const short gold);
 
     void saveToFile(std::string path);
-    void readFromFile(std::string path, bool newGame);
+    void loadFromFile(std::string path, bool newGame = false);
 
 };
 

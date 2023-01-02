@@ -21,6 +21,7 @@ public:
 	virtual ~Orc();
 
 	void takeDamage(const int damage);
+	const bool getDmgTimer();
 
 	void updateAnimation(const float& dt);
 	void update(const float& dt, sf::Vector2f& mousePosView);

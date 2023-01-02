@@ -28,6 +28,16 @@ void Player::initAnimations() {
 	this->animationComponent->addAnim("HURT", 12.f, 7, 0, 9, 0, 46, 64);
 }
 
+void Player::initGui() {
+
+	this->hpBar.setFillColor(sf::Color(222, 0, 0, 200));
+	this->hpBar.setSize(sf::Vector2f(72.f, 8.f));
+	this->hpBar.setPosition(sf::Vector2f(
+		this->sprite.getPosition().x - 13.f,
+		this->sprite.getPosition().y + this->sprite.getGlobalBounds().height + 4.f
+	));
+}
+
 Player::Player(float x, float y, sf::Texture& textureSheet, PlayerData* playerData) : Entity() {
 
 	this->initVariables();
@@ -42,6 +52,7 @@ Player::Player(float x, float y, sf::Texture& textureSheet, PlayerData* playerDa
 	//this->initComponents();
 	this->setPosition(x, y);
 	this->initAnimations();
+	this->initGui();
 }
 
 Player::~Player() {
@@ -94,11 +105,6 @@ void Player::gainHP(const int hp) {
 	this->attributeComponent->gainHP(hp);
 }
 
-void Player::loseExp(const int exp) {
-
-	this->attributeComponent->loseExp(exp);
-}
-
 void Player::gainExp(const int exp) {
 
 	this->attributeComponent->gainExp(exp);
@@ -139,9 +145,17 @@ void Player::updateAnimation(const float& dt) {
 		this->animationComponent->play("RUN", dt, this->movementComponent->getVelocity().y, this->movementComponent->getMaxVelocity());
 
 	}
+
+
 }
 
 void Player::update(const float& dt, sf::Vector2f& mousePosView) {
+
+	this->hpBar.setSize(sf::Vector2f(72.f * (static_cast<float>(this->attributeComponent->hp) / this->attributeComponent->hpMax), 8.f));
+	this->hpBar.setPosition(sf::Vector2f(
+		this->sprite.getPosition().x - 13.f,
+		this->sprite.getPosition().y + this->sprite.getGlobalBounds().height + 4.f
+	));
 
 	this->movementComponent->update(dt);
 
@@ -153,7 +167,7 @@ void Player::update(const float& dt, sf::Vector2f& mousePosView) {
 
 void Player::render(sf::RenderTarget& target, sf::Shader* shader, const sf::Vector2f lightPos, const bool showHitbox) {
 
-	if (shader) {
+	if (!shader) {
 
 		shader->setUniform("hasTexture", true);
 		shader->setUniform("lightPos", lightPos);
@@ -163,6 +177,8 @@ void Player::render(sf::RenderTarget& target, sf::Shader* shader, const sf::Vect
 
 		target.draw(this->sprite);
 	}
+
+	target.draw(this->hpBar);
 
 	if (this->hitboxComponent && showHitbox)
 		this->hitboxComponent->render(target);

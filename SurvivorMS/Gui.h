@@ -122,6 +122,8 @@ namespace gui {
 		std::string barString;
 		sf::Text text;
 
+		bool withString;
+
 		float maxWidth;
 		int maxValue;
 
@@ -134,7 +136,7 @@ namespace gui {
 			float width, float height, 
 			float _charSizeMultip, 
 			int maxValue, sf::Color innerColor,
-			sf::VideoMode& vm, sf::Font* font = NULL);
+			sf::VideoMode& vm, sf::Font* font = NULL, bool withTxt = true);
 		~ProgressBar();
 
 		void updateMaxVal(const float val);

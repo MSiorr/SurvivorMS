@@ -568,13 +568,28 @@ void TileMap::updateTiles(Entity* entity, const float& dt, EnemySystem& enemySys
 
 					EnemySpawnerTile* est = dynamic_cast<EnemySpawnerTile*>(this->map[i][j][this->layer][k]);
 
-					if (est && est->getSpawnTimer() && est->getEnemyCounter() < est->getEnemyAmount()) {
+					if (instanceof<Player>(entity)) {
+
+						Player* player = dynamic_cast<Player*>(entity);
+						float dist = vectorDistance(sf::Vector2f(
+							i * this->gridSizeF + this->gridSizeF / 2.f,
+							j * this->gridSizeF + this->gridSizeF / 2.f
+						), player->getCenter());
 						
-						enemySystem.createEnemy(ORC, i * this->gridSizeF, j * this->gridSizeF, *est);
+						if (dist > 2.f * this->gridSizeF) {
+
+							if (est && est->getSpawnTimer() && est->getEnemyCounter() < est->getEnemyAmount()) {
+
+								enemySystem.createEnemy(ORC, i * this->gridSizeF, j * this->gridSizeF, this->gridSizeF, *est);
+							}
+						}
+
+					} else {
+
+						if (est && est->getSpawnTimer() && est->getEnemyCounter() < est->getEnemyAmount())
+							enemySystem.createEnemy(ORC, i * this->gridSizeF, j * this->gridSizeF, this->gridSizeF, *est);
 					}
-
 				}
-
 			}
 		}
 	}
@@ -651,12 +666,16 @@ void TileMap::render(sf::RenderTarget& target, const sf::Vector2i& gridPos, sf::
 					if (this->map[i][j][this->layer][k]->getCollision()) {
 
 						this->collisionBox.setPosition(this->map[i][j][this->layer][k]->getPosition());
+						this->collisionBox.setFillColor(sf::Color(255, 0, 0, 50));
+						this->collisionBox.setOutlineColor(sf::Color::Red);
 						target.draw(this->collisionBox);
 					}
 
 					if (this->map[i][j][this->layer][k]->getType() == TileTypes::ENEMYSPAWNER) {
 
 						this->collisionBox.setPosition(this->map[i][j][this->layer][k]->getPosition());
+						this->collisionBox.setFillColor(sf::Color(0, 0, 255, 50));
+						this->collisionBox.setOutlineColor(sf::Color::Blue);
 						target.draw(this->collisionBox);
 					}
 				}
