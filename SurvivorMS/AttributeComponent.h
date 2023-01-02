@@ -6,6 +6,10 @@ private:
 
 public:
 
+	int baseHP;
+	int baseDMG;
+	int baseFireRate;
+
 	int lvl;
 	int exp;
 	int expNext;
@@ -14,9 +18,11 @@ public:
 	int hp;
 	int hpMax;
 
+	int fireRate;
+
 	int dmg;
 
-	AttributeComponent(int lvl, int dmg, int hpMax);
+	AttributeComponent(int lvl, int dmg, int hpMax, int fireRate = 500);
 	virtual ~AttributeComponent();
 
 	void loseHP(const int hp);
@@ -26,7 +32,7 @@ public:
 	const bool isDead() const;
 	const bool toUpgrade() const;
 
-	void updateStats(const bool reset);
+	void updateStats(const float hpMultip, const float dmgMultip, const float fireRateMultip);
 	void updateLvl();
 
 	std::string debugPrint() const;

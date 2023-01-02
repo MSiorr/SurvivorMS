@@ -350,7 +350,7 @@ void TileMap::addTile(const int x, const int y, const int z, const sf::IntRect& 
 
 	if (x < this->maxSizeWorldGrid.x && y < this->maxSizeWorldGrid.y && z < this->layers && x >= 0 && y >= 0 && z >= 0) {
 
-		if (type == TileTypes::DEFAULT) {
+		if (type == TileTypes::DEFAULT || type == TileTypes::ONTOP) {
 
 			this->map[x][y][z].push_back(new RegularTile(
 				type,

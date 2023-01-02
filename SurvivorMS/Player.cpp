@@ -7,7 +7,7 @@ void Player::initVariables() {
 	this->damageTimerMax = 500;
 
 	this->attackTimer.restart();
-	this->attackTimerMax = 500;
+	this->attackTimerMax = this->getAttributeComponent()->fireRate;
 
 	this->attacking = false;
 	//this->weapon = new Kunai();
@@ -40,7 +40,6 @@ void Player::initGui() {
 
 Player::Player(float x, float y, sf::Texture& textureSheet, PlayerData* playerData) : Entity() {
 
-	this->initVariables();
 
 
 	this->createHitboxComponent(0, 16, 46, 48);
@@ -51,6 +50,7 @@ Player::Player(float x, float y, sf::Texture& textureSheet, PlayerData* playerDa
 
 	//this->initComponents();
 	this->setPosition(x, y);
+	this->initVariables();
 	this->initAnimations();
 	this->initGui();
 }
@@ -90,7 +90,11 @@ const std::string Player::toStringCharacterTab() const {
 
 	ss << "Level: " << ac->lvl << "\n"
 		<< "Exp: " << ac->exp << "\n"
-		<< "Exp next: " << ac->expNext << "\n";
+		<< "Exp next: " << ac->expNext << "\n"
+		<< "HP: " << ac->hp << "\n"
+		<< "HP MAX: " << ac->hpMax << "\n"
+		<< "DMG: " << ac->dmg << "\n"
+		<< "Fire Rate: " << ac->fireRate << " ms" << "\n";
 
 	return ss.str();
 }
@@ -108,6 +112,16 @@ void Player::gainHP(const int hp) {
 void Player::gainExp(const int exp) {
 
 	this->attributeComponent->gainExp(exp);
+}
+
+void Player::lvlUpSkill(const int key) {
+	this->getSkillComponent()->skillLvlUp(key);
+
+	this->getAttributeComponent()->updateStats(
+		this->getSkillComponent()->getSkillLvl(SKILLS::HEALTH) / 10.f,
+		this->getSkillComponent()->getSkillLvl(SKILLS::ATTACK) / 10.f,
+		this->getSkillComponent()->getSkillLvl(SKILLS::FIRERATE) / 10.f
+	);
 }
 
 void Player::updateAnimation(const float& dt) {
@@ -151,17 +165,17 @@ void Player::updateAnimation(const float& dt) {
 
 void Player::update(const float& dt, sf::Vector2f& mousePosView) {
 
-	this->hpBar.setSize(sf::Vector2f(72.f * (static_cast<float>(this->attributeComponent->hp) / this->attributeComponent->hpMax), 8.f));
-	this->hpBar.setPosition(sf::Vector2f(
-		this->sprite.getPosition().x - 13.f,
-		this->sprite.getPosition().y + this->sprite.getGlobalBounds().height + 4.f
-	));
-
 	this->movementComponent->update(dt);
 
 	this->updateAnimation(dt);
 	
 	this->hitboxComponent->update(dt);
+
+	this->hpBar.setSize(sf::Vector2f(72.f * (static_cast<float>(this->attributeComponent->hp) / this->attributeComponent->hpMax), 8.f));
+	this->hpBar.setPosition(sf::Vector2f(
+		this->sprite.getPosition().x - 13.f,
+		this->sprite.getPosition().y + this->sprite.getGlobalBounds().height + 4.f
+	));
 
 }
 

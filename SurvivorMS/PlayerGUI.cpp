@@ -203,7 +203,7 @@ void PlayerGUI::render(sf::RenderTarget& target) {
 
 	this->renderExpBar(target);
 	this->renderLevelBar(target);
-	this->renderPlayerTabs(target);
 	this->renderGold(target);
 	this->renderKillCounter(target);
+	this->renderPlayerTabs(target);
 }

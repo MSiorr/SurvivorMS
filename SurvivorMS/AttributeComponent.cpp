@@ -1,7 +1,11 @@
 #include "stdafx.h"
 #include "AttributeComponent.h"
 
-AttributeComponent::AttributeComponent(int lvl, int dmg, int hpMax) {
+AttributeComponent::AttributeComponent(int lvl, int dmg, int hpMax, int fireRate) {
+
+	this->baseHP = hpMax;
+	this->baseDMG = dmg;
+	this->baseFireRate = fireRate;
 
 	this->lvl = lvl;
 	this->exp = 0;
@@ -10,11 +14,10 @@ AttributeComponent::AttributeComponent(int lvl, int dmg, int hpMax) {
 
 	this->hp = hpMax;
 	this->hpMax = hpMax;
-
+	this->fireRate = fireRate;
 	this->dmg = dmg;
 
 	this->updateLvl();
-	this->updateStats(true);
 }
 
 AttributeComponent::~AttributeComponent() {
@@ -53,10 +56,14 @@ const bool AttributeComponent::toUpgrade() const {
 	return this->attributePoints > 0;
 }
 
-void AttributeComponent::updateStats(const bool reset) {
+void AttributeComponent::updateStats(const float hpMultip, const float dmgMultip, const float fireRateMultip) {
 
-	if(reset)
-		this->hp = this->hpMax;
+	this->hp = this->hp + (this->baseHP + this->baseHP * hpMultip - this->hpMax);
+	this->hpMax = this->baseHP + this->baseHP * hpMultip;
+
+	this->dmg = this->baseDMG + this->baseDMG * dmgMultip;
+
+	this->fireRate = this->baseFireRate - this->baseFireRate * fireRateMultip;
 }
 
 void AttributeComponent::updateLvl() {

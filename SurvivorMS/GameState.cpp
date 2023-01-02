@@ -95,6 +95,13 @@ void GameState::initGameOverScreen() {
 	this->gameOvecScr = new GameOver(vm, this->font, this->states);
 }
 
+void GameState::initSkillChooseScreen() {
+
+	sf::VideoMode& vm = this->stateData->gfxSettings->resolution;
+
+	this->skillChooseScr = new SkillChoose(vm, this->font);
+}
+
 void GameState::initShaders() {
 
 	if(!this->coreShader.loadFromFile("vertex_shader.vert", "fragment_shader.frag")){
@@ -138,6 +145,7 @@ GameState::GameState(StateData* stateData, PlayerData* playerData)
 
 	this->playerData = playerData;
 	this->gameOver = false;
+	this->showSkillChoose = false;
 
 	this->initDefferedRender();
 	this->initView();
@@ -146,6 +154,7 @@ GameState::GameState(StateData* stateData, PlayerData* playerData)
 	this->initTextures();
 	this->initPauseMenu();
 	this->initGameOverScreen();
+	this->initSkillChooseScreen();
 	this->initShaders();
 	this->initKeyTime();
 	this->initPlayer();
@@ -233,6 +242,64 @@ void GameState::updateView(const float& dt) {
 	this->viewGridPos.y = static_cast<int>(this->view.getCenter().y) / static_cast<int>(this->stateData->gridSize);
 }
 
+void GameState::rollSkillsToChoose() {
+
+	this->skillChooseScr->resetSkills();
+	int count = 0;
+	if (!this->player->getSkillComponent()->isSkillMaxed(SKILLS::ATTACK)) {
+		
+		std::stringstream ss;
+		int skillLvl = this->player->getSkillComponent()->getSkillLvl(SKILLS::ATTACK);
+
+		ss << "+" << ((skillLvl + 1) * 10) << "% dmg";
+
+		this->skillChooseScr->addSkill(SKILLS::ATTACK,
+			"ATTACK", ss.str(),
+			skillLvl,
+			this->player->getSkillComponent()->getSkillLvlCap(SKILLS::ATTACK)
+		);
+		
+		++count;
+	}
+
+	if (!this->player->getSkillComponent()->isSkillMaxed(SKILLS::HEALTH)) {
+
+		std::stringstream ss;
+		int skillLvl = this->player->getSkillComponent()->getSkillLvl(SKILLS::HEALTH);
+
+		ss << "+" << ((skillLvl + 1) * 10) << "% hp";
+
+		this->skillChooseScr->addSkill(SKILLS::HEALTH,
+			"HEALTH", ss.str(),
+			skillLvl,
+			this->player->getSkillComponent()->getSkillLvlCap(SKILLS::HEALTH)
+		);
+
+		++count;
+	}
+
+	if (!this->player->getSkillComponent()->isSkillMaxed(SKILLS::FIRERATE)) {
+
+		std::stringstream ss;
+		int skillLvl = this->player->getSkillComponent()->getSkillLvl(SKILLS::FIRERATE);
+
+		ss << "+" << ((skillLvl + 1) * 10) << "% fire rate";
+
+		this->skillChooseScr->addSkill(SKILLS::FIRERATE,
+			"FIRE RATE", ss.str(),
+			skillLvl,
+			this->player->getSkillComponent()->getSkillLvlCap(SKILLS::FIRERATE)
+		);
+
+		++count;
+	}
+
+	for (int i = count; i < 3; i++) {
+
+		this->skillChooseScr->addSkill(SKILLS::GOLD, "GOLD", "+100 GOLD", 0, 0);
+	}
+}
+
 void GameState::updateInput(const float& dt) {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keyBinds.at("CLOSE"))) && this->getKeytime()) {
 
@@ -275,10 +342,10 @@ void GameState::updatePlayerGUI(const float& dt) {
 
 	this->playerGUI->update(dt, goldCount, killCount);
 
-	/*if (sf::Keyboard::isKeyPressed(sf::Keyboard::C) && this->getKeyTime()) {
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::C) && this->getKeyTime()) {
 
 		this->playerGUI->toggleCharacterTab();
-	}*/
+	}
 
 }
 
@@ -288,13 +355,48 @@ void GameState::updatePauseMenuButtons() {
 	}
 }
 
+void GameState::updateSkillChooseScrButtons() {
+
+	if (this->skillChooseScr->buttonExist(SKILLS::ATTACK) && 
+		this->skillChooseScr->isButtonPressed(SKILLS::ATTACK) && this->getKeytime()) {
+		
+		this->player->lvlUpSkill(SKILLS::ATTACK);
+		this->skillChooseScr->resetSkills();
+		this->showSkillChoose = false;
+		this->player->getAttributeComponent()->attributePoints--;
+	}
+	if (this->skillChooseScr->buttonExist(SKILLS::HEALTH) &&
+		this->skillChooseScr->isButtonPressed(SKILLS::HEALTH) && this->getKeytime()) {
+
+		this->player->lvlUpSkill(SKILLS::HEALTH);
+		this->skillChooseScr->resetSkills();
+		this->showSkillChoose = false;
+		this->player->getAttributeComponent()->attributePoints--;
+	}
+	if (this->skillChooseScr->buttonExist(SKILLS::FIRERATE) &&
+		this->skillChooseScr->isButtonPressed(SKILLS::FIRERATE) && this->getKeytime()) {
+
+		this->player->lvlUpSkill(SKILLS::FIRERATE);
+		this->skillChooseScr->resetSkills();
+		this->showSkillChoose = false;
+		this->player->getAttributeComponent()->attributePoints--;
+	}
+	if (this->skillChooseScr->buttonExist(SKILLS::GOLD) &&
+		this->skillChooseScr->isButtonPressed(SKILLS::GOLD) && this->getKeytime()) {
+
+		this->goldCount += 100;
+		this->skillChooseScr->resetSkills();
+		this->showSkillChoose = false;
+		this->player->getAttributeComponent()->attributePoints--;
+	}
+}
+
 void GameState::updateTileMap(const float& dt) {
 
 	this->tileMap->updateWorldBoundsCollision(this->player, dt);
 	this->tileMap->updateTileCollision(this->player, dt);
 	this->tileMap->updateTiles(this->player, dt, *this->enemySystem);
 
-	//this->tileMap->update(this->player, dt);
 }
 
 void GameState::updatePlayer(const float& dt) {
@@ -303,6 +405,12 @@ void GameState::updatePlayer(const float& dt) {
 
 	if (this->player->getAttributeComponent()->isDead()) {
 		this->gameOver = true;
+	}
+
+	if (player->getAttributeComponent()->toUpgrade()) {
+		
+		this->showSkillChoose = true;
+		this->rollSkillsToChoose();
 	}
 
 }
@@ -409,7 +517,18 @@ void GameState::update(const float& dt) {
 	this->updateKeytime(dt);
 	this->updateInput(dt);
 
-	if (!this->paused && !this->gameOver) {
+	if (this->gameOver) {
+
+		this->gameOvecScr->update(this->mousePosWindow);
+	} else if (this->showSkillChoose) {
+
+		this->skillChooseScr->update(this->mousePosWindow);
+		this->updateSkillChooseScrButtons();
+	} else if (this->paused) {
+
+		this->pMenu->update(this->mousePosWindow);
+		this->updatePauseMenuButtons();
+	} else {
 
 		this->updateView(dt);
 		this->updatePlayerInput(dt);
@@ -425,14 +544,6 @@ void GameState::update(const float& dt) {
 		this->updatePickables(dt);
 
 		this->tts->update(dt);
-
-	} else if(this->paused && !this->gameOver) {
-
-		this->pMenu->update(this->mousePosWindow);
-		this->updatePauseMenuButtons();
-	} else {
-
-		this->gameOvecScr->update(this->mousePosWindow);
 	}
 
 }
@@ -481,13 +592,24 @@ void GameState::render(sf::RenderTarget* target) {
 	this->renderTexture.setView(this->renderTexture.getDefaultView());
 	this->playerGUI->render(this->renderTexture);
 
-	if (this->paused && !this->gameOver) {
+	if (this->gameOver) {
+
+		this->gameOvecScr->render(this->renderTexture);
+	} else if (this->showSkillChoose) {
+
+		this->skillChooseScr->render(this->renderTexture);
+	} else if (this->paused) {
+
+		this->pMenu->render(this->renderTexture);
+	}
+
+	/*if (this->paused && !this->gameOver) {
 		
 		this->pMenu->render(this->renderTexture);
 	} else if (this->gameOver) {
 
 		this->gameOvecScr->render(this->renderTexture);
-	}
+	}*/
 
 	//FINAL 
 

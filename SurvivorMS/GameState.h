@@ -10,6 +10,7 @@
 #include "PlayerData.h"
 #include "GameOver.h"
 #include "Pickable.h"
+#include "SkillChoose.h"
 
 class GameState : public State {
 private:
@@ -22,6 +23,7 @@ private:
 	sf::Font font;
 	PauseMenu* pMenu;
 	GameOver* gameOvecScr;
+	SkillChoose* skillChooseScr;
 
 	sf::Shader coreShader;
 
@@ -43,6 +45,7 @@ private:
 
 	PlayerData* playerData;
 	bool gameOver;
+	bool showSkillChoose;
 
 	int goldCount;
 	int killCount;
@@ -54,6 +57,7 @@ private:
 	void initTextures();
 	void initPauseMenu();
 	void initGameOverScreen();
+	void initSkillChooseScreen();
 	void initShaders();
 	void initKeyTime();
 	void initPlayer();
@@ -70,12 +74,15 @@ public:
 
 	void endState();
 
+	void rollSkillsToChoose();
+
 	//Fun
 	void updateView(const float& dt);
 	void updateInput(const float& dt);
 	void updatePlayerInput(const float& dt);
 	void updatePlayerGUI(const float& dt);
 	void updatePauseMenuButtons();
+	void updateSkillChooseScrButtons();
 	void updateTileMap(const float& dt);
 	void updatePlayer(const float& dt);
 	void updateEnemies(const float& dt);

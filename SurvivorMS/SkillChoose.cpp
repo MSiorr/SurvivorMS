@@ -2,7 +2,7 @@
 #include "SkillChoose.h"
 
 SkillChoose::SkillChoose(sf::VideoMode& vm, sf::Font& font)
-	: font(font) {
+	: font(font), vm(vm) {
 
 	this->bg.setSize(sf::Vector2f(
 		static_cast<float>(vm.width),
@@ -13,7 +13,7 @@ SkillChoose::SkillChoose(sf::VideoMode& vm, sf::Font& font)
 
 
 	this->container.setSize(sf::Vector2f(
-		static_cast<float>(vm.width) / 4.f,
+		gui::p2pX(33.f, vm),
 		static_cast<float>(vm.height) / 2.f 
 	));
 
@@ -23,8 +23,6 @@ SkillChoose::SkillChoose(sf::VideoMode& vm, sf::Font& font)
 	);
 
 	this->container.setFillColor(sf::Color(24, 24, 24, 200));
-
-	// INIT TEXT
 
 	this->menuText.setFont(font);
 	this->menuText.setFillColor(sf::Color(255, 255, 255, 200));
@@ -41,20 +39,58 @@ SkillChoose::~SkillChoose() {
 	for (auto& it : this->buttons) {
 		delete it.second;
 	}
+
+	for (auto& it : this->skills) {
+		delete it.second;
+	}
 }
 
-std::map<std::string, gui::Button*>& SkillChoose::getButtons() {
+std::map<short, gui::Button*>& SkillChoose::getButtons() {
 	return this->buttons;
 }
 
-const bool SkillChoose::isButtonPressed(const std::string key) {
+const bool SkillChoose::isButtonPressed(const short key) {
 	return this->buttons[key]->isPressed();
 }
 
-void SkillChoose::addButton(const std::string key, float y, const float width, const float height, const unsigned charSize, const std::string text) {
+const bool SkillChoose::buttonExist(const short key) {
+	return this->buttons.find(key) != this->buttons.end();
+}
 
-	float x = this->container.getPosition().x + (this->container.getGlobalBounds().width / 2.f) - width / 2.f;
-	y = this->container.getPosition().y + (this->container.getGlobalBounds().height / 2.f) - height / 2.f + y;
+void SkillChoose::resetSkills() {
+
+	for (auto& it : this->skills) {
+		delete it.second;
+	}
+
+	for (auto& it : this->buttons) {
+		delete it.second;
+	}
+
+	this->skills.clear();
+	this->buttons.clear();
+}
+
+void SkillChoose::addSkill(const short key, const std::string title, const std::string desc, const int currLvl, const int maxLvl) {
+
+	if (maxLvl == 0) 
+		this->skills[key] = new Skill(this->vm, this->font, title, desc);
+	else 
+		this->skills[key] = new Skill(this->vm, this->font, title, desc, currLvl, maxLvl);
+
+	float x = this->container.getPosition().x + gui::p2pX(2.f, this->vm) + (this->skills.size() - 1) * gui::p2pX(10.f, this->vm);
+	float y = this->container.getPosition().y + gui::p2pY(16.f, this->vm);
+
+	this->skills[key]->setPosition(x, y);
+
+	this->addButton(key,
+		x, y + gui::p2pY(24.5f, vm),
+		gui::p2pX(9.f, vm), gui::p2pY(6.f, vm),
+		gui::calcCharSize(vm) * 0.5f, "CHOOSE"
+	);
+}
+
+void SkillChoose::addButton(const short key, float x, float y, const float width, const float height, const unsigned charSize, const std::string text) {
 
 	this->buttons[key] = new gui::Button(
 		x, y,
@@ -74,6 +110,10 @@ void SkillChoose::update(const sf::Vector2i& mousePosWindow) {
 void SkillChoose::render(sf::RenderTarget& target) {
 	target.draw(this->bg);
 	target.draw(this->container);
+
+	for (auto& it : this->skills) {
+		it.second->render(target);
+	}
 
 	for (auto& it : this->buttons) {
 		it.second->render(target);

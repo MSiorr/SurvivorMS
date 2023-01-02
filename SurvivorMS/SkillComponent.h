@@ -1,7 +1,7 @@
 #ifndef SKILLCOMPONENT_H
 #define SKILLCOMPONENT_H
 
-enum SKILLS {HEALTH = 0, ATTACK, FIRERATE};
+enum SKILLS {HEALTH = 0, ATTACK, FIRERATE, GOLD};
 
 class SkillComponent {
 private:
@@ -17,7 +17,7 @@ private:
 		Skill(int type) {
 			
 			this->type = type;
-			this->lvl = 1;
+			this->lvl = 0;
 			this->lvlCap = 5;
 		}
 		~Skill() {}
@@ -50,6 +50,10 @@ public:
 	virtual ~SkillComponent();
 
 	const int getSkillLvl(const int skill) const;
+	const int getSkillLvlCap(const int skill) const;
+	const bool isSkillMaxed(const int skill) const;
+
+	void skillLvlUp(const int skill);
 };
 
 #endif 
