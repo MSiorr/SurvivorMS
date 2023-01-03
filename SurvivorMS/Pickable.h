@@ -3,7 +3,7 @@
 
 #include "Player.h"
 
-enum PICKABLETYPES {COIN, EXP};
+enum PICKABLETYPES {COIN = 0, EXP, MEAT};
 
 class Pickable {
 protected:

@@ -165,6 +165,7 @@
     <ClCompile Include="LvLBlockadeTile.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenuState.cpp" />
+    <ClCompile Include="Meat.cpp" />
     <ClCompile Include="MovementComponent.cpp" />
     <ClCompile Include="Orc.cpp" />
     <ClCompile Include="PauseMenu.cpp" />
@@ -219,6 +220,7 @@
     <ClInclude Include="Item.h" />
     <ClInclude Include="LvLBlockadeTile.h" />
     <ClInclude Include="MainMenuState.h" />
+    <ClInclude Include="Meat.h" />
     <ClInclude Include="MovementComponent.h" />
     <ClInclude Include="Orc.h" />
     <ClInclude Include="PauseMenu.h" />

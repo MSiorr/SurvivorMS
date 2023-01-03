@@ -216,6 +216,9 @@
     <ClCompile Include="BarierEditorMode.cpp">
       <Filter>States\Editor Modes</Filter>
     </ClCompile>
+    <ClCompile Include="Meat.cpp">
+      <Filter>Pickable</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -367,6 +370,9 @@
     </ClInclude>
     <ClInclude Include="BarierEditorMode.h">
       <Filter>States\Editor Modes</Filter>
+    </ClInclude>
+    <ClInclude Include="Meat.h">
+      <Filter>Pickable</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

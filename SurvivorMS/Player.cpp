@@ -23,9 +23,8 @@ void Player::initComponents() {
 
 void Player::initAnimations() {
 
-	this->animationComponent->addAnim("IDLE", 16.f, 0, 0, 3, 0, 46, 64);
-	this->animationComponent->addAnim("RUN", 12.f, 4, 0, 7, 0, 46, 64);
-	this->animationComponent->addAnim("HURT", 12.f, 7, 0, 9, 0, 46, 64);
+	this->animationComponent->addAnim("IDLE", 16.f, 0, 0, 3, 0, 48, 83);
+	this->animationComponent->addAnim("RUN", 12.f, 4, 0, 7, 0, 48, 83);
 }
 
 void Player::initGui() {
@@ -33,7 +32,7 @@ void Player::initGui() {
 	this->hpBar.setFillColor(sf::Color(222, 0, 0, 200));
 	this->hpBar.setSize(sf::Vector2f(72.f, 8.f));
 	this->hpBar.setPosition(sf::Vector2f(
-		this->sprite.getPosition().x - 13.f,
+		this->sprite.getPosition().x - 10.f,
 		this->sprite.getPosition().y + this->sprite.getGlobalBounds().height + 4.f
 	));
 }
@@ -42,7 +41,7 @@ Player::Player(float x, float y, sf::Texture& textureSheet, PlayerData* playerDa
 
 
 
-	this->createHitboxComponent(0, 16, 46, 48);
+	this->createHitboxComponent(8, 32, 38, 51);
 	this->createMovementComponent(300.f, 2400.f, 800.f);
 	this->createAnimationComponent(textureSheet);
 	this->createAttributeComponent(1, playerData->getDMG(), playerData->getHP());
@@ -145,7 +144,7 @@ void Player::updateAnimation(const float& dt) {
 	} else if (this->movementComponent->getState(MOVING_LEFT)) {
 
 		if (this->sprite.getScale().x > 0.f) {
-			this->sprite.setOrigin(46.f, 0.f);
+			this->sprite.setOrigin(54.f, 0.f);
 			this->sprite.setScale(-1.f, 1.f);
 		}
 
@@ -173,7 +172,7 @@ void Player::update(const float& dt, sf::Vector2f& mousePosView) {
 
 	this->hpBar.setSize(sf::Vector2f(72.f * (static_cast<float>(this->attributeComponent->hp) / this->attributeComponent->hpMax), 8.f));
 	this->hpBar.setPosition(sf::Vector2f(
-		this->sprite.getPosition().x - 13.f,
+		this->sprite.getPosition().x - 10.f,
 		this->sprite.getPosition().y + this->sprite.getGlobalBounds().height + 4.f
 	));
 

@@ -622,14 +622,6 @@ void GameState::render(sf::RenderTarget* target) {
 		this->pMenu->render(this->renderTexture);
 	}
 
-	/*if (this->paused && !this->gameOver) {
-		
-		this->pMenu->render(this->renderTexture);
-	} else if (this->gameOver) {
-
-		this->gameOvecScr->render(this->renderTexture);
-	}*/
-
 	//FINAL 
 
 	this->renderTexture.display();

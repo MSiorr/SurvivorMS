@@ -543,7 +543,6 @@ void TileMap::updateTileCollision(Entity* entity, const float& dt, TextTagSystem
 						entity->stopVelocityY();
 						entity->setPosition(entityBounds.left, wallBounds.top - entityBounds.height);
 						collision = true;
-						//std::cout << "BOTT" << "\n";
 					}
 					// TOP COLLISION
 					else if (entityBounds.top > wallBounds.top
@@ -554,7 +553,6 @@ void TileMap::updateTileCollision(Entity* entity, const float& dt, TextTagSystem
 						entity->stopVelocityY();
 						entity->setPosition(entityBounds.left, wallBounds.top + wallBounds.height);
 						collision = true;
-						//std::cout << "TOP" << "\n";
 					}
 
 					// RIGHT COLLISION
@@ -566,7 +564,6 @@ void TileMap::updateTileCollision(Entity* entity, const float& dt, TextTagSystem
 						entity->stopVelocityX();
 						entity->setPosition(wallBounds.left - entityBounds.width, entityBounds.top);
 						collision = true;
-						//std::cout << "RIGHT" << "\n";
 					}
 					// LEFT COLLISION
 					else if (entityBounds.left > wallBounds.left
@@ -577,9 +574,7 @@ void TileMap::updateTileCollision(Entity* entity, const float& dt, TextTagSystem
 						entity->stopVelocityX();
 						entity->setPosition(wallBounds.left + wallBounds.width, entityBounds.top);
 						collision = true;
-						//std::cout << "LEFT" << "\n";
 					}
-
 				}
 
 				if (collision && this->getKeytime()) {

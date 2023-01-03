@@ -5,6 +5,7 @@
 #include "Pickable.h"
 #include "Coin.h"
 #include "ExpGem.h"
+#include "Meat.h"
 #include "Orc.h"
 #include "Boss.h"
 

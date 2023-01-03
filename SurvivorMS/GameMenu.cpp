@@ -173,14 +173,14 @@ void GameMenu::initPlayerAvatar() {
 	}
 
 	this->playerAvAnimComp = new AnimationComponent(this->playerAv, this->playerAvTexture);
-	this->playerAvAnimComp->addAnim("AV_IDLE", 16.f, 0, 0, 3, 0, 46, 64);
+	this->playerAvAnimComp->addAnim("AV_IDLE", 16.f, 0, 0, 3, 0, 48, 83);
 
 	this->playerAv.setPosition(
 		gui::p2pX(15.75f, vm),
-		this->mainTopPadding + gui::p2pY(10.09f, vm)
+		this->mainTopPadding + gui::p2pY(2.64f, vm)
 	);
 
-	float scale = static_cast<float>(vm.width) * 0.1468f / 46.f;
+	float scale = static_cast<float>(vm.width) * 0.1468f / 48.f;
 
 	this->playerAv.setScale(scale, scale);
 }

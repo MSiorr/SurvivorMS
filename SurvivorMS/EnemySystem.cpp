@@ -56,6 +56,14 @@ void EnemySystem::removeEnemy(const int index, std::vector<Pickable*>* pickables
 		this->textures["PICKABLE_SHEET"]
 	));
 
+	float randV = rand() % 100;
+	if (randV < 20) {
+		pickables->push_back(new Meat(
+			this->activeEnemies[index]->getRandomPosAroundEnemy(),
+			this->textures["PICKABLE_SHEET"]
+		));
+	}
+
 	delete this->activeEnemies[index];
 	this->activeEnemies.erase(this->activeEnemies.begin() + index);
 }
