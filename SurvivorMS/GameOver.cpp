@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "GameOver.h"
 
-GameOver::GameOver(sf::VideoMode& vm, sf::Font& font, std::stack<State*>* states) : font(font) {
+GameOver::GameOver(sf::VideoMode& vm, sf::Font& font, std::stack<State*>* states) : font(font), vm(vm) {
 
 	this->states = states;
 
@@ -31,6 +31,14 @@ GameOver::GameOver(sf::VideoMode& vm, sf::Font& font, std::stack<State*>* states
 }
 
 GameOver::~GameOver() {
+}
+
+void GameOver::setMainString(std::string str) {
+	this->gameOverTxt.setString(str);
+	this->gameOverTxt.setPosition(
+		this->vm.width / 2 - this->gameOverTxt.getGlobalBounds().width / 2,
+		this->vm.height / 2 - this->gameOverTxt.getGlobalBounds().height / 2
+	);
 }
 
 void GameOver::update(const sf::Vector2i& mousePosWindow) {

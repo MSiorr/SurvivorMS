@@ -207,6 +207,15 @@
     <ClCompile Include="SkillChoose.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
+    <ClCompile Include="Boss.cpp">
+      <Filter>Entities\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="LvLBlockadeTile.cpp">
+      <Filter>Map\Tile</Filter>
+    </ClCompile>
+    <ClCompile Include="BarierEditorMode.cpp">
+      <Filter>States\Editor Modes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -349,6 +358,15 @@
     </ClInclude>
     <ClInclude Include="SkillChoose.h">
       <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss.h">
+      <Filter>Entities\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="LvLBlockadeTile.h">
+      <Filter>Map\Tile</Filter>
+    </ClInclude>
+    <ClInclude Include="BarierEditorMode.h">
+      <Filter>States\Editor Modes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

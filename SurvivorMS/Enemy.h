@@ -29,6 +29,7 @@ public:
 
 	void resetDamageTimer();
 
+	void instantKill();
 
 	virtual void takeDamage(const int damage);
 	virtual const bool isDead() const;

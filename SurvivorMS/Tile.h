@@ -1,7 +1,7 @@
 #ifndef TILE_H
 #define TILE_H
 
-enum TileTypes { DEFAULT = 0, DAMAGING, ONTOP, ENEMYSPAWNER };
+enum TileTypes { DEFAULT = 0, DAMAGING, ONTOP, ENEMYSPAWNER, BLOCKADE };
 
 class Tile {
 private:

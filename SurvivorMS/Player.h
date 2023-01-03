@@ -21,7 +21,7 @@ private:
 	sf::Int32 damageTimerMax;
 
 	sf::Clock attackTimer;
-	sf::Int32 attackTimerMax;
+	//sf::Int32 attackTimerMax;
 
 	void initVariables();
 	void initComponents();

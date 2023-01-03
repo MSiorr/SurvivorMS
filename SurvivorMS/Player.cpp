@@ -7,7 +7,7 @@ void Player::initVariables() {
 	this->damageTimerMax = 500;
 
 	this->attackTimer.restart();
-	this->attackTimerMax = this->getAttributeComponent()->fireRate;
+	//this->attackTimerMax = this->getAttributeComponent()->fireRate;
 
 	this->attacking = false;
 	//this->weapon = new Kunai();
@@ -77,7 +77,7 @@ const bool Player::getDamageTimer() {
 
 const bool Player::getAttackTimer() {
 
-	if (this->attackTimer.getElapsedTime().asMilliseconds() >= this->attackTimerMax) {
+	if (this->attackTimer.getElapsedTime().asMilliseconds() >= this->getAttributeComponent()->fireRate) {
 		this->attackTimer.restart();
 		return true;
 	}

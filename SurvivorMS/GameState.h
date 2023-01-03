@@ -47,6 +47,9 @@ private:
 	bool gameOver;
 	bool showSkillChoose;
 
+	bool bossPhase;
+	bool bossKilled;
+
 	int goldCount;
 	int killCount;
 
@@ -63,11 +66,11 @@ private:
 	void initPlayer();
 	void initPlayerGUI();
 	void initEnemySystem();
-	void initTileMap();
+	void initTileMap(std::string mapPath);
 	void initSystems();
 
 public:
-	GameState(StateData* stateData, PlayerData* playerData);
+	GameState(StateData* stateData, PlayerData* playerData, std::string mapPath);
 	virtual ~GameState();
 
 	const bool getKeyTime();

@@ -1,6 +1,24 @@
 #include "stdafx.h"
 #include "TileMap.h"
 
+const bool TileMap::getKeytime() {
+
+	if (this->keytime >= this->keytimeMax) {
+		this->keytime = 0.f;
+		return true;
+	}
+
+	return false;
+}
+
+void TileMap::updateKeytime(const float& dt) {
+
+	if (this->keytime < this->keytimeMax) {
+
+		this->keytime += 1000.f * dt;
+	}
+}
+
 void TileMap::clear() {
 	if (!this->map.empty()) {
 		for (int i = 0; i < this->map.size(); i++) {
@@ -23,6 +41,9 @@ void TileMap::clear() {
 
 TileMap::TileMap(float gridSize, int width, int height, std::string textureFile) {
 	
+	this->keytime = 0.f;
+	this->keytimeMax = 1600.f;
+
 	this->gridSizeF = gridSize;
 	this->gridSizeI = static_cast<int>(this->gridSizeF);
 	this->maxSizeWorldGrid.x = width;
@@ -67,6 +88,9 @@ TileMap::TileMap(float gridSize, int width, int height, std::string textureFile)
 }
 
 TileMap::TileMap(const std::string fileName) {
+
+	this->keytime = 0.f;
+	this->keytimeMax = 160.f;
 
 	this->fromX = 0;
 	this->toX = 0;
@@ -311,7 +335,7 @@ void TileMap::loadFromFile(const std::string path) {
 				int enemyTimeToSpawn = 0;
 				int enemyMaxDist = 0;
 
-				ifs >> trX >> trY 
+				ifs >> trX >> trY
 					>> enemyType >> enemyAmount >> enemyTimeToSpawn >> enemyMaxDist;
 
 				this->map[x][y][z].push_back(new EnemySpawnerTile(
@@ -321,8 +345,21 @@ void TileMap::loadFromFile(const std::string path) {
 					sf::IntRect(trX, trY, this->gridSizeI, this->gridSizeI),
 					enemyType,
 					enemyAmount,
-					enemyTimeToSpawn, 
+					enemyTimeToSpawn,
 					enemyMaxDist
+				));
+			} else if(type == TileTypes::BLOCKADE){
+
+				int blockadeLvl = 0;
+
+				ifs >> trX >> trY >> blockadeLvl;
+
+				this->map[x][y][z].push_back(new LvLBlockadeTile(
+					x, y,
+					this->gridSizeF,
+					this->tileSheet,
+					sf::IntRect(trX, trY, this->gridSizeI, this->gridSizeI),
+					blockadeLvl
 				));
 
 			} else {
@@ -385,6 +422,23 @@ void TileMap::addTile(const int x, const int y, const int z, const sf::IntRect& 
 
 }
 
+void TileMap::addTile(const int x, const int y, const int z, const sf::IntRect& textureRect, int blockadeLvl) {
+
+	if (x < this->maxSizeWorldGrid.x && y < this->maxSizeWorldGrid.y && z < this->layers && x >= 0 && y >= 0 && z >= 0) {
+
+		std::cout << "ADD BLOCKADE" << "\n";
+
+		this->map[x][y][z].push_back(new LvLBlockadeTile(
+			x, y,
+			this->gridSizeF,
+			this->tileSheet,
+			textureRect,
+			blockadeLvl
+		));
+	}
+
+}
+
 void TileMap::removeTile(const int x, const int y, const int z, const int type) {
 
 	if (x < this->maxSizeWorldGrid.x && 
@@ -437,7 +491,7 @@ void TileMap::updateWorldBoundsCollision(Entity* entity, const float& dt) {
 
 }
 
-void TileMap::updateTileCollision(Entity* entity, const float& dt) {
+void TileMap::updateTileCollision(Entity* entity, const float& dt, TextTagSystem* tts) {
 
 	//TILES
 	this->layer = 0;
@@ -476,6 +530,8 @@ void TileMap::updateTileCollision(Entity* entity, const float& dt) {
 				sf::FloatRect nextEntityBounds = entity->getNextPositionBounds(dt);
 				sf::FloatRect wallBounds = this->map[i][j][this->layer][k]->getGlobalBounds();
 
+				bool collision = false;
+
 				if (this->map[i][j][this->layer][k]->getCollision() && this->map[i][j][this->layer][k]->intersects(nextEntityBounds)) {
 
 					// BOTTOM COLLISION
@@ -486,6 +542,7 @@ void TileMap::updateTileCollision(Entity* entity, const float& dt) {
 						) {
 						entity->stopVelocityY();
 						entity->setPosition(entityBounds.left, wallBounds.top - entityBounds.height);
+						collision = true;
 						//std::cout << "BOTT" << "\n";
 					}
 					// TOP COLLISION
@@ -496,6 +553,7 @@ void TileMap::updateTileCollision(Entity* entity, const float& dt) {
 						) {
 						entity->stopVelocityY();
 						entity->setPosition(entityBounds.left, wallBounds.top + wallBounds.height);
+						collision = true;
 						//std::cout << "TOP" << "\n";
 					}
 
@@ -507,6 +565,7 @@ void TileMap::updateTileCollision(Entity* entity, const float& dt) {
 						) {
 						entity->stopVelocityX();
 						entity->setPosition(wallBounds.left - entityBounds.width, entityBounds.top);
+						collision = true;
 						//std::cout << "RIGHT" << "\n";
 					}
 					// LEFT COLLISION
@@ -517,9 +576,19 @@ void TileMap::updateTileCollision(Entity* entity, const float& dt) {
 						) {
 						entity->stopVelocityX();
 						entity->setPosition(wallBounds.left + wallBounds.width, entityBounds.top);
+						collision = true;
 						//std::cout << "LEFT" << "\n";
 					}
 
+				}
+
+				if (collision && this->getKeytime()) {
+					if (instanceof<Player>(entity) && this->map[i][j][this->layer][k]->getType() == TileTypes::BLOCKADE) {
+
+						LvLBlockadeTile* lbt = dynamic_cast<LvLBlockadeTile*>(this->map[i][j][this->layer][k]);
+
+						tts->addTextTag(TAGTYPES::EXPERIENCE_TAG, entity->getPosition().x - 100.f, entity->getPosition().y - 10.f, lbt->getBarierLvl(), "YOU NEED ", " LVL");
+					}
 				}
 			}
 		}
@@ -527,7 +596,7 @@ void TileMap::updateTileCollision(Entity* entity, const float& dt) {
 
 }
 
-void TileMap::updateTiles(Entity* entity, const float& dt, EnemySystem& enemySystem) {
+void TileMap::updateTiles(Entity* entity, const float& dt, EnemySystem& enemySystem, bool& bossPhase) {
 
 	//TILES
 	this->layer = 0;
@@ -580,7 +649,12 @@ void TileMap::updateTiles(Entity* entity, const float& dt, EnemySystem& enemySys
 
 							if (est && est->getSpawnTimer() && est->getEnemyCounter() < est->getEnemyAmount()) {
 
-								enemySystem.createEnemy(ORC, i * this->gridSizeF, j * this->gridSizeF, this->gridSizeF, *est);
+								if(est->getEnemyType() == EnemyTypes::BOSS && bossPhase)
+									enemySystem.createEnemy(BOSS, i * this->gridSizeF, j * this->gridSizeF, this->gridSizeF, *est);
+								else if (est->getEnemyType() != EnemyTypes::BOSS && !bossPhase) {
+
+									enemySystem.createEnemy(est->getEnemyType(), i * this->gridSizeF, j * this->gridSizeF, this->gridSizeF, *est);
+								}
 							}
 						}
 
@@ -589,6 +663,24 @@ void TileMap::updateTiles(Entity* entity, const float& dt, EnemySystem& enemySys
 						if (est && est->getSpawnTimer() && est->getEnemyCounter() < est->getEnemyAmount())
 							enemySystem.createEnemy(ORC, i * this->gridSizeF, j * this->gridSizeF, this->gridSizeF, *est);
 					}
+				} else if(this->map[i][j][this->layer][k]->getType() == TileTypes::BLOCKADE) {
+
+					LvLBlockadeTile* lbt = dynamic_cast<LvLBlockadeTile*>(this->map[i][j][this->layer][k]);
+
+					if (instanceof<Player>(entity)) {
+						
+						Player* player = dynamic_cast<Player*>(entity);
+
+						if (player->getAttributeComponent()->lvl >= lbt->getBarierLvl()) {
+
+							lbt->setCollision(false);
+						}
+
+						if (lbt->getGlobalBounds().contains(player->getCenter())) {
+
+							bossPhase = true;
+						}
+					}
 				}
 			}
 		}
@@ -596,12 +688,9 @@ void TileMap::updateTiles(Entity* entity, const float& dt, EnemySystem& enemySys
 
 }
 
-void TileMap::update(Entity* entity, const float& dt) {
+void TileMap::update(const float& dt) {
 
-	
-
-	
-
+	this->updateKeytime(dt);
 }
 
 void TileMap::renderDeferred(sf::RenderTarget& target, sf::Shader* shader, const sf::Vector2f playerPos) {
@@ -661,6 +750,16 @@ void TileMap::render(sf::RenderTarget& target, const sf::Vector2i& gridPos, sf::
 						this->map[i][j][this->layer][k]->render(target);
 
 				}
+
+				if (!showCollision &&
+					this->map[i][j][this->layer][k]->getType() == TileTypes::BLOCKADE && this->map[i][j][this->layer][k]->getCollision()) {
+
+					this->collisionBox.setPosition(this->map[i][j][this->layer][k]->getPosition());
+					this->collisionBox.setFillColor(sf::Color(200, 124, 0, 20));
+					this->collisionBox.setOutlineColor(sf::Color(200, 124, 0, 125));
+					target.draw(this->collisionBox);
+				}
+
 				if (showCollision) {
 
 					if (this->map[i][j][this->layer][k]->getCollision()) {
@@ -676,6 +775,14 @@ void TileMap::render(sf::RenderTarget& target, const sf::Vector2i& gridPos, sf::
 						this->collisionBox.setPosition(this->map[i][j][this->layer][k]->getPosition());
 						this->collisionBox.setFillColor(sf::Color(0, 0, 255, 50));
 						this->collisionBox.setOutlineColor(sf::Color::Blue);
+						target.draw(this->collisionBox);
+					}
+
+					if (this->map[i][j][this->layer][k]->getType() == TileTypes::BLOCKADE) {
+
+						this->collisionBox.setPosition(this->map[i][j][this->layer][k]->getPosition());
+						this->collisionBox.setFillColor(sf::Color(255, 165, 0, 50));
+						this->collisionBox.setOutlineColor(sf::Color(255,165,0,255));
 						target.draw(this->collisionBox);
 					}
 				}

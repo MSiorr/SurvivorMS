@@ -30,6 +30,12 @@ void EnemySystem::createEnemy(const short type, const float x, const float y, co
 		enemySpawnerTile.increaseEnemyCounter();
 
 		break;
+	case EnemyTypes::BOSS:
+
+		this->activeEnemies.push_back(new Boss(pos.x, pos.y, this->textures["BOSS_SHEET"], enemySpawnerTile, this->player));
+		enemySpawnerTile.increaseEnemyCounter();
+
+		break;
 	default:
 		std::cout << "WRONG ENEMY TYPE" << "\n";
 		break;

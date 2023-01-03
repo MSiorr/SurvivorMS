@@ -27,6 +27,7 @@ public:
 	virtual ~EnemySpawnerTile();
 
 	const std::string getAsString() const;
+	const int& getEnemyType() const;
 	const int& getEnemyCounter() const;
 	const int& getEnemyAmount() const;
 	const bool getSpawnTimer();

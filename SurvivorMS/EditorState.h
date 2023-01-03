@@ -7,6 +7,7 @@
 #include "EditorMode.h"
 #include "DefaultEditorMode.h"
 #include "EnemyEditorMode.h"
+#include "BarierEditorMode.h"
 
 class State;
 class StateData;

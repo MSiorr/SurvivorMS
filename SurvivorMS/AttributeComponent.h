@@ -8,7 +8,7 @@ public:
 
 	int baseHP;
 	int baseDMG;
-	int baseFireRate;
+	sf::Int32 baseFireRate;
 
 	int lvl;
 	int exp;
@@ -18,7 +18,7 @@ public:
 	int hp;
 	int hpMax;
 
-	int fireRate;
+	sf::Int32 fireRate;
 
 	int dmg;
 

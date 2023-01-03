@@ -369,13 +369,13 @@ void GameMenu::updateButtons() {
 	if (this->buttons["PLAY_NORMAL"]->isPressed() && this->getKeytime()) {
 
 		this->backFromGame = true;
-		this->states->push(new GameState(this->stateData, this->playerData));
+		this->states->push(new GameState(this->stateData, this->playerData, "map1.txt"));
 	}
 
 	if (this->buttons["PLAY_EDITOR"]->isPressed() && this->getKeytime()) {
 
 		this->backFromGame = true;
-		this->states->push(new GameState(this->stateData, this->playerData));
+		this->states->push(new GameState(this->stateData, this->playerData, "mapEditor.txt"));
 	}
 }
 

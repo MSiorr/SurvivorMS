@@ -21,6 +21,9 @@ private:
 protected:
 	sf::Sprite sprite;
 
+	bool knock;
+	int knockFramesCounter;
+
 	HitboxComponent* hitboxComponent;
 	MovementComponent* movementComponent;
 	AnimationComponent* animationComponent;
@@ -53,6 +56,8 @@ public:
 	virtual const float getDistance(const Entity& entity) const;
 
 	virtual void setPosition(const float x, const float y);
+
+	virtual void knockBack(const int framesCount);
 
 	virtual void move(const float dirX, const float dirY, const float& dt);
 	void stopVelocity();

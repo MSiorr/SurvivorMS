@@ -110,13 +110,14 @@ void EditorState::initModes() {
 
 	this->modes.push_back(new DefaultEditorMode(this->stateData, this->tileMap, &this->editorStateData));
 	this->modes.push_back(new EnemyEditorMode(this->stateData, this->tileMap, &this->editorStateData));
+	this->modes.push_back(new BarierEditorMode(this->stateData, this->tileMap, &this->editorStateData));
 
 	this->activeMode = EditorModes::DEFAULT_EDITOR_MODE;
 }
 
 void EditorState::initTileMap() {
 
-	this->tileMap = new TileMap(this->stateData->gridSize, 100, 100, "Resources/Images/Tiles/tilesheet3.png");
+	this->tileMap = new TileMap(this->stateData->gridSize, 100, 100, "Resources/Images/Tiles/tilesheet4.png");
 
 }
 
@@ -182,11 +183,11 @@ void EditorState::updateEditorCameraInput(const float& dt) {
 		this->view.move(this->cameraSpeed * dt, 0.f);
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keyBinds.at("MODE_UP")))) {
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keyBinds.at("MODE_UP"))) && this->getKeytime()) {
 		if (this->activeMode < this->modes.size() - 1) {
 			this->activeMode++;
 		}
-	} else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keyBinds.at("MODE_DOWN")))) {
+	} else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keyBinds.at("MODE_DOWN"))) && this->getKeytime()) {
 		if (this->activeMode > 0) {
 			this->activeMode--;
 		}
@@ -220,11 +221,11 @@ void EditorState::updatePauseMenuButtons() {
 	}
 
 	if (this->pMenu->isButtonPressed("SAVE")) {
-		this->tileMap->saveToFile("text.slmp");
+		this->tileMap->saveToFile("mapEditor.txt");
 	}
 
 	if (this->pMenu->isButtonPressed("LOAD")) {
-		this->tileMap->loadFromFile("text.slmp");
+		this->tileMap->loadFromFile("mapEditor.txt");
 	}
 }
 

@@ -71,6 +71,10 @@ void GameState::initTextures() {
 		throw "PICKABLE TEXTURE ERROR";
 	}
 
+	if (!this->textures["BOSS_SHEET"].loadFromFile("Resources/Images/Sprites/bigOrcSheet.png")) {
+		throw "BIG ORC TEXTURE ERROR";
+	}
+
 }
 
 void GameState::initPauseMenu() {
@@ -130,9 +134,9 @@ void GameState::initEnemySystem() {
 	this->enemySystem = new EnemySystem(this->activeEnemies, this->textures, *this->player);
 }
 
-void GameState::initTileMap() {
+void GameState::initTileMap(std::string mapPath) {
 
-	this->tileMap = new TileMap("text.slmp");
+	this->tileMap = new TileMap(mapPath);
 }
 
 void GameState::initSystems() {
@@ -140,12 +144,14 @@ void GameState::initSystems() {
 	this->tts = new TextTagSystem("Fonts/trebuc.ttf");
 }
 
-GameState::GameState(StateData* stateData, PlayerData* playerData)
+GameState::GameState(StateData* stateData, PlayerData* playerData, std::string mapPath)
 	: State(stateData) {
 
 	this->playerData = playerData;
 	this->gameOver = false;
 	this->showSkillChoose = false;
+	this->bossKilled = false;
+	this->bossPhase = false;
 
 	this->initDefferedRender();
 	this->initView();
@@ -160,7 +166,7 @@ GameState::GameState(StateData* stateData, PlayerData* playerData)
 	this->initPlayer();
 	this->initPlayerGUI();
 	this->initEnemySystem();
-	this->initTileMap();
+	this->initTileMap(mapPath);
 	this->initSystems();
 }
 
@@ -389,13 +395,15 @@ void GameState::updateSkillChooseScrButtons() {
 		this->showSkillChoose = false;
 		this->player->getAttributeComponent()->attributePoints--;
 	}
+	this->player->getAttackTimer();
 }
 
 void GameState::updateTileMap(const float& dt) {
 
+	this->tileMap->update(dt);
 	this->tileMap->updateWorldBoundsCollision(this->player, dt);
-	this->tileMap->updateTileCollision(this->player, dt);
-	this->tileMap->updateTiles(this->player, dt, *this->enemySystem);
+	this->tileMap->updateTileCollision(this->player, dt, this->tts);
+	this->tileMap->updateTiles(this->player, dt, *this->enemySystem, this->bossPhase);
 
 }
 
@@ -404,6 +412,7 @@ void GameState::updatePlayer(const float& dt) {
 	this->player->update(dt, this->mousePosView);
 
 	if (this->player->getAttributeComponent()->isDead()) {
+		this->gameOvecScr->setMainString("GAME OVER");
 		this->gameOver = true;
 	}
 
@@ -423,11 +432,20 @@ void GameState::updateEnemies(const float& dt) {
 		enemy->update(dt, this->mousePosView);
 
 		this->tileMap->updateWorldBoundsCollision(enemy, dt);
-		this->tileMap->updateTileCollision(enemy, dt);
+		this->tileMap->updateTileCollision(enemy, dt, this->tts);
 
 		this->updateCombat(enemy, index, dt);
 
+		if (this->bossPhase && enemy->getEnemySpawnerTile().getEnemyType() != EnemyTypes::BOSS) 
+			enemy->instantKill();
+
 		if (enemy->isDead()) {
+
+			if (enemy->getEnemySpawnerTile().getEnemyType() == EnemyTypes::BOSS) {
+				this->gameOvecScr->setMainString("CONGRATULATIONS");
+				this->goldCount += 1000;
+				this->gameOver = true;
+			}
 
 			this->enemySystem->removeEnemy(index, &this->pickables);
 			++this->killCount;
@@ -497,6 +515,7 @@ void GameState::updateCombat(Enemy* enemy, const int index, const float& dt) {
 			int dmg = static_cast<int>(weapon->getDamage());
 
 			enemy->takeDamage(dmg);
+			enemy->knockBack(10);
 			enemy->resetDamageTimer();
 			this->tts->addTextTag(TAGTYPES::DEFAULT_TAG, enemy->getCenter().x - 50.f, enemy->getCenter().y - 10.f, dmg, "", "DMG");
 			weapon->setToDestroy(true);
@@ -561,7 +580,7 @@ void GameState::render(sf::RenderTarget* target) {
 		this->viewGridPos, 
 		&this->coreShader, 
 		this->player->getCenter(),
-		true
+		false
 	);
 
 	for (auto* pickable : this->pickables) {
@@ -571,7 +590,7 @@ void GameState::render(sf::RenderTarget* target) {
 
 	for (auto* enemy : this->activeEnemies) {
 
-		enemy->render(this->renderTexture, &this->coreShader, this->player->getCenter(), true);
+		enemy->render(this->renderTexture, &this->coreShader, this->player->getCenter(), false);
 	}
 
 	for (auto* item : this->items) {
@@ -579,7 +598,7 @@ void GameState::render(sf::RenderTarget* target) {
 		item->render(this->renderTexture, &this->coreShader, this->player->getCenter());
 	}
 
-	this->player->render(this->renderTexture, &this->coreShader, this->player->getCenter(), true);
+	this->player->render(this->renderTexture, &this->coreShader, this->player->getCenter(), false);
 
 	this->tileMap->renderDeferred(
 		this->renderTexture, 

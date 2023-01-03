@@ -1,30 +1,24 @@
-#ifndef ENEMYEDITORMODE_H
-#define ENEMYEDITORMODE_H
+#ifndef BARIEREDITORMODE_H
+#define BARIEREDITORMODE_H
 
 #include "EditorMode.h"
-#include "EnemySpawnerTile.h"
-
-class EnemyEditorMode :
+class BarierEditorMode :
     public EditorMode {
 private:
 
 	sf::Text cursorTxt;
 	sf::RectangleShape sidebar;
 	sf::RectangleShape selectorRect;
-
 	sf::IntRect textureRect;
 
-	int type;
-	int amount;
-	int timeToSpawn;
-	float maxDist;
+	int lvl;
 
 	void initVariables();
 	void initGui();
 
 public:
-	EnemyEditorMode(StateData* stateData, TileMap* tileMap, EditorStateData* editorStateData);
-	virtual ~EnemyEditorMode();
+	BarierEditorMode(StateData* stateData, TileMap* tileMap, EditorStateData* editorStateData);
+	virtual ~BarierEditorMode();
 
 	void updateInput(const float& dt);
 	void updateGui(const float& dt);
@@ -34,4 +28,4 @@ public:
 	void render(sf::RenderTarget& target);
 };
 
-#endif 
+#endif

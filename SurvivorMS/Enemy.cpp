@@ -35,6 +35,12 @@ const sf::Vector2f Enemy::getRandomPosAroundEnemy() {
 void Enemy::resetDamageTimer() {
 
 	this->damageTimer.restart();
+
+}
+
+void Enemy::instantKill() {
+
+	this->getAttributeComponent()->hp = 0;
 }
 
 void Enemy::takeDamage(const int damage) {

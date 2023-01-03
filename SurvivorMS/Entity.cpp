@@ -8,6 +8,9 @@ void Entity::initVariables() {
 	this->animationComponent = nullptr;
 	this->attributeComponent = nullptr;
 	this->skillComponent = nullptr;
+
+	this->knock = false;
+	this->knockFramesCounter = 10;
 }
 
 Entity::Entity() {
@@ -27,8 +30,20 @@ Entity::~Entity() {
 
 void Entity::move(const float dirX, const float dirY, const float& dt) {
 
-	if(this->movementComponent)
-		this->movementComponent->move(dirX, dirY, dt);
+	if (this->movementComponent) {
+
+		if (this->knock) {
+			if (--this->knockFramesCounter <= 0) {
+				this->knock = false;
+			}
+
+			this->movementComponent->move(-dirX, -dirY, dt);
+		} else {
+
+			this->movementComponent->move(dirX, dirY, dt);
+		}
+
+	}
 
 }
 
@@ -101,6 +116,12 @@ void Entity::setPosition(const float x, const float y) {
 		return this->hitboxComponent->setPosition(x, y);
 	else
 		this->sprite.setPosition(x, y);
+}
+
+void Entity::knockBack(const int framesCount) {
+
+	this->knock = true;
+	this->knockFramesCounter = framesCount;
 }
 
 void Entity::createHitboxComponent(float offsetX, float offsetY, float width, float height) {

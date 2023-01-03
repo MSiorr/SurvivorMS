@@ -139,6 +139,8 @@
     <ClCompile Include="AIOption.cpp" />
     <ClCompile Include="AnimationComponent.cpp" />
     <ClCompile Include="AttributeComponent.cpp" />
+    <ClCompile Include="BarierEditorMode.cpp" />
+    <ClCompile Include="Boss.cpp" />
     <ClCompile Include="CharacterTab.cpp" />
     <ClCompile Include="Coin.cpp" />
     <ClCompile Include="DefaultEditorMode.cpp" />
@@ -160,6 +162,7 @@
     <ClCompile Include="Helpers.cpp" />
     <ClCompile Include="HitboxComponent.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="LvLBlockadeTile.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenuState.cpp" />
     <ClCompile Include="MovementComponent.cpp" />
@@ -191,6 +194,8 @@
     <ClInclude Include="AIOption.h" />
     <ClInclude Include="AnimationComponent.h" />
     <ClInclude Include="AttributeComponent.h" />
+    <ClInclude Include="BarierEditorMode.h" />
+    <ClInclude Include="Boss.h" />
     <ClInclude Include="CharacterTab.h" />
     <ClInclude Include="Coin.h" />
     <ClInclude Include="DefaultEditorMode.h" />
@@ -212,6 +217,7 @@
     <ClInclude Include="Helpers.h" />
     <ClInclude Include="HitboxComponent.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="LvLBlockadeTile.h" />
     <ClInclude Include="MainMenuState.h" />
     <ClInclude Include="MovementComponent.h" />
     <ClInclude Include="Orc.h" />

@@ -6,8 +6,9 @@
 #include "Coin.h"
 #include "ExpGem.h"
 #include "Orc.h"
+#include "Boss.h"
 
-enum EnemyTypes {ORC = 0};
+enum EnemyTypes {ORC = 0, BOSS};
 
 class EnemySystem {
 private:

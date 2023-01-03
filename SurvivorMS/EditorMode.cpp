@@ -18,6 +18,5 @@ const bool EditorMode::getKeytime() {
 		*this->editorStateData->keytime = 0.f;
 		return true;
 	}
-
 	return false;
 }

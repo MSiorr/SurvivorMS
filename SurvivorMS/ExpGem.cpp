@@ -5,7 +5,7 @@ ExpGem::ExpGem(sf::Vector2f pos, sf::Texture& textureSheet) {
 
 	this->type = PICKABLETYPES::EXP;
 
-	this->exp = 5000;
+	this->exp = 100;
 
 	this->sprite.setPosition(pos);
 	this->sprite.setTexture(textureSheet);
