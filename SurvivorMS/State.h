@@ -5,6 +5,8 @@
 #include "Gui.h"
 #include "GraphicsSettings.h"
 
+class State;
+
 class StateData {
 public:
 	StateData() {

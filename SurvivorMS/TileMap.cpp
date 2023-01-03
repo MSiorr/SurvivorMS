@@ -426,8 +426,6 @@ void TileMap::addTile(const int x, const int y, const int z, const sf::IntRect& 
 
 	if (x < this->maxSizeWorldGrid.x && y < this->maxSizeWorldGrid.y && z < this->layers && x >= 0 && y >= 0 && z >= 0) {
 
-		std::cout << "ADD BLOCKADE" << "\n";
-
 		this->map[x][y][z].push_back(new LvLBlockadeTile(
 			x, y,
 			this->gridSizeF,

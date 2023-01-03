@@ -18,8 +18,6 @@ Meat::~Meat() {
 
 void Meat::onPick(Player& player, int& goldCount) {
 
-	std::cout << player.getAttributeComponent()->hpMax * this->hpMultipHeal << "\n";
-
 	player.getAttributeComponent()->gainHP(
 		player.getAttributeComponent()->hpMax * this->hpMultipHeal
 	);
