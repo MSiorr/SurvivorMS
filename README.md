@@ -67,6 +67,7 @@ Own game written to pass a semester at AGH UST
 ### Game:
 - WASD - Movement
 - LMB - Shot
+- C - Player stats
 - ESC - Close
 
 ## Credits
